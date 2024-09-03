@@ -16,6 +16,13 @@
       <description>&lt;p&gt;Hi!&lt;/p&gt;</description>
     </item>
     <item>
+      <title>test again!</title>
+      <link>https://example.org/post/2024/09/03/test-again/</link>
+      <pubDate>Tue, 03 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://example.org/post/2024/09/03/test-again/</guid>
+      <description>&lt;p&gt;hi!&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Hello R Markdown</title>
       <link>https://example.org/post/2020/12/01/hello-r-markdown/</link>
       <pubDate>Tue, 01 Dec 2020 21:13:14 -0500</pubDate>
