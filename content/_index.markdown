@@ -2,6 +2,8 @@
 title: Home
 ---
 
+[<img src="https://www.flfamily.org/wp-content/uploads/2016/11/vote-button-clipart-1.gif" style="max-width:15%;min-width:40px;float:right;" alt="Github repo" />](https://github.com/menemshasolomon/election-blog)
+
 # Election Prediction Blog
 
 ## Predicting the Outcome of the 2024 General Election

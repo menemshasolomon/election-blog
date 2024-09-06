@@ -6,3 +6,4 @@ slug: blog-post-1-exploring-electoral-competitiveness
 categories: []
 tags: []
 ---
+Hi!
