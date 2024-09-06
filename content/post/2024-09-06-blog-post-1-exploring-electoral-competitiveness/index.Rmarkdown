@@ -1,7 +1,7 @@
 ---
 title: 'Blog Post 1: Exploring Electoral Competitiveness'
 author: []
-date: 'September 9, 2024'
+date: '2024-09-09'
 slug: blog-post-1-exploring-electoral-competitiveness
 categories: []
 tags: []
