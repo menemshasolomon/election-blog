@@ -53,7 +53,8 @@ d_popvote_plot <- ggplot(data = d_popvote,
   theme_bw() +
   labs(x = "Year",
        y = "Percent of Two-Party Voteshare",
-       title = "Two-Party Presidential Popular Voteshare Over Time")
+       title = "Two-Party Presidential Popular Voteshare (1948-2020)") +
+  scale_x_continuous(breaks = seq(min(d_popvote$year), max(d_popvote$year), by = 4))
 
 d_popvote_plot
 
