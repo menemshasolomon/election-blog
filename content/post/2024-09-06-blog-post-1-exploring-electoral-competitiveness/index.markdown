@@ -1,9 +1,0 @@
----
-title: 'Blog Post 1: Exploring Electoral Competitiveness'
-author: []
-date: '2024-09-09'
-slug: blog-post-1-exploring-electoral-competitiveness
-categories: []
-tags: []
----
-When predicting future outcomes it is important to base them on patterns of the past.   
