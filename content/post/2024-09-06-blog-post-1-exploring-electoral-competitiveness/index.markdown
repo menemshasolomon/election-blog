@@ -6,4 +6,4 @@ slug: blog-post-1-exploring-electoral-competitiveness
 categories: []
 tags: []
 ---
-Hi!
+When predicting future outcomes it is important to base them on patterns of the past.   
