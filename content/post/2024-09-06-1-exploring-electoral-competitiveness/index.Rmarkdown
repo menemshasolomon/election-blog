@@ -1,0 +1,47 @@
+---
+title: 1. Exploring Electoral Competitiveness
+author: []
+date: '2024-09-06'
+slug: []
+categories: []
+tags: []
+---
+
+
+##How competitive are presidential elections in the United States?
+
+In order to predict the outcome of the 2024 presidential election, it is important to base the prediction model on an understanding of past elections at the national level. 
+
+**Generally speaking, national elections have been competitive between the two major parties since the election of President Roosevelt in 1948.** In the succeeding 75+ years, neither party has been able to maintain significant control over the White House.
+
+```{r echo = FALSE}
+# Load libraries.
+library(ggplot2)
+library(maps)
+library(tidyverse)
+
+# Read presidential popular vote. 
+d_popvote <- read_csv("/Users/menasolomon/Desktop/election-blog/Lab1/popvote_1948-2020.csv")
+
+####----------------------------------------------------------#
+#### Visualize trends in national presidential popular vote. 
+####----------------------------------------------------------#
+
+# Visualize the two-party presidential popular over time. 
+d_popvote_plot <- ggplot(data = d_popvote,
+                         mapping = aes(x = year, y = pv2p, color = party)) + 
+  geom_line() +
+  scale_color_manual(values = c("dodgerblue", "firebrick")) +
+  theme_bw() +
+  labs(x = "Year",
+       y = "Percent of Two-Party Voteshare",
+       title = "Two-Party Presidential Popular Voteshare (1948-2020)") +
+  scale_x_continuous(breaks = seq(min(d_popvote$year), max(d_popvote$year), by = 4))
+
+d_popvote_plot
+```
+
+
+##Which states vote blue/red and how consistently?
+
+##Using electoral competitiveness, predict the outcome of the 2024 election 

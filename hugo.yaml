@@ -1,0 +1,37 @@
+baseurl: "https://menemshasolomon.github.io/election-blog/"  # please update this to your actual URL
+languageCode: "en-us"
+title: "Election Prediction Blog"
+theme: "hugo-xmin"
+googleAnalytics: ""
+disqusShortname: ""
+ignoreFiles: ["\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
+footnotereturnlinkcontents: "↩"
+
+menu:
+  main:
+    - name: Home
+      url: ""
+      weight: 1
+
+params:
+  description: "A website built through Hugo and blogdown."
+  footer: "Mena Solomon | [Github](https://github.com/menemshasolomon/election-blog) | 2024"
+
+markup:
+  highlight:
+    codeFences: false
+  goldmark:
+    renderer:
+      unsafe: true
+    extensions:
+      passthrough:
+        enable: true
+        delimiters:
+          block:
+          - - \[
+            - \]
+          - - $$
+            - $$
+          inline:
+          - - \(
+            - \)

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Home on Election Prediction Blog</title>
+    <link>https://menemshasolomon.github.io/election-blog/</link>
+    <description>Recent content in Home on Election Prediction Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 06 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://menemshasolomon.github.io/election-blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>1. Exploring Electoral Competitiveness</title>
+      <link>https://menemshasolomon.github.io/election-blog/post/2024-09-06-1-exploring-electoral-competitiveness/</link>
+      <pubDate>Fri, 06 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://menemshasolomon.github.io/election-blog/post/2024-09-06-1-exploring-electoral-competitiveness/</guid>
+      <description>&lt;p&gt;##How competitive are presidential elections in the United States?&lt;/p&gt;&#xA;&lt;p&gt;In order to predict the outcome of the 2024 presidential election, it is important to base the prediction model on an understanding of past elections at the national level.&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Generally speaking, national elections have been competitive between the two major parties since the election of President Roosevelt in 1948.&lt;/strong&gt; In the succeeding 75+ years, neither party has been able to maintain significant control over the White House.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>About Hugo XMin</title>
+      <link>https://menemshasolomon.github.io/election-blog/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://menemshasolomon.github.io/election-blog/about/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;XMin&lt;/strong&gt; is the first Hugo theme I have designed. The original reason that I wrote it was I needed a minimal example of Hugo themes when I was writing the  &lt;a href=&#34;https://github.com/rstudio/blogdown&#34;&gt;&lt;strong&gt;blogdown&lt;/strong&gt;&lt;/a&gt; book. Basically I wanted a simple theme that supports a navigation menu, a home page, other single pages, lists of pages, blog posts, categories, tags, and RSS. That is all. Nothing fancy. In terms of CSS and JavaScript, I really want to keep them minimal. In fact, this theme does not contain any JavaScript code at all, although on this example website I did introduce some JavaScript code (still relatively simple anyway). The theme does not contain any images, either, and is pretty much a plain-text theme.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
