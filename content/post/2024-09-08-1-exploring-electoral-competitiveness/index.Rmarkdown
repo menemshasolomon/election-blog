@@ -58,7 +58,7 @@ These elections indicate there are many narratives which contribute to the compe
 
 In presidential elections, it is not popular vote which determines election outcomes, but the electoral college. In this winner-takes-all system, a state's population dictates the number of electors allocated to that state. The popular vote winner in that state will receive all of that state's electors, thus increasing the importance of understanding voting patterns on a state-by-state basis. 
 
-```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=12}
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=12, fig.height=6.5}
 # Sequester shapefile of states from `maps` library.
 states_map <- map_data("state")
 
@@ -98,7 +98,7 @@ The [Helmut Norpoth Primary Model](http://primarymodel.com/) uses a weighted ave
 
 **(Y2024_i = 0.75*Y2020_voteshare_i + 0.25*Y2016_voteshare_i)**
 
-```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=12}
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=12, fig.height=7}
 pv2p_2024_states <- d_pvstate_wide |>
   filter(year == 2020) |>
   group_by(state) |>
@@ -122,4 +122,4 @@ pv2p_2024_states |>
   labs(title = "2024 Presidential Election Prediction",
       subtitle = "A Naive Forecast Based Upon Helmut Norpoth's Primary Model")
 ```
-Based upon this naive prediction model, Harris is expected to win the key battle ground states of *Michigan **(+2.06%)**, Nevada, Pennsylvania**(+0.7%)**, and Wisconsin**(+0.27%)*** while Trump will capture *Arizona **(+0.7%)**, Georgia **(+1.15%)**, and North Carolina **(+1.98%)**.* This would lead to a Harris victory with 276 electoral votes over Trump's 262 votes.
+Based upon this naive prediction model, Harris is expected to win the key battle ground states of *Michigan (+2.06%), Nevada, Pennsylvania (+0.7%), and Wisconsin (+0.27%)* while Trump will capture *Arizona (+0.7%), Georgia (+1.15%), and North Carolina (+1.98%).* This would lead to a Harris victory with 276 electoral votes over Trump's 262 votes.

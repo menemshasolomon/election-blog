@@ -46,4 +46,4 @@ The [Helmut Norpoth Primary Model](http://primarymodel.com/) uses a weighted ave
 **(Y2024_i = 0.75*Y2020_voteshare_i + 0.25*Y2016_voteshare_i)**
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="1152" />
-Based upon this naive prediction model, Harris is expected to win the key battle ground states of *Michigan **(+2.06%)**, Nevada, Pennsylvania**(+0.7%)**, and Wisconsin**(+0.27%)*** while Trump will capture *Arizona **(+0.7%)**, Georgia **(+1.15%)**, and North Carolina **(+1.98%)**.* This would lead to a Harris victory with 276 electoral votes over Trump's 262 votes.
+Based upon this naive prediction model, Harris is expected to win the key battle ground states of *Michigan (+2.06%), Nevada, Pennsylvania (+0.7%), and Wisconsin (+0.27%)* while Trump will capture *Arizona (+0.7%), Georgia (+1.15%), and North Carolina (+1.98%).* This would lead to a Harris victory with 276 electoral votes over Trump's 262 votes.
