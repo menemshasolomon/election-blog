@@ -58,6 +58,21 @@ d_popvote_plot <- ggplot(data = d_popvote,
 
 d_popvote_plot
 
+meanvote <- d_popvote |>
+  filter(year %in% c(1956, 1960, 1964, 1968, 1972, 1976, 1980, 1984)) |>
+  filter(winner == TRUE) |>
+  summarize(mean(pv2p))
+
+meanvote2 <- d_popvote |>
+  filter(year %in% c(1988, 1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020)) |>
+  filter(winner == TRUE) |>
+  summarize(mean(pv2p))
+
+margin <- d_popvote |>
+  select(year, pv2p, winner) |>
+  group_by(year) |>
+  mutate(margin = (pv2p[winner == TRUE] - pv2p[winner == FALSE]))
+
 ####----------------------------------------------------------#
 #### State-by-state map of presidential popular votes.
 ####----------------------------------------------------------#

@@ -8,11 +8,11 @@ tags: []
 ---
 
 
-##How competitive are presidential elections in the United States?
+*How competitive are presidential elections in the United States?*
 
 In order to predict the outcome of the 2024 presidential election, it is important to base the prediction model on an understanding of past elections at the national level. 
 
-**Generally speaking, national elections have been competitive between the two major parties since the election of President Roosevelt in 1948.** In the succeeding 75+ years, neither party has been able to maintain significant control over the White House.
+**Generally speaking, national elections have been competitive between the two major parties since the election of President Franklin Roosevelt in 1948.** In the succeeding 75+ years, neither party has been able to maintain a significant monopoly over the Presidency. 
 
 
 ```
@@ -38,7 +38,11 @@ In order to predict the outcome of the 2024 presidential election, it is importa
 ```
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="672" />
+Within this time frame, the margin of victory has lessened significantly over the past 40 years. From the 1956 re-election of President Eisenhower to the 1984 re-election of President Reagan, the winning candidate received an average of 55.85% of the two-party popular voteshare. Indeed, 1964 and 1972 the winning candidate won with a margin of 22.69% and 23.58% respectively. Since 1988, however, the winning candidate has only recieved on average 52.23% of the two-party popular voteshare. This includes the 2000 election of Bush v. Gore wherin Bush not only won with a negative margin, but an incredibly narrow 0.52%.
 
+To better understand the factors which contribute to the competitiveness of a presidential election, it is important to understand the narratives of both the landslide victories and narrow margins of the past 75+ years.
+
+- *The 
 
 ##Which states vote blue/red and how consistently?
 
