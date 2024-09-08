@@ -56,5 +56,23 @@ To better understand the factors which contribute to the competitiveness of a pr
 These elections indicate there are many narratives which contribute to the competitiveness of an election. Indeed, one of the most influential factors in determining election competitiveness is past precedent, which will be explored as a predictor in depth below.
 
 ## Which states vote blue/red and how consistently?
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=12}
+# Make map grid of state winners for each election year available in the dataset.
+
+pv_win_map <- pv_map |>
+  mutate(winner = if_else(R_pv2p > D_pv2p, "republican", "democrat"))
+
+d_pvstate_wide |>
+  filter(year >= 1980) |>
+  left_join(states_map, by = "region") |>
+  mutate(winner = if_else(R_pv2p > D_pv2p, "republican", "democrat")) |>
+  ggplot(aes(long, lat, group = group)) +
+  facet_wrap(facets = year ~.) +
+  geom_polygon(aes(fill = winner), color = "white") +
+  scale_fill_manual(values = c("dodgerblue", "firebrick")) +
+  theme_void() +
+    ggtitle("Presidential Vote Share (1980 - 2020)") 
+```
+
 
 ## Using electoral competitiveness, predict the outcome of the 2024 election 
