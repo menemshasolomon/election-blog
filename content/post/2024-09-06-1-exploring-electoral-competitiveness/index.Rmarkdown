@@ -8,13 +8,13 @@ tags: []
 ---
 
 
-*How competitive are presidential elections in the United States?*
+## How competitive are presidential elections in the United States?
 
 In order to predict the outcome of the 2024 presidential election, it is important to base the prediction model on an understanding of past elections at the national level. 
 
-**Generally speaking, national elections have been competitive between the two major parties since the election of President Franklin Roosevelt in 1948.** In the succeeding 75+ years, neither party has been able to maintain a significant monopoly over the Presidency. 
+Generally speaking, national elections have been competitive between the two major parties since the election of President Franklin Roosevelt in 1948. In the succeeding 75+ years, neither party has been able to maintain a significant monopoly over the Presidency. 
 
-```{r echo = FALSE}
+```{r echo = FALSE, fig.width=10, fig.height=5}
 library(ggplot2)
 library(maps)
 library(tidyverse)
@@ -39,12 +39,20 @@ d_popvote_plot <- ggplot(data = d_popvote,
 
 d_popvote_plot
 ```
-Within this time frame, the margin of victory has lessened significantly over the past 40 years. From the 1956 re-election of President Eisenhower to the 1984 re-election of President Reagan, the winning candidate received an average of 55.85% of the two-party popular voteshare. Indeed, 1964 and 1972 the winning candidate won with a margin of 22.69% and 23.58% respectively. Since 1988, however, the winning candidate has only recieved on average 52.23% of the two-party popular voteshare. This includes the 2000 election of Bush v. Gore wherin Bush not only won with a negative margin, but an incredibly narrow 0.52%.
 
-To better understand the factors which contribute to the competitiveness of a presidential election, it is important to understand the narratives of both the landslide victories and narrow margins of the past 75+ years.
 
-- *The 
+Within this time frame, the margin of victory for a winning candidate has lessened significantly. From the 1956 re-election of President Eisenhower to the 1984 re-election of President Reagan, the winning candidate received an average of 55.85% of the two-party popular voteshare. Indeed, in 1964 and 1972 the winning candidate won with a margin of 22.69% and 23.58% respectively. Since 1988, however, the winning candidate has only recieved on average 52.23% of the two-party popular voteshare. This includes the 2000 election of Bush v. Gore wherein Bush not only won with a negative margin, but an incredibly narrow 0.52%.
 
-##Which states vote blue/red and how consistently?
+To better understand the factors which contribute to the competitiveness of a presidential election, it is important to understand the narratives of both the *landslide victories* and *narrow margins* of the past 75+ years.
 
-##Using electoral competitiveness, predict the outcome of the 2024 election 
+- **The 1972 Nixon v. McGovern election with a margin of 23.58%.** Nixon received nearly 18 million more votes than his democratic challenger due to a combination of factors. Not only was he able to capitalize off of a strong economy and immense popularity, but his Vietnam policy allowed him to successfully frame McGovern as a left-wing extremist.[Politico](https://www.politico.com/story/2018/11/07/this-day-in-politics-november-7-963516)
+
+- **The 1964 Johnson v. Goldwater election with a margin of 22.69%.** In the wake of the assassination of JFK, Johnson used his position as Kennedy's Vice President to carry forward JFK's legacy. Invoking Kennedy's memory, Johnson helped calm hysteria and push forth the Civil Rights Act. Johnson beat Goldwater by a margin of over 15 million votes. [Britannica](https://www.britannica.com/event/United-States-presidential-election-of-1964)
+
+- **The 1960 JFK v. Nixon election with a margin of 0.17%.** In the narrowest election of US History, Kennedy and Nixon fought closely on issues of the Cold War and Civil Rights. Strategic use of his Catholic faith and a key endorsement by MLK Sr. led to his victory in important battleground states. [JFK Library](https://www.jfklibrary.org/learn/about-jfk/jfk-in-history/campaign-of-1960)
+
+- **The 2000 Bush v. Gore election with a margin of 0.52%.** Decided by a few hundred votes in Florida, this election was so close it was essentially decided by the U.S. Supreme Court. Clinton's scandals gave Gore a difficult challenge to re-frame the character of the Democratic Party, yet the state of economy put Gore at a significant advantage. [Political Science Quarterly](https://www.uvm.edu/~dguber/POLS125/articles/pomper.htm)
+
+## Which states vote blue/red and how consistently?
+
+## Using electoral competitiveness, predict the outcome of the 2024 election 
