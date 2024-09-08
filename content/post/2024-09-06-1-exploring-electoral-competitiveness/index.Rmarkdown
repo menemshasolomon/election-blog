@@ -56,6 +56,9 @@ To better understand the factors which contribute to the competitiveness of a pr
 These elections indicate there are many narratives which contribute to the competitiveness of an election. Indeed, one of the most influential factors in determining election competitiveness is past precedent, which will be explored as a predictor in depth below.
 
 ## Which states vote blue/red and how consistently?
+
+In presidential elections, it is not popular vote which determines election outcomes, but the electoral college. In this winner-takes-all system, a state's population dictates the number of electors allocated to that state. The popular vote winner in that state will receive all of that state's electors, thus increasing the importance of understanding voting patterns on a state-by-state basis. 
+
 ```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=12}
 # Make map grid of state winners for each election year available in the dataset.
 
@@ -74,5 +77,37 @@ d_pvstate_wide |>
     ggtitle("Presidential Vote Share (1980 - 2020)") 
 ```
 
+As displayed by the graphic above, states like *Arizona, Georgia, Michigan, Nevada, North Carolina, Pennsylvania, and Wisconsin* (93 EV) lack the party consistency of other states. In this way, candidates often focus their campaigning on winning these so-called swing states. Furthermore, the role of the electoral college and the way it inflates the importance of certain states can generate outcomes like the one seen in 2016 wherein Hillary Clinton won the popular vote by a margin of 2.32% yet lost the electoral college with 227 votes compared to Donald Trump's 304 votes. 
 
 ## Using electoral competitiveness, predict the outcome of the 2024 election 
+As concluded by the first figure, the competitiveness of each election cycle is often influenced by past elections. Yet, as noted by the second figure, it is important to look at these trends on a state-by-state basis as it is the elector college, not the general popular vote, which determines election outcomes. Furthermore, many states vote consistently toward a singular party, thus precedence plays a large role in determining election outcomes. 
+
+The [Helmut Norpoth Primary Model](http://primarymodel.com/) uses a weighted average of the two-party voteshare from the previous two election cycles to predict the outcome of a future election. To make my prediction, I will be using a simplified version of this model as outlined below.
+
+**(Y2024_i = 0.75*Y2020_voteshare_i + 0.25*Y2016_voteshare_i)**
+
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=12}
+pv2p_2024_states <- d_pvstate_wide |>
+  filter(year == 2020) |>
+  group_by(state) |>
+  summarize(R_pv2p_2024 = 0.75*R_pv2p + 0.25*R_pv2p_lag1,
+            D_pv2p_2024 = 0.75*D_pv2p + 0.25*D_pv2p_lag1) |>
+  mutate(pv2p_2024_margin = R_pv2p_2024 - D_pv2p_2024,
+         winner = ifelse(R_pv2p_2024 > D_pv2p_2024, "R", "D"),
+         region = tolower(state))
+
+pv2p_2024_states |>
+  left_join(states_map, by = "region") |>
+  ggplot(aes(long, lat, group = group)) +
+  geom_polygon(aes(fill = pv2p_2024_margin), color = "black") +
+  scale_fill_gradient2(high = "firebrick",
+                      low = "dodgerblue",
+                      mid = "white",
+                      name = "win margin",
+                      breaks = c(-50, -25, 0, 25, 50),
+                      limits = c(-50, 50)) +
+  theme_void() +
+  labs(title = "2024 Presidential Election Prediction",
+      subtitle = "A Naive Forecast Based Upon Helmut Norpoth's Primary Model")
+```
+Based upon this naive prediction model, Harris is expected to win the key battle ground states of *Michigan **(+2.06%)**, Nevada, Pennsylvania**(+0.7%)**, and Wisconsin**(+0.27%)*** while Trump will capture *Arizona **(+0.7%)**, Georgia **(+1.15%)**, and North Carolina **(+1.98%)**.* This would lead to a Harris victory with 276 electoral votes over Trump's 262 votes.

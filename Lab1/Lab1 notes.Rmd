@@ -150,10 +150,15 @@ pv2p_2024_states |>
                       limits = c(-50, 50)) +
   theme_void()
 
-ec <-  read_csv("ec_full.csv")
+ec <-  read_csv("ec_full.csv") |>
+  filter(year == 2024)
 
-pv2p_2024_states <- pv2p_2024_states |>
-  mutate()
+ec_2024 <- pv2p_2024_states |>
+  left_join(ec, by = "state") |>
+  select(state, electors, winner, pv2p_2024_margin)
+
+ec_2024 |>
+  aggregate(electors ~ winner, sum)
 
 # Generate projected state winners and merge with electoral college votes to make summary of electoral college vote distributions. 
 
