@@ -14,7 +14,7 @@ In order to predict the outcome of the 2024 presidential election, it is importa
 
 Generally speaking, national elections have been competitive between the two major parties since the election of President Franklin Roosevelt in 1948. In the succeeding 75+ years, neither party has been able to maintain a significant monopoly over the Presidency. 
 
-```{r echo = FALSE, fig.width=10, fig.height=5}
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=12, fig.height=5.5}
 library(ggplot2)
 library(maps)
 library(tidyverse)
