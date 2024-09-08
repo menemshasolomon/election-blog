@@ -105,16 +105,27 @@ pv_win_map |>
   scale_fill_manual(values = c("dodgerblue", "firebrick")) +
   theme_void()
 
-d_pvstate_wide |>
+d_pvstate_wide_more <-  d_pvstate_wide |>
+  filter(year >= 1976) |>
+  mutate(
+    swing = (D_pv2p / (D_pv2p + R_pv2p)) - (D_pv2p_lag1 / (D_pv2p_lag1 + R_pv2p_lag1))
+  ) |>
+  mutate(region = tolower(state))
+
+d_pvstate_wide_more |>
   filter(year >= 1980) |>
   left_join(states_map, by = "region") |>
-  mutate(winner = if_else(R_pv2p > D_pv2p, "republican", "democrat")) |>
   ggplot(aes(long, lat, group = group)) +
   facet_wrap(facets = year ~.) +
-  geom_polygon(aes(fill = winner), color = "white") +
-  scale_fill_manual(values = c("dodgerblue", "firebrick")) +
+  geom_polygon(aes(fill = swing), color = "white") +
+  scale_fill_gradient2(low = "firebrick",
+                      high = "dodgerblue",
+                      mid = "white",
+                      name = "Swing",
+                      breaks = c(-0.2, -0.15, -0.1, 0, 0.1, 0.15, 0.2),
+                      limits = c(-0.2, 0.2)) +
   theme_void() +
-    ggtitle("Presidential Vote Share (1980 - 2020)")
+    ggtitle("Swing Map (1980 - 2020)")
 
 
 ```

@@ -34,16 +34,18 @@ These elections indicate there are many narratives which contribute to the compe
 
 In presidential elections, it is not popular vote which determines election outcomes, but the electoral college. In this winner-takes-all system, a state's population dictates the number of electors allocated to that state. The popular vote winner in that state will receive all of that state's electors, thus increasing the importance of understanding voting patterns on a state-by-state basis. 
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="1152" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-2.png" width="672" />
 
-As displayed by the graphic above, states like *Arizona, Georgia, Michigan, Nevada, North Carolina, Pennsylvania, and Wisconsin* (93 EV) lack the party consistency of other states. In this way, candidates often focus their campaigning on winning these so-called swing states. Furthermore, the role of the electoral college and the way it inflates the importance of certain states can generate outcomes like the one seen in 2016 wherein Hillary Clinton won the popular vote by a margin of 2.32% yet lost the electoral college with 227 votes compared to Donald Trump's 304 votes. 
+As displayed by the graphics above, states like *Arizona, Georgia, Michigan, Nevada, North Carolina, Pennsylvania, and Wisconsin* (93 EV) lack the party consistency of other states. In this way, candidates often focus their campaigning on winning these so-called swing states. The second graphic illustrates the proportion of the two-party votesahre allocated to the democratic party relative to the previous year. A state which is a darker shade of blue swung more democratic than the previous year, while a state which is a darker shade of red swung more republican. This map similarly illustrates the extreme volatility of battleground states.
+
+Furthermore, the role of the electoral college and the way it inflates the importance of certain states can generate outcomes like the one seen in 2016 wherein Hillary Clinton won the popular vote by a margin of 2.32% yet lost the electoral college with 227 votes compared to Donald Trump's 304 votes. 
 
 ## Using electoral competitiveness, predict the outcome of the 2024 election 
 As concluded by the first figure, the competitiveness of each election cycle is often influenced by past elections. Yet, as noted by the second figure, it is important to look at these trends on a state-by-state basis as it is the elector college, not the general popular vote, which determines election outcomes. Furthermore, many states vote consistently toward a singular party, thus precedence plays a large role in determining election outcomes. 
 
 The [Helmut Norpoth Primary Model](http://primarymodel.com/) uses a weighted average of the two-party voteshare from the previous two election cycles to predict the outcome of a future election. To make my prediction, I will be using a simplified version of this model as outlined below.
 
-**(Y2024_i = 0.75*Y2020_voteshare_i + 0.25*Y2016_voteshare_i)**
+**(Y2024_i = 0.75xY2020_voteshare_i + 0.25xY2016_voteshare_i)**
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="1152" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 Based upon this naive prediction model, Harris is expected to win the key battle ground states of *Michigan (+2.06%), Nevada, Pennsylvania (+0.7%), and Wisconsin (+0.27%)* while Trump will capture *Arizona (+0.7%), Georgia (+1.15%), and North Carolina (+1.98%).* This would lead to a Harris victory with 276 electoral votes over Trump's 262 votes.
