@@ -1,6 +1,6 @@
 ---
 title: 1. Exploring Electoral Competitiveness
-author: []
+author: [Mena Solomon]
 date: '2024-09-08'
 slug: []
 categories: []
@@ -56,5 +56,25 @@ Y_{2024_i} = 0.75 \times Y_{2020\_voteshare_i} + 0.25 \times Y_{2016\_voteshare_
 
 Based upon this naive prediction model, Harris is expected to win the key battle ground states of _Michigan (+2.06%), Nevada, Pennsylvania (+0.7%), and Wisconsin (+0.27%)_ while Trump will capture _Arizona (+0.7%), Georgia (+1.15%), and North Carolina (+1.98%)._ This would lead to a **Harris victory with 276 electoral votes** over Trump's 262 votes.
 
-
+## Notes
 All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-09-08-1-exploring-electoral-competitiveness/index.Rmarkdown).
+
+**Sources**
+Glass, Andrew. "Nixon reelected in landslide, Nov. 7, 1972." Politico. Accessed September 8, 2024. 
+     https://www.politico.com/story/2018/11/07/this-day-in-politics-november-7-963516. 
+ 
+Levy, Michael. "United States Presidential Election of 1964." In Encyclopedia Britannica. Last 
+     modified August 9, 2024. https://www.britannica.com/event/United-States-presidential-election-of-1964. 
+ 
+National Archives. "Campaign of 1960." John F. Kennedy Presidential Library and Museum. Accessed 
+     September 8, 2024. https://www.jfklibrary.org/learn/about-jfk/jfk-in-history/campaign-of-1960. 
+ 
+Norpoth, Helmut. "The Primary Model." The Primary Model. Accessed September 8, 2024. 
+     http://primarymodel.com/. 
+ 
+Pomber, Gerald M. "The 2000 Presidential Election: Why Gore Lost." Political Science Quarterly 116, 
+     no. 2 (2001): 201. Accessed September 8, 2024. https://www.uvm.edu/~dguber/POLS125/articles/pomper.htm. 
+
+**Data Source**
+US Presidential Election Popular Vote Data from 1948-2020 provided by the course.
+
