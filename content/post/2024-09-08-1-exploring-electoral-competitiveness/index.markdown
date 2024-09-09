@@ -1,6 +1,6 @@
 ---
 title: 1. Exploring Electoral Competitiveness
-author: [Mena Solomon]
+author: Mena Solomon
 date: '2024-09-08'
 slug: []
 categories: []
@@ -60,6 +60,7 @@ Based upon this naive prediction model, Harris is expected to win the key battle
 All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-09-08-1-exploring-electoral-competitiveness/index.Rmarkdown).
 
 **Sources**
+
 Glass, Andrew. "Nixon reelected in landslide, Nov. 7, 1972." Politico. Accessed September 8, 2024. 
      https://www.politico.com/story/2018/11/07/this-day-in-politics-november-7-963516. 
  
@@ -76,5 +77,6 @@ Pomber, Gerald M. "The 2000 Presidential Election: Why Gore Lost." Political Sci
      no. 2 (2001): 201. Accessed September 8, 2024. https://www.uvm.edu/~dguber/POLS125/articles/pomper.htm. 
 
 **Data Source**
+
 US Presidential Election Popular Vote Data from 1948-2020 provided by the course.
 
