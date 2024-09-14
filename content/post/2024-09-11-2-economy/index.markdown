@@ -217,7 +217,7 @@ mean(out_samp_pred - out_samp_truth)
 ```
 
 ```
-## [1] 1.500489
+## [1] -0.3520063
 ```
 
 ```r
@@ -235,7 +235,7 @@ mean(abs(out_samp_errors))
 ```
 
 ```
-## [1] 1.765418
+## [1] 1.779507
 ```
 
 
@@ -268,6 +268,8 @@ predict(reg_econ_2, GDP_new, interval = "prediction")
 ##        fit      lwr     upr
 ## 1 51.58486 41.85982 61.3099
 ```
+
+
 to improve the model, there are many options:
 1. timeline
 - retrospective voters are the ones who focus on Q2 growth (less-rational)
@@ -275,3 +277,19 @@ to improve the model, there are many options:
 2. use different data
 - RDI, SMP 500, GDP, unemployment etc.
  -worry about over fitting and multi collinearity when adding many variables (this mades IVs no longer independent)
+ 
+ 
+ 
+ 
+ EXTRA CODE
+ 
+
+
+Table: <span id="tab:unnamed-chunk-6"></span>Table 2: Correlation Values Between Economic Indicators and Incumbent Vote Share
+
+|Description                          | Correlation|
+|:------------------------------------|-----------:|
+|GDP Growth vs Incumbent Vote Share   |   0.5699180|
+|RDPI Growth vs Incumbent Vote Share  |   0.3338966|
+|Unemployment vs Incumbent Vote Share |   0.0065221|
+ 
