@@ -14,6 +14,14 @@ Many scholars argue that most presidential elections are determined by political
 To evaluate this correlation it is important to look at the relationship between different economic indicators and two-party vote. In doing so, I will be focusing on economic data from quarter 2, the financial reporting quarter right before the election. This echoes the assumption embedded within retrospective voting that a vast majority of American voters only begin paying attention to the election in the months leading up to November, rewarding or punishing incumbent candidates and/or parties based on recent economic conditions [Achen and Bartels, 2017](https://hollis.harvard.edu/permalink/f/1s5nto6/01HVD_ALMA512397392810003941). 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-1-1.png" width="1632" />
 
+Table: <span id="tab:unnamed-chunk-1"></span>Table 1: Correlation Values between Economic Indicators and Incumbent Vote Share
+
+|Description                          | Correlation|
+|:------------------------------------|-----------:|
+|GDP Growth vs Incumbent Vote Share   |   0.5699180|
+|RDPI Growth vs Incumbent Vote Share  |   0.3338966|
+|Unemployment vs Incumbent Vote Share |   0.0065221|
+
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-2.png" width="672" />
 
@@ -209,7 +217,7 @@ mean(out_samp_pred - out_samp_truth)
 ```
 
 ```
-## [1] 2.225764
+## [1] 1.500489
 ```
 
 ```r
@@ -227,7 +235,7 @@ mean(abs(out_samp_errors))
 ```
 
 ```
-## [1] 1.801506
+## [1] 1.765418
 ```
 
 

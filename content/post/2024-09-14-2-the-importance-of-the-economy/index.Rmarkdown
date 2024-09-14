@@ -1,0 +1,106 @@
+---
+title: 2. The Importance of the Economy
+author: Package Build
+date: '2024-09-14'
+slug: []
+categories: []
+tags: []
+---
+## How does the economy relate to election outcomes?
+
+Many scholars argue that most presidential elections are determined by political and economic conditions called fundamentals, which exist outside of campaign efforts by either party. Factors like economic growth, disposable income, inflation, and the cost of living, which are often economic circumstances of the previous administration, are found to be highly correlated with election outcomes. This phenomenon is known as retrospective economic voting, wherein a voter makes choices based on the incumbent's past performance, with a specific focus on the economy [Achen and Bartels, 2017](https://hollis.harvard.edu/permalink/f/1s5nto6/01HVD_ALMA512397392810003941).
+
+To evaluate this correlation it is important to look at the relationship between different economic indicators and two-party vote. In doing so, I will be focusing on economic data from quarter 2, the financial reporting quarter right before the election. This echoes the assumption embedded within retrospective voting that a vast majority of American voters only begin paying attention to the election in the months leading up to November, rewarding or punishing incumbent candidates and/or parties based on recent economic conditions [Achen and Bartels, 2017](https://hollis.harvard.edu/permalink/f/1s5nto6/01HVD_ALMA512397392810003941). 
+
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=17, fig.height=6}
+# Load libraries.
+## install via `install.packages("name")`
+library(tidyverse)
+
+# Load data. 
+d_popvote <- read_csv("popvote_1948-2020.csv")
+d_fred <- read_csv("fred_econ.csv")
+
+d_bea <- read_csv("bea_econ.csv") |> 
+  rename(year = "Year",
+         quarter = "Quarter", 
+         gdp = "Gross domestic product", 
+         gnp = "Gross national product", 
+         dpi = "Disposable personal income", 
+         consumption = "Personal consumption expenditures", 
+         goods = "Goods", 
+         durables = "Durable goods", 
+         nondurables = "Nondurable goods", 
+         services = "Services", 
+         pop = "Population (midperiod, thousands)")
+
+# Filter and merge data for Q2. 
+d_inc_econ <- d_popvote |> 
+  filter(incumbent_party == TRUE) |> 
+  select(year, pv, pv2p, winner) |> 
+  left_join(d_fred |> filter(quarter == 2)) |> 
+  left_join(d_bea |> filter(quarter == "Q2") |> select(year, dpi))
+
+# Create scatterplot to visualize relationship between Q2 GDP growth and incumbent vote share. 
+GDPgrowthplot <- d_inc_econ |> 
+  ggplot(aes(x = GDP_growth_quarterly, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) +
+  labs(x = "Second Quarter GDP Growth (%)", 
+       y = "Incumbent Party's National Popular Vote Share",
+       title = "Relationship Between Second Quarter GDP Growth 
+       and the Incumbent Party's National Popular Voteshare") + 
+  theme_bw()
+
+# Create scatterplot to visualize relationship between Q2 RDPI growth and incumbent vote share. 
+RDPIgrowthplot <- d_inc_econ |> 
+  ggplot(aes(x = RDPI_growth_quarterly, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) +
+  labs(x = "Second Quarter Real Disposable Personal Income Growth (%)", 
+       y = "Incumbent Party's National Popular Vote Share",
+       title = "Relationship Between Second Quarter RDPI Growth 
+       and the Incumbent Party's National Popular Voteshare") + 
+  theme_bw()
+
+# Create scatterplot to visualize relationship between Q2 unemployment and incumbent vote share. 
+unemploymentplot <- d_inc_econ |> 
+  ggplot(aes(x = unemployment, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) +
+  labs(x = "Second Quarter Unemployment (%)", 
+       y = "Incumbent Party's National Popular Vote Share",
+       title = "Relationship Between Second Quarter Unemployment 
+       and the Incumbent Party's National Popular Voteshare") + 
+  theme_bw()
+
+library(patchwork)
+combined_plot <- GDPgrowthplot + RDPIgrowthplot + unemploymentplot
+combined_plot
+
+```
+
+
+From these plots ...
+
+```{r  echo = FALSE, message=FALSE, warning=FALSE}
+#remove 2020 and calculate correlations
+d_inc_econ_2 <- d_inc_econ |>
+  filter(year != 2020)
+
+cor_gdp <- cor(d_inc_econ_2$GDP_growth_quarterly, d_inc_econ_2$pv2p)
+cor_rdpi <- cor(d_inc_econ_2$RDPI_growth_quarterly, d_inc_econ_2$pv2p)
+cor_unemployment <- cor(d_inc_econ_2$unemployment, d_inc_econ_2$pv2p)
+
+cor <- data.frame(
+  "Correlation Pair" = c("GDP Growth vs Incumbent Vote Share", "RDPI Growth vs Incumbent Vote Share", "Unemployment vs Incumbent Vote Share"),
+  "Correlation Value" = c(cor_gdp, cor_rdpi, cor_unemployment)
+)
+library(knitr)
+kable(cor, col.names = c("Description", "Correlation"), 
+      caption = "Correlation Values Between Economic Indicators and Incumbent Vote Share")
+```
+

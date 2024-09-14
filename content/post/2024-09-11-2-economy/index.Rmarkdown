@@ -80,6 +80,22 @@ unemploymentplot <- d_inc_econ |>
 library(patchwork)
 combined_plot <- GDPgrowthplot + RDPIgrowthplot + unemploymentplot
 combined_plot
+
+#remove 2020 and calculate correlations
+d_inc_econ_2 <- d_inc_econ |>
+  filter(year != 2020)
+
+cor_gdp <- cor(d_inc_econ_2$GDP_growth_quarterly, d_inc_econ_2$pv2p)
+cor_rdpi <- cor(d_inc_econ_2$RDPI_growth_quarterly, d_inc_econ_2$pv2p)
+cor_unemployment <- cor(d_inc_econ_2$unemployment, d_inc_econ_2$pv2p)
+
+cor <- data.frame(
+  "Correlation Pair" = c("GDP Growth vs Incumbent Vote Share", "RDPI Growth vs Incumbent Vote Share", "Unemployment vs Incumbent Vote Share"),
+  "Correlation Value" = c(cor_gdp, cor_rdpi, cor_unemployment)
+)
+library(knitr)
+kable(cor, col.names = c("Description", "Correlation"), 
+      caption = "Correlation Values between Economic Indicators and Incumbent Vote Share")
 ```
 
 
