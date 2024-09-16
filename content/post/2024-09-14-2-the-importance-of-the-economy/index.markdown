@@ -1,6 +1,6 @@
 ---
 title: 2. The Importance of the Economy
-author: Package Build
+author: Mena Solomon
 date: '2024-09-14'
 slug: []
 categories: []
@@ -17,7 +17,7 @@ To evaluate this correlation it is important to look at the relationship between
 
 From these plots it is somewhat difficult to discern whether or not a correlation exists between the three second quarter economic indicators plotted above — GDP growth and real disposable personal income — and the Incumbent Party's national popular vote share. Indeed, the blue bivariate regression line on each plot paints a better picture of the data, yet one which is still difficult to interpret without more information One thing that is easy to discern, however, is that for both indicators, the year **2020 is an obvious outlier in the data**. Due to the unique nature of the COVID-19 pandemic and the subsequent recession it caused, in the quarter preceding the 2020 election, unemployment remained high while economic stimulus and back-to-work policies allowed for GDP growth and RDPI growth to bounce back rapidly [(NPR News)](https://www.npr.org/2020/07/09/889080504/the-economy-may-be-losing-its-impact-on-presidential-elections). Since this moment was so unique and its data so different than any other election year, *2020 will be excluded in further analysis and prediction*. 
 
-The table below better outlines the bivariate regression relationship between the economic indicators plotted above and the national popular vote of the incumbent party (excluding 2020).
+The table below better outlines the bivariate regression relationship between the economic indicators plotted above and the national popular vote of the incumbent party from 1948 to 2016.
 
 
 |Variable (Measured in Q2) | Coefficient| R-squared|Significant at 20% |Significant at 5% |
@@ -27,9 +27,16 @@ The table below better outlines the bivariate regression relationship between th
 
 In analyzing the differences between these three relationships, it is first important to understand the statistical significance. The only variable significant at the 5% level is GDP growth, indicating that GDP growth is a significant predictor of election outcomes. The growth in real disposable personal income is also a significant predictor, but only at the 20% level, leaving a high likelihood of type-1 error. Furthermore, based on the R^2 values, while *GDP growth in Q2 can explain around 32% of the trend in incumbent party voteshare*, RDPI growth can only explain 11%. Finally, the coefficients of both variables, which indicate the effect of a one percent increase in growth on incumbent voteshare, show that **while GDP growth of 1% increases incumbent voteshare by 0.74 percentage points, RDPI growth only has a 0.46 percentage point effect.**  
 
-## How can economic data be used to build a prediction model?
+##How should these models be evaluated for accuracy?
 
-Based on the information above, I will use the **GDP and RDPI growth data to build a predictive model.** 
+These regression models are not always accurate predictors as they can only explain a small amount of variance in the data. To test the efficacy of both models, both in-sample and out-of-sample models should be used. 
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+
+
+## Using these models, how can the economy be used to predict the outcome of the 2024 election?
+
+Using the bivariate regressions above as well as 2024 Q2 economic data on GDP and RDPI growth, it is possible to generate a predictive model of the 2024 incumbent voteshare. The results of this model are displayed below.
 
 
 |Variable    | Predicted Value| Lower Bound (80% PI)| Upper Bound (80% PI)|
@@ -38,6 +45,5 @@ Based on the information above, I will use the **GDP and RDPI growth data to bui
 |RDPI Growth |        50.32576|             43.11837|             57.53316|
 
 
-The predictive model above displays that 
+**Using GDP growth as a predictor, the above model estimates a 51.58% two-party popular voteshare for Vice President Harris.** To make this prediction, a prediction interval of 80% was used (as is common for election prediction models). Using this interval means that there is a 20% chance the real election outcome does not fall within the upper and lower bounds noted above. **Using RDPI growth as a predictor, the model estimates a 50.33% two-party popular voteshare for Vice President Harris, once again giving her the majority.** The same prediction interval of 80% once again means that there is only an 80% likelihood the real value lies within the 43% to 57% range shown above. 
 
-##How should this model be evaluated for accuracy?

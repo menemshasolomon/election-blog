@@ -198,7 +198,7 @@ out_samp_pred &lt;- predict(mod, d_inc_econ_2[d_inc_econ_2$year %in% years_out_s
 out_samp_truth &lt;- d_inc_econ_2$pv2p[d_inc_econ_2$year %in% years_out_samp]
 mean(out_samp_pred - out_samp_truth)
 </code></pre>
-<pre><code>## [1] 0.3936298
+<pre><code>## [1] 3.903453
 </code></pre>
 <pre><code class="language-r"># Model Testing: Cross-Validation (1000 Runs)
 out_samp_errors &lt;- sapply(1:1000, function(i) {
@@ -212,7 +212,7 @@ mean(out_samp_pred - out_samp_truth)
 
 mean(abs(out_samp_errors))
 </code></pre>
-<pre><code>## [1] 1.804773
+<pre><code>## [1] 1.793112
 </code></pre>
 <pre><code class="language-r">####----------------------------------------------------------#
 #### Predicting 2024 results using simple economy model. 
