@@ -177,3 +177,347 @@ ec_2024 |>
 ## Harris: 
 ## Trump: 
 ```
+
+---
+title: 2. The Importance of the Economy
+author: Package Build
+date: '2024-09-15'
+slug: []
+categories: []
+tags: []
+---
+
+## How does the economy relate to election outcomes?
+
+Many scholars argue that most presidential elections are determined by political and economic conditions called fundamentals, which exist outside of campaign efforts by either party. Factors like economic growth, disposable income, inflation, and the cost of living, which are often economic circumstances of the previous administration, are found to be highly correlated with election outcomes. This phenomenon is known as retrospective economic voting, wherein a voter makes choices based on the incumbent's past performance, with a specific focus on the economy [Achen and Bartels, 2017](https://hollis.harvard.edu/permalink/f/1s5nto6/01HVD_ALMA512397392810003941).
+
+To evaluate this correlation it is important to look at the relationship between different economic indicators and two-party vote. In doing so, I will be focusing on economic data from quarter 2, the financial reporting quarter right before the election. This echoes the assumption embedded within retrospective voting that a vast majority of American voters only begin paying attention to the election in the months leading up to November, rewarding or punishing incumbent candidates and/or parties based on recent economic conditions [Achen and Bartels, 2017](https://hollis.harvard.edu/permalink/f/1s5nto6/01HVD_ALMA512397392810003941). 
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=17, fig.height=6}
+# Load libraries.
+## install via `install.packages("name")`
+library(tidyverse)
+
+# Load data. 
+d_popvote <- read_csv("popvote_1948-2020.csv")
+d_fred <- read_csv("fred_econ.csv")
+
+d_bea <- read_csv("bea_econ.csv") |> 
+  rename(year = "Year",
+         quarter = "Quarter", 
+         gdp = "Gross domestic product", 
+         gnp = "Gross national product", 
+         dpi = "Disposable personal income", 
+         consumption = "Personal consumption expenditures", 
+         goods = "Goods", 
+         durables = "Durable goods", 
+         nondurables = "Nondurable goods", 
+         services = "Services", 
+         pop = "Population (midperiod, thousands)")
+
+# Filter and merge data for Q2. 
+d_inc_econ <- d_popvote |> 
+  filter(incumbent_party == TRUE) |> 
+  select(year, pv, pv2p, winner) |> 
+  left_join(d_fred |> filter(quarter == 2)) |> 
+  left_join(d_bea |> filter(quarter == "Q2") |> select(year, dpi))
+
+# Create scatterplot to visualize relationship between Q2 GDP growth and incumbent vote share. 
+GDPgrowthplot <- d_inc_econ |> 
+  ggplot(aes(x = GDP_growth_quarterly, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) +
+  labs(x = "Second Quarter GDP Growth (%)", 
+       y = "Incumbent Party's National Popular Vote Share",
+       title = "Relationship Between Second Quarter GDP Growth 
+       and the Incumbent Party's National Popular Voteshare") + 
+  theme_bw()
+
+# Create scatterplot to visualize relationship between Q2 RDPI growth and incumbent vote share. 
+RDPIgrowthplot <- d_inc_econ |> 
+  ggplot(aes(x = RDPI_growth_quarterly, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) +
+  labs(x = "Second Quarter Real Disposable Personal Income Growth (%)", 
+       y = "Incumbent Party's National Popular Vote Share",
+       title = "Relationship Between Second Quarter RDPI Growth 
+       and the Incumbent Party's National Popular Voteshare") + 
+  theme_bw()
+
+# Create scatterplot to visualize relationship between Q2 unemployment and incumbent vote share. 
+unemploymentplot <- d_inc_econ |> 
+  ggplot(aes(x = unemployment, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) +
+  labs(x = "Second Quarter Unemployment (%)", 
+       y = "Incumbent Party's National Popular Vote Share",
+       title = "Relationship Between Second Quarter Unemployment 
+       and the Incumbent Party's National Popular Voteshare") + 
+  theme_bw()
+
+library(patchwork)
+combined_plot <- GDPgrowthplot + RDPIgrowthplot + unemploymentplot
+combined_plot
+
+#remove 2020 and calculate correlations
+d_inc_econ_2 <- d_inc_econ |>
+  filter(year != 2020)
+
+cor_gdp <- cor(d_inc_econ_2$GDP_growth_quarterly, d_inc_econ_2$pv2p)
+cor_rdpi <- cor(d_inc_econ_2$RDPI_growth_quarterly, d_inc_econ_2$pv2p)
+cor_unemployment <- cor(d_inc_econ_2$unemployment, d_inc_econ_2$pv2p)
+
+cor <- data.frame(
+  "Correlation Pair" = c("GDP Growth vs Incumbent Vote Share", "RDPI Growth vs Incumbent Vote Share", "Unemployment vs Incumbent Vote Share"),
+  "Correlation Value" = c(cor_gdp, cor_rdpi, cor_unemployment)
+)
+library(knitr)
+kable(cor, col.names = c("Description", "Correlation"), 
+      caption = "Correlation Values between Economic Indicators and Incumbent Vote Share")
+```
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+####----------------------------------------------------------#
+#### Preamble
+####----------------------------------------------------------#
+
+# Load libraries.
+## install via `install.packages("name")`
+library(tidyverse)
+
+## set working directory here
+# setwd("~")
+
+####----------------------------------------------------------#
+#### Read, merge, and process data.
+####----------------------------------------------------------#
+
+# Load popular vote data. 
+d_popvote <- read_csv("popvote_1948-2020.csv")
+
+# Load economic data from FRED: https://fred.stlouisfed.org. 
+# Variables, units, & ranges: 
+# GDP, billions $, 1947-2024
+# GDP_growth_quarterly, %
+# RDPI, $, 1959-2024
+# RDPI_growth_quarterly, %
+# CPI, $ index, 1947-2024
+# unemployment, %, 1948-2024
+# sp500_, $, 1927-2024 
+d_fred <- read_csv("fred_econ.csv")
+
+# Load economic data from the BEA: https://apps.bea.gov/iTable/?reqid=19&step=2&isuri=1&categories=survey#eyJhcHBpZCI6MTksInN0ZXBzIjpbMSwyLDMsM10sImRhdGEiOltbImNhdGVnb3JpZXMiLCJTdXJ2ZXkiXSxbIk5JUEFfVGFibGVfTGlzdCIsIjI2NCJdLFsiRmlyc3RfWWVhciIsIjE5NDciXSxbIkxhc3RfWWVhciIsIjIwMjQiXSxbIlNjYWxlIiwiMCJdLFsiU2VyaWVzIiwiUSJdXX0=.
+# GDP, 1947-2024 (all)
+# GNP
+# RDPI
+# Personal consumption expenditures
+# Goods
+# Durable goods
+# Nondurable goods
+# Services 
+# Population (midperiod, thousands)
+d_bea <- read_csv("bea_econ.csv") |> 
+  rename(year = "Year",
+         quarter = "Quarter", 
+         gdp = "Gross domestic product", 
+         gnp = "Gross national product", 
+         dpi = "Disposable personal income", 
+         consumption = "Personal consumption expenditures", 
+         goods = "Goods", 
+         durables = "Durable goods", 
+         nondurables = "Nondurable goods", 
+         services = "Services", 
+         pop = "Population (midperiod, thousands)")
+
+# Filter and merge data. 
+d_inc_econ <- d_popvote |> 
+  filter(incumbent_party == TRUE) |> 
+  select(year, pv, pv2p, winner) |> 
+  left_join(d_fred |> filter(quarter == 2)) |> 
+  left_join(d_bea |> filter(quarter == "Q2") |> select(year, dpi))
+  # N.B. two different sources of data to use, FRED & BEA. 
+  # We are using second-quarter data since that is the latest 2024 release. 
+  # Feel free to experiment with different data/combinations!
+
+####----------------------------------------------------------#
+#### Understanding the relationship between economy and vote share. 
+####----------------------------------------------------------#
+
+# Create scatterplot to visualize relationship between Q2 GDP growth and 
+# incumbent vote share. 
+d_inc_econ |> 
+  ggplot(aes(x = GDP_growth_quarterly, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) +
+  labs(x = "Second Quarter GDP Growth (%)", 
+       y = "Incumbent Party's National Popular Vote Share") + 
+  theme_bw()
+
+# Remove 2020 from plot and replot.
+d_inc_econ_2 <- d_inc_econ |>
+  filter(year != 2020)
+
+d_inc_econ_2 |> 
+  ggplot(aes(x = GDP_growth_quarterly, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) + 
+  labs(x = "Second Quarter GDP Growth (%)", 
+       y = "Incumbent Party's National Popular Vote Share") + 
+  theme_bw()
+
+# Compute correlations between Q2 GDP growth and incumbent vote 2-party vote share.
+cor(d_inc_econ$GDP_growth_quarterly, 
+    d_inc_econ$pv2p)
+cor(d_inc_econ_2$GDP_growth_quarterly, 
+    d_inc_econ_2$pv2p)
+
+# Fit bivariate OLS. 
+reg_econ <- lm(pv2p ~ GDP_growth_quarterly, 
+               data = d_inc_econ)
+reg_econ |> summary()
+
+#bivariate OLS excluding 2020
+reg_econ_2 <- lm(pv2p ~ GDP_growth_quarterly, 
+                         data = d_inc_econ_2)
+reg_econ_2 |> summary()
+
+# Can add bivariate regression lines to our scatterplots. 
+d_inc_econ |> 
+  ggplot(aes(x = GDP_growth_quarterly, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_smooth(method = "lm", formula = y ~ x) +
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) + 
+  labs(x = "Second Quarter GDP Growth (%)", 
+       y = "Incumbent Party's National Popular Vote Share", 
+       title = "Y = 51.25 + 0.274 * X") + 
+  theme_bw() + 
+  theme(plot.title = element_text(size = 18))
+
+d_inc_econ_2 |> 
+  ggplot(aes(x = GDP_growth_quarterly, y = pv2p, label = year)) + 
+  geom_text() + 
+  geom_smooth(method = "lm", formula = y ~ x) +
+  geom_hline(yintercept = 50, lty = 2) + 
+  geom_vline(xintercept = 0.01, lty = 2) + 
+  labs(x = "Second Quarter GDP Growth (%)", 
+       y = "Incumbent Party's National Popular Vote Share", 
+       title = "Y = 49.38 + 0.737 * X") + 
+  theme_bw() + 
+  theme(plot.title = element_text(size = 18))
+```
+
+```{r}
+#Test predictive power
+#In sample fit --> this is a good baseline, but it is sort of like cheating 
+
+#R^2
+summary(reg_econ) #Multiple R^2 = 0.19
+summary(reg_econ_2) #Multiple R^2 = 0.32 --> better fit when 2020 is removed (regression is predictive 32% of the time)
+
+#In-sample error
+plot(reg_econ)
+
+plot(d_inc_econ$year, d_inc_econ$pv2p, type = "l",
+     main = "true Y (Line), Predicted Y (Dot) for Each Year")
+points(d_inc_econ$year, predict(reg_econ_2, d_inc_econ))
+
+hist(reg_econ_2$model$pv2p - reg_econ_2$fitted.values)
+
+#mean-squared error (hard to interpret on its own)
+mse <- mean((reg_econ_2$model$pv2p - reg_econ_2$fitted.values)^2)
+mse
+
+sqrt(mse) #in case of outliers, this is more reliable
+
+
+```
+
+```{r}
+#Out-of-sample testing
+
+# Model Testing: Leave-One-Out - withold one observation before fitting and then see how well the model predicts
+(out_samp_pred <- predict(reg_econ_2, d_inc_econ[d_inc_econ$year == 2020,]))
+(out_samp_truth <- d_inc_econ |> filter(year == 2020) |> select(pv2p))
+out_samp_pred - out_samp_truth # Dangers of fundamentals-only model!
+
+# https://www.nytimes.com/2020/07/30/business/economy/q2-gdp-coronavirus-economy.html
+
+# Model Testing: Cross-Validation (One Run) - applies to any random sub sample, train on half and predict on half
+years_out_samp <- sample(d_inc_econ_2$year, 9) 
+mod <- lm(pv2p ~ GDP_growth_quarterly, 
+          d_inc_econ_2[!(d_inc_econ_2$year %in% years_out_samp),])
+out_samp_pred <- predict(mod, d_inc_econ_2[d_inc_econ_2$year %in% years_out_samp,])
+out_samp_truth <- d_inc_econ_2$pv2p[d_inc_econ_2$year %in% years_out_samp]
+mean(out_samp_pred - out_samp_truth)
+
+# Model Testing: Cross-Validation (1000 Runs)
+out_samp_errors <- sapply(1:1000, function(i) {
+  years_out_samp <- sample(d_inc_econ_2$year, 9) 
+mod <- lm(pv2p ~ GDP_growth_quarterly, 
+          d_inc_econ_2[!(d_inc_econ_2$year %in% years_out_samp),])
+out_samp_pred <- predict(mod, d_inc_econ_2[d_inc_econ_2$year %in% years_out_samp,])
+out_samp_truth <- d_inc_econ_2$pv2p[d_inc_econ_2$year %in% years_out_samp]
+mean(out_samp_pred - out_samp_truth)
+})
+
+mean(abs(out_samp_errors))
+
+```
+
+
+```{r}
+####----------------------------------------------------------#
+#### Predicting 2024 results using simple economy model. 
+####----------------------------------------------------------#
+# Sequester 2024 data.
+GDP_new <- d_fred |> 
+  filter(year == 2024 & quarter == 2) |> 
+  select(GDP_growth_quarterly)
+
+# Predict --> assume 2024 is not a major outlier, 52% for the incumbent party
+#predict(model, new data)
+predict(reg_econ_2, GDP_new)
+
+# Predict uncertainty. -> uncertainty is pretty wide here, so many predictors will use a lower confidence interval to narrow their prediction interval (change the level from 0.95 to 0.8 to get a narrower interval)
+predict(reg_econ_2, GDP_new, interval = "prediction")
+```
+
+
+to improve the model, there are many options:
+1. timeline
+- retrospective voters are the ones who focus on Q2 growth (less-rational)
+- more rational voters may vote based on aggregate GDP growth over the entire presidency
+2. use different data
+- RDI, SMP 500, GDP, unemployment etc.
+ -worry about over fitting and multi collinearity when adding many variables (this mades IVs no longer independent)
+ 
+ 
+ 
+ 
+ EXTRA CODE
+ 
+
+```{r  echo = FALSE, message=FALSE, warning=FALSE}
+#remove 2020 and calculate correlations
+d_inc_econ_2 <- d_inc_econ |>
+  filter(year != 2020)
+
+cor_gdp <- cor(d_inc_econ_2$GDP_growth_quarterly, d_inc_econ_2$pv2p)
+cor_rdpi <- cor(d_inc_econ_2$RDPI_growth_quarterly, d_inc_econ_2$pv2p)
+cor_unemployment <- cor(d_inc_econ_2$unemployment, d_inc_econ_2$pv2p)
+
+cor <- data.frame(
+  "Correlation Pair" = c("GDP Growth vs Incumbent Vote Share", "RDPI Growth vs Incumbent Vote Share", "Unemployment vs Incumbent Vote Share"),
+  "Correlation Value" = c(cor_gdp, cor_rdpi, cor_unemployment)
+)
+library(knitr)
+kable(cor, col.names = c("Description", "Correlation"), 
+      caption = "Correlation Values Between Economic Indicators and Incumbent Vote Share")
+```
+ 
