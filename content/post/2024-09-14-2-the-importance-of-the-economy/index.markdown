@@ -6,6 +6,12 @@ slug: []
 categories: []
 tags: []
 ---
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
 ## How does the economy relate to election outcomes?
 
 Many scholars argue that most presidential elections are determined by political and economic conditions called fundamentals, which exist outside of campaign efforts by either party. Factors like *economic growth*, *disposable income*, *inflation*, and the *cost of living*, which are often economic circumstances of the previous administration, are found to be highly correlated with election outcomes. This phenomenon is known as **retrospective economic voting**, wherein a voter makes choices based on the incumbent's past performance, with a specific focus on the economy [(Achen and Bartels, 2017)](https://hollis.harvard.edu/permalink/f/1s5nto6/01HVD_ALMA512397392810003941).
@@ -19,13 +25,34 @@ From these plots it is somewhat difficult to discern whether or not a correlatio
 
 The table below better outlines the bivariate regression relationship between the economic indicators plotted above and the national popular vote of the incumbent party from 1948 to 2016.
 
-
-Table: <span id="tab:unnamed-chunk-2"></span>Table 1: Bivariate Regression Models
-
-|Variable (Measured in Q2) | Coefficient| R-squared|Significant at 20% |Significant at 5% |
-|:-------------------------|-----------:|---------:|:------------------|:-----------------|
-|GDP Growth                |   0.7365757| 0.3248066|Yes                |Yes               |
-|RDPI Growth               |   0.4604327| 0.1114869|Yes                |No                |
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-2"></span>Table 1: (\#tab:unnamed-chunk-2)Bivariate Regression Models</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable (Measured in Q2) </th>
+   <th style="text-align:right;"> Coefficient </th>
+   <th style="text-align:right;"> R-squared </th>
+   <th style="text-align:left;"> Significant at 20% </th>
+   <th style="text-align:left;"> Significant at 5% </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> GDP Growth </td>
+   <td style="text-align:right;"> 0.7365757 </td>
+   <td style="text-align:right;"> 0.3248066 </td>
+   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:left;"> Yes </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> RDPI Growth </td>
+   <td style="text-align:right;"> 0.4604327 </td>
+   <td style="text-align:right;"> 0.1114869 </td>
+   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:left;"> No </td>
+  </tr>
+</tbody>
+</table>
 
 In analyzing the differences between these three relationships, it is first important to understand the statistical significance. The only variable significant at the 5% level is GDP growth, indicating that GDP growth is a significant predictor of election outcomes. The growth in real disposable personal income is also a significant predictor, but only at the 20% level, leaving a high likelihood of type-1 error. Furthermore, based on the R^2 values, while *GDP growth in Q2 can explain around 32% of the trend in incumbent party vote share*, RDPI growth can only explain 11%. This point is especially interesting when attempting to better understand the rationality of American voters. Indeed, an area for further investigation should be whether the difference in explanatory capabilities is due to differences in how american experience changes in general GDP vs. their disposable income. Finally, the coefficients of both variables, which indicate the effect of a one percent increase in growth on incumbent vote share, show that **while GDP growth of 1% increases incumbent vote share by 0.74 percentage points, RDPI growth only has a 0.46 percentage point effect.**  
 
@@ -44,13 +71,28 @@ The cross-validation method uses a random half of the existing data to train a m
 
 **Using cross validation to test predictive power:**
 
-
-Table: <span id="tab:unnamed-chunk-4"></span>Table 2: Mean Error in the Predictive Models According to Cross Validation
-
-|Variable (Measured in Q2) | Mean Error| Standard Deviation of Error|
-|:-------------------------|----------:|---------------------------:|
-|GDP Growth                | -0.0780578|                    4.998580|
-|RDPI Growth               |  0.0310256|                    5.803397|
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-4"></span>Table 3: (\#tab:unnamed-chunk-4)Mean Error in the Predictive Models According to Cross Validation</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable (Measured in Q2) </th>
+   <th style="text-align:right;"> Mean Error </th>
+   <th style="text-align:right;"> Standard Deviation of Error </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> GDP Growth </td>
+   <td style="text-align:right;"> -0.1298106 </td>
+   <td style="text-align:right;"> 5.004247 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> RDPI Growth </td>
+   <td style="text-align:right;"> 0.3315608 </td>
+   <td style="text-align:right;"> 5.824482 </td>
+  </tr>
+</tbody>
+</table>
 
 
 As displayed by the table above, the cross-validation test displays that the magnitude of the error generated by using GDP Growth and RDPI growth models to predict incumbent vote share are quite small. Though GDP growth tends to lead to under prediction and RDPI growth to over prediction, both are by less than one percentage point. The standard deviations indicated above do, however, indicate high variability in these results, which is important in interpreting the importance of these predictive models below.  
@@ -60,13 +102,31 @@ As displayed by the table above, the cross-validation test displays that the mag
 Using the model which has been evaluated at length above to be somewhat effective in determining popular vote
 as well as 2024 Q2 economic data on GDP and RDPI growth, it is possible to generate a prediction for the 2024 incumbent vote share. The results of this model are displayed below.
 
-
-Table: <span id="tab:unnamed-chunk-5"></span>Table 3: 2024 Election Prediction Model
-
-|Variable    | Predicted Value| Lower Bound (80% PI)| Upper Bound (80% PI)|
-|:-----------|---------------:|--------------------:|--------------------:|
-|GDP Growth  |        51.58486|             45.45250|             57.71722|
-|RDPI Growth |        50.32576|             43.11837|             57.53316|
+<table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-5"></span>Table 5: (\#tab:unnamed-chunk-5)2024 Election Prediction Model</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable </th>
+   <th style="text-align:right;"> Predicted Value </th>
+   <th style="text-align:right;"> Lower Bound (80% PI) </th>
+   <th style="text-align:right;"> Upper Bound (80% PI) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> GDP Growth </td>
+   <td style="text-align:right;"> 51.58486 </td>
+   <td style="text-align:right;"> 45.45250 </td>
+   <td style="text-align:right;"> 57.71722 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> RDPI Growth </td>
+   <td style="text-align:right;"> 50.32576 </td>
+   <td style="text-align:right;"> 43.11837 </td>
+   <td style="text-align:right;"> 57.53316 </td>
+  </tr>
+</tbody>
+</table>
 
 
 **Using GDP growth as a predictor, the above model estimates a 51.58% two-party popular vote share for Vice President Harris.** To make this prediction, a prediction interval of 80% was used (as is common for election prediction models). Using this interval means that there is a 20% chance the real election outcome does not fall within the upper and lower bounds noted above. **Using RDPI growth as a predictor, the model estimates a 50.33% two-party popular vote share for Vice President Harris, once again giving her the majority.** The same prediction interval of 80% once again means that there is only an 80% likelihood the real value lies within the 43% to 57% range shown above. These results are incredibly similar, most likely indicating a strong correlation between GDP growth and RDPI growth, though definitely an interesting area for further exploration.
