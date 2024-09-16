@@ -78,6 +78,7 @@ From these plots it is somewhat difficult to discern whether or not a correlatio
 
 The table below better outlines the bivariate regression relationship between the economic indicators plotted above and the national popular vote of the incumbent party from 1948 to 2016.
 
+**Bivariate Regression Models**
 ```{r echo = FALSE, message=FALSE, warning=FALSE}
 ##filter out 2020
 d_inc_econ_2 <- d_inc_econ |>
@@ -123,8 +124,7 @@ summary_table <- data.frame(
 
 library(knitr)
 library(kableExtra)
-kable(summary_table, caption = "Bivariate Regression Models") |>
-  kable_styling(bootstrap_options = "striped", full_width = F)
+kable(summary_table)
 
 ```
 
@@ -136,7 +136,7 @@ These regression models are not always accurate predictors as they can only expl
 
 **Using in-sample fit to test predictive power:**
 
-```{r  echo = FALSE, message=FALSE, warning=FALSE, fig.width=11, fig.height=6}
+```{r  echo = FALSE, message=FALSE, warning=FALSE, fig.width=9, fig.height=5}
 ## in sample testing
 par(mfrow = c(1, 2))
 
@@ -208,8 +208,7 @@ crossvaltable <- data.frame(
 
 library(knitr)
 library(kableExtra)
-kable(crossvaltable, caption = "Mean Error in the Predictive Models According to Cross Validation") |>
-  kable_styling(bootstrap_options = "striped", full_width = F)
+kable(crossvaltable)
 
 ```
 
@@ -221,6 +220,7 @@ As displayed by the table above, the cross-validation test displays that the mag
 Using the model which has been evaluated at length above to be somewhat effective in determining popular vote
 as well as 2024 Q2 economic data on GDP and RDPI growth, it is possible to generate a prediction for the 2024 incumbent vote share. The results of this model are displayed below.
 
+**2024 Election Prediction Model**
 ```{r echo = FALSE, message=FALSE, warning=FALSE}
 # Sequester 2024 data.
 GDP_new <- d_fred |> 
@@ -252,8 +252,7 @@ RDPIdf <- data.frame(
 )
 
 pred_table <- rbind(GDPdf, RDPIdf)
-kable(pred_table, caption = "2024 Election Prediction Model") |>
-  kable_styling(bootstrap_options = "striped", full_width = F)
+kable(pred_table)
 ```
 
 
