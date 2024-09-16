@@ -134,7 +134,7 @@ These regression models are not always accurate predictors as they can only expl
 
 **Using in-sample fit to test predictive power:**
 
-```{r  echo = FALSE, message=FALSE, warning=FALSE}
+```{r  echo = FALSE, message=FALSE, warning=FALSE, fig.width=11, fig.height=6}
 ## in sample testing
 par(mfrow = c(1, 2))
 
