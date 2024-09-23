@@ -6,8 +6,15 @@
     <description>Recent content in Posts on Election Prediction Blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 14 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 18 Sep 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://menemshasolomon.github.io/election-blog/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>3. Incorporating Polling</title>
+      <link>https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/</link>
+      <pubDate>Wed, 18 Sep 2024 00:00:00 +0000</pubDate>
+      <guid>https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/</guid>
+      <description>&lt;h2 id=&#34;how-can-we-best-use-polls-to-predict-election-outcomes&#34;&gt;How can we best use polls to predict election outcomes?&lt;/h2&gt;&#xA;&lt;p&gt;Polls are central to understanding democratic discourse as they measure the average person&amp;rsquo;s opinion. Since January 1, 2024 there have been &lt;strong&gt;13,626 large-scale presidential polls&lt;/strong&gt; conducted to gauge sentiment towards the general election candidates. From 1968 to 2020, &lt;em&gt;general election polling has largely been an accurate predictor of election outcomes&lt;/em&gt;, with an average polling miss of 1.58 percentage points in terms of popular vote. Much of this accuracy stems from a concept which dates back to Galton&amp;rsquo;s Ox, wherein a large sample of guesses — or, in this case, opinions — will generate an average that approximates the general population&amp;rsquo;s opinion as error in both ways cancels out. &lt;a href=&#34;https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_crossref_primary_10_1038_075450a0&#34;&gt;(Galton, 1907)&lt;/a&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>2. The Importance of the Economy</title>
       <link>https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/</link>
