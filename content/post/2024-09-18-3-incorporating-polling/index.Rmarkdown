@@ -143,10 +143,13 @@ grid.arrange(plot4, plot3, plot5, ncol = 1)
 
 ## How well do polls predict elections?
 
+**Different pollsters have disparate methods of approaching poll-based predictions.** To better understand various methods of predicting, I will briefly compare the methods used by two preeminent pollsters, Nate Silver, the former director of FiveThirtyEight, and Elliott Morris, FiveThirtyEight's current director. Both Morris and Silver use a combination of weighted polling data as well as economic and political fundamentals to predict the outcome of the election. Silver's model relies heavily on polling data, generating aggregates based on the FiveThiryEight weighting technique while also adjusting to incorporate the likely-voter effect, the house effect, and the timeline effect. Furthermore, Silver weights polling data more heavily than fundamental data — for which he uses only six economic indicators — especially in the weeks leading up to the election [(Silver, 2020)](https://fivethirtyeight.com/features/how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/). 
+
+After Nate Silver's model failed to accurately predict the 2016 election, Elliott Morris shifted his model's strategy. The Morris model relies heavily on fundamental data, including 11 economic indicators. According to Morris, a baseline fundamental model which includes past elections and economic data should steer the ship by providing an upper and lower bound for estimates which include polling data. Furthermore, Morris utilizes an enhanced understanding of geographic location and demographic information to evaluate and weight polling data [(Morris, 2024)](https://abcnews.go.com/538/538s-2024-presidential-election-forecast-works/story?id=110867585). 
+
 To understand how well polls predict the outcome of general elections, I will use a **multivariate regression which relates aggregate polling data beginning 30 weeks before election day with actual election outcomes.** In doing so, there are a few key assumptions included:
 
 1. **Aggregation** — Aggregate polling data is used here to correct for bias in individual polls. The data used here is from FiveThirtyEight, thus it uses their weighting technique which evaluates the quality of each pollster and then weights based on their rating. For more information, see [FiveThirtyEight's weighting technique](https://fivethirtyeight.com/methodology/how-our-pollster-ratings-work/).
-Since this data is from the course, the raw poll data will be average without weighting using a method similar to the one used by Real Clear Politics. 
 
 2. **Regularization** — Since this data only includes 11 election cycles (from 1980 to 2024) but 30 variables, there is a risk that the OLS regression model will be over fit toward our data. To correct for this, a regularized regression model will be used which selects for variables which are most significant in predeicting the actual outcome.
 
@@ -255,15 +258,11 @@ d.coefplot |>
 ```
 
 
-According to the Elastic-Net model, the only statistically significant predictors are weeks 0, 2, 5, 9, 11, 12, 15, 18, 21, 24, 25, 26, and 30. These coefficiants are not cannot be interpreted becaused they are biased for the sake of decreasing model variance. 
+According to the Elastic-Net model, the only statistically significant predictors are *weeks 0, 2, 5, 9, 11, 12, 15, 18, 21, 24, 25, 26, and 30*. These coefficiants are not cannot be interpreted becaused they are biased for the sake of decreasing model variance. 
 
 While it is difficult to determine exactly why the weeks listed above have more predictive power than other weeks, my intuition is that the earlier weeks are significant due to the power of fundamentals and partisan stickiness. Indeed, most individuals are loyal to a particular party and are able to determine their vote based on a few economic [fundamentals](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/) well before election day. In the lead up to the election, however, the news cycle is dominated by general election coverage and information, generating two effects. First, right before election day the polls tend to converge as voters become enlightened, making later polls more accurate. Second, poll volatility is often a reflection of media volatility within a media-driven election environment, thus in the weeks before elections small moments have large effects on polling, decreasing the reliability of this data[(Gelman and King, 1993)](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_webofscience_primary_A1993MC65200001CitationCount).
 
 ## Using these models, how can polling be used to predict the outcome of the 2024 election?
-
-The elastic-net regularized regression model trained above uses aggregate polling data to predict the national two-party vote share in 2024. **Using polling as a predictor, the normalized model estimates a 50.55% two-party popular vote share for Vice President Harris and a 49.45% two-party popular vote share for former President Trump, giving Harris the majority.**
-
-Furthermore, using an elastic-net regularized regression of the [economic fundamental model from last week](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/) including the effect of GDP growth, RDPI growth, CPI, and unemployment on incumbent vote share then allows for the creation of a *combined model*. **This combined model, which incorporates both economic fundamentals and polling data, estimates a 50.48% two-party popular vote share for Vice President Harris and a 47.94% two-party popular vote share for former President Trump, once again giving Harris the majority.**
 
 ```{r   echo = FALSE, message=FALSE, warning=FALSE}
 # First check how many weeks of polling we have for 2024. 
@@ -376,8 +375,58 @@ lambda.min.enet.combined <- enet.combined$lambda.min
 
 # Predict 2024 national pv2p share using elastic-net.
 combo.pred <- predict(enet.combined, s = lambda.min.enet.combined, newx = x.test.combined)
+
+#table
+# Candidate names for 2024 (example)
+candidates <- c("Kamala Harris", "Donald Trump")
+
+predictions_df <- data.frame(
+  Candidate = candidates,
+  Polling_Model = polls.pred.normalized,
+  Fundamentals_Model = fund.pred,
+  Combined_Model = combo.pred
+)
+
+colnames(predictions_df) <- c("Candidate", 
+                                "Polling Model", 
+                                "Fundamentals Model", 
+                                "Combined Model")
+
+# Print
+library(knitr)
+kable(predictions_df)
+
+
 ```
 
+The elastic-net regularized regression model trained above uses aggregate polling data to predict the national two-party vote share in 2024. **Using polling as a predictor, the normalized model estimates a 50.55% two-party popular vote share for Vice President Harris and a 49.45% two-party popular vote share for former President Trump, giving Harris the majority.**
 
+Furthermore, using an elastic-net regularized regression of the [economic fundamental model from last week](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/) including the effect of GDP growth, RDPI growth, CPI, and unemployment on incumbent vote share then allows for the creation of a *combined model*. **This combined model, which incorporates both economic fundamentals and polling data, estimates a 50.48% two-party popular vote share for Vice President Harris and a 47.94% two-party popular vote share for former President Trump, once again giving Harris the majority.**
 
+## Notes
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-09-18-3-incorporating-polling/index.Rmarkdown).
+
+**Sources**
+
+Galton, Francis. "Vox Populi." Nature 75, no. 1949 (1907): 450-51. https://doi.org/10.1038/075450a0. 
+ 
+Gelman, Andrew, and Gary King. "Why Are American Presidential Election Campaign Polls so Variable 
+     When Votes Are so Predictable?" British Journal of Political Science 23, no. 4 (1993): 409-51. 
+     https://doi.org/10.1017/s0007123400006682. 
+
+"How Our Pollster Ratings Work." FiveThirtyEight. Last modified March 10, 2023. Accessed September 
+     22, 2024. https://fivethirtyeight.com/methodology/how-our-pollster-ratings-work/. 
+
+Morris, G. Elliott. "How 538's 2024 presidential election forecast works." Abc News. Last modified 
+     June 11, 2024. Accessed September 23, 2024. https://abcnews.go.com/538/ 
+     538s-2024-presidential-election-forecast-works/story?id=110867585.      
+
+Silver, Nate. "How FiveThirtyEight's 2020 Presidential Forecast Works — And What's Different 
+     Because Of COVID-19." FiveThirtyEight. Last modified August 12, 2020. Accessed September 23, 
+     2024. https://fivethirtyeight.com/features/ 
+     how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/. 
+     
+**Data Source**
+
+US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight, also provided by the course.
 
