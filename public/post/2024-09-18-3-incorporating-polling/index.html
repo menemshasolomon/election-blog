@@ -35,16 +35,18 @@
 <img src="https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/index_files/figure-html/unnamed-chunk-2-1.png" width="768" />
 <h2 id="how-well-do-polls-predict-elections">How well do polls predict elections?</h2>
 <p>To understand how well polls predict the outcome of general elections, I will use a <strong>multivariate regression which relates aggregate polling data beginning 30 weeks before election day with actual election outcomes.</strong> In doing so, there are a few key assumptions included:</p>
-<p><strong>1. Aggregation</strong> — Aggregate polling data is used here to correct for bias in individual polls. The data used here is from FiveThirtyEight, thus it uses their weighting technique which evaluates the quality of each pollster and then weights based on their rating. For more information, see <a href="https://fivethirtyeight.com/methodology/how-our-pollster-ratings-work/">FiveThirtyEight&rsquo;s weighting technique</a>.
-Since this data is from the course, the raw poll data will be average without weighting using a method similar to the one used by Real Clear Politics.
-<strong>2. Regularization</strong> — Since this data only includes 11 election cycles (from 1980 to 2024) but 30 variables, there is a risk that the OLS regression model will be over fit toward our data. To correct for this, a regularized regression model will be used which selects for variables which are most significant in predeicting the actual outcome.
-<strong>3. Elastic-Net</strong> — The elastic-net regularization technique is a linear combination of Ridge and Lasso penalties. Cross-validation was used to test the optimal lambda value to minimize mean squared error in the regression and, as displayed in the graphic below, elastic-net does the best job of minimizing variance in the model.</p>
-<pre><code>## [1] 9.575001
-</code></pre>
-<pre><code>## [1] 1.89766
-</code></pre>
-<pre><code>## [1] 2.325853
-</code></pre>
+<ol>
+<li>
+<p><strong>Aggregation</strong> — Aggregate polling data is used here to correct for bias in individual polls. The data used here is from FiveThirtyEight, thus it uses their weighting technique which evaluates the quality of each pollster and then weights based on their rating. For more information, see <a href="https://fivethirtyeight.com/methodology/how-our-pollster-ratings-work/">FiveThirtyEight&rsquo;s weighting technique</a>.
+Since this data is from the course, the raw poll data will be average without weighting using a method similar to the one used by Real Clear Politics.</p>
+</li>
+<li>
+<p><strong>Regularization</strong> — Since this data only includes 11 election cycles (from 1980 to 2024) but 30 variables, there is a risk that the OLS regression model will be over fit toward our data. To correct for this, a regularized regression model will be used which selects for variables which are most significant in predeicting the actual outcome.</p>
+</li>
+<li>
+<p><em>Elastic-Net</em>* — The elastic-net regularization technique is a linear combination of Ridge and Lasso penalties. Cross-validation was used to test the optimal lambda value to minimize mean squared error in the regression and, as displayed in the graphic below, elastic-net does the best job of minimizing variance in the model.</p>
+</li>
+</ol>
 <img src="https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 <p>According to the Elastic-Net model, the only statistically significant predictors are weeks 0, 2, 5, 9, 11, 12, 15, 18, 21, 24, 25, 26, and 30. These coefficiants are not cannot be interpreted becaused they are biased for the sake of decreasing model variance.</p>
 <p>While it is difficult to determine exactly why the weeks listed above have more predictive power than other weeks, my intuition is that the earlier weeks are significant due to the power of fundamentals and partisan stickiness. Indeed, most individuals are loyal to a particular party and are able to determine their vote based on a few economic <a href="https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/">fundamentals</a> well before election day. In the lead up to the election, however, the news cycle is dominated by general election coverage and information, generating two effects. First, right before election day the polls tend to converge as voters become enlightened, making later polls more accurate. Second, poll volatility is often a reflection of media volatility within a media-driven election environment, thus in the weeks before elections small moments have large effects on polling, decreasing the reliability of this data<a href="https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_webofscience_primary_A1993MC65200001CitationCount">(Gelman and King, 1993)</a>.</p>

@@ -20,24 +20,13 @@ Despite the general accuracy of polling right before election day, **polls are o
 
 To understand how well polls predict the outcome of general elections, I will use a **multivariate regression which relates aggregate polling data beginning 30 weeks before election day with actual election outcomes.** In doing so, there are a few key assumptions included:
 
-**1. Aggregation** — Aggregate polling data is used here to correct for bias in individual polls. The data used here is from FiveThirtyEight, thus it uses their weighting technique which evaluates the quality of each pollster and then weights based on their rating. For more information, see [FiveThirtyEight's weighting technique](https://fivethirtyeight.com/methodology/how-our-pollster-ratings-work/).
+1. **Aggregation** — Aggregate polling data is used here to correct for bias in individual polls. The data used here is from FiveThirtyEight, thus it uses their weighting technique which evaluates the quality of each pollster and then weights based on their rating. For more information, see [FiveThirtyEight's weighting technique](https://fivethirtyeight.com/methodology/how-our-pollster-ratings-work/).
 Since this data is from the course, the raw poll data will be average without weighting using a method similar to the one used by Real Clear Politics. 
-**2. Regularization** — Since this data only includes 11 election cycles (from 1980 to 2024) but 30 variables, there is a risk that the OLS regression model will be over fit toward our data. To correct for this, a regularized regression model will be used which selects for variables which are most significant in predeicting the actual outcome.
-**3. Elastic-Net** — The elastic-net regularization technique is a linear combination of Ridge and Lasso penalties. Cross-validation was used to test the optimal lambda value to minimize mean squared error in the regression and, as displayed in the graphic below, elastic-net does the best job of minimizing variance in the model. 
 
+2. **Regularization** — Since this data only includes 11 election cycles (from 1980 to 2024) but 30 variables, there is a risk that the OLS regression model will be over fit toward our data. To correct for this, a regularized regression model will be used which selects for variables which are most significant in predeicting the actual outcome.
 
+3. *Elastic-Net** — The elastic-net regularization technique is a linear combination of Ridge and Lasso penalties. Cross-validation was used to test the optimal lambda value to minimize mean squared error in the regression and, as displayed in the graphic below, elastic-net does the best job of minimizing variance in the model. 
 
-```
-## [1] 9.575001
-```
-
-```
-## [1] 1.89766
-```
-
-```
-## [1] 2.325853
-```
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
