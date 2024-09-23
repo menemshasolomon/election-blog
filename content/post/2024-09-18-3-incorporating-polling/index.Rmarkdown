@@ -149,7 +149,7 @@ After Nate Silver's model failed to accurately predict the 2016 election, Elliot
 
 Due to the chaotic nature of this election cycle wherein the Democratic candidate changed 15 weeks before the election, I believe it makes more sense to weight fundamental factors heavier than polling data while weighting recent polling data much heavier than data from before Harris took over. This model more closely resembles the Elliott Morris approach. For the sake of accuracy, however, **the prediction generated below will weight fundamentals and polling data equally** as there is still very little polling data with Harris as the candidate and I am careful not to bias my prediction.
 
-## How can polling data be used to build a predictive model?
+## Can polling data build a predictive model?
 
 To understand how well polls predict the outcome of general elections, I will use a **multivariate regression which relates aggregate polling data beginning 30 weeks before election day with actual election outcomes.** In doing so, a few key decisions must be made:
 
@@ -430,7 +430,7 @@ Silver, Nate. "How FiveThirtyEight's 2020 Presidential Forecast Works — And Wh
      2024. https://fivethirtyeight.com/features/ 
      how-fivethirtyeights-2020-presidential-forecast-works-and-whats-different-because-of-covid-19/. 
      
-**Data Source**
+**Data Sources**
 
 US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight, also provided by the course.
 
