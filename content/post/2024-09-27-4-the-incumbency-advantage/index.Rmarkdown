@@ -98,10 +98,12 @@ reelect_party <- d_vote |>
   group_by(reelect_party) |> 
   summarize(Count = n()) |> 
   mutate(Percent = round(Count/sum(Count) * 100, 2)) |>
-  rename(`Was the incumbent party re-elected` = reelect_party) |>
+  rename(`. Was the incumbent party re-elected  ` = reelect_party) |>
   as.data.frame()
 
 knitr::kable(reelect_president)
+
+
 knitr::kable(reelect_party)
 
 ```
