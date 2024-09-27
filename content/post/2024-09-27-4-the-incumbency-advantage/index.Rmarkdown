@@ -1,0 +1,119 @@
+---
+title: 4. The Incumbency Advantage
+author: Mena Solomon
+date: '2024-09-27'
+slug: []
+categories: []
+tags: []
+---
+```{r    echo = FALSE, message=FALSE, warning=FALSE}
+# Load libraries.
+## install via `install.packages("name")`
+library(car)
+library(caret)
+library(CVXR)
+library(glmnet)
+library(kableExtra)
+library(maps)
+library(RColorBrewer)
+library(sf)
+library(tidyverse)
+library(viridis)
+
+# Read incumbency/vote data.
+d_vote <- read_csv("data/popvote_1948-2020.csv")
+d_state_vote <- read_csv("data/state_popvote_1948_2020.csv")
+d_vote$party[d_vote$party == "democrat"] <- "DEM"
+d_vote$party[d_vote$party == "republican"] <- "REP"
+
+# Read economic data.
+d_econ <- read_csv("data/fred_econ.csv") |> 
+  filter(quarter == 2)
+
+# Read polling and election results data. 
+d_pollav_natl <- read_csv("data/national_polls_1968-2024.csv")
+d_pollav_state <- read_csv("data/state_polls_1968-2024.csv")
+
+# Shape and merge polling and election data using November polls. 
+d_poll_nov <- d_vote |> 
+  left_join(d_pollav_natl |> 
+              group_by(year, party) |> 
+              top_n(1, poll_date) |> 
+              select(-candidate), 
+            by = c("year", "party")) |> 
+  rename(nov_poll = poll_support) |> 
+  filter(year <= 2020) |> 
+  drop_na()
+
+# Create dataset of polling average by week until the election. 
+d_poll_weeks <- d_pollav_natl |> 
+  group_by(year, party, weeks_left) |>
+  summarize(mean_poll_week = mean(poll_support)) |> 
+  filter(weeks_left <= 30) |> 
+  pivot_wider(names_from = weeks_left, values_from = mean_poll_week) |> 
+  left_join(d_vote, by = c("year", "party"))
+```
+## What is the advantage of incumbency in presidential elections?
+
+**There have been 18 presidential elections since World War II, eleven of which had at least one incumbent president running, seven of whom won re-election.** Indeed, while an incumbent president has won re-election in 33% of the elections post WWII, the incumbent party has won over 44% of such presidential elections. These results point out a reality within U.S. politics: that incumbency is a major advantage for both politicians and parties within the context of a general election for President. 
+
+**How many incumbent presidents have been r-elected since WWII? How many incumbent parties?**
+```{r    echo = FALSE, message=FALSE, warning=FALSE}
+
+####----------------------------------------------------------#
+#### Descriptive statistics on the incumbency advantage. 
+####----------------------------------------------------------#
+# A different way of assessing the incumbency advantage 
+# (out of 11 elections where there was at least one incumbent running). 
+inc_tab <- d_vote |> 
+  filter(year > 1948 & year < 2024) |>
+  select(year, party, candidate, incumbent, winner) |> 
+  pivot_wider(names_from = party, 
+              values_from = c(candidate, incumbent, winner)) |> 
+  filter(incumbent_DEM == TRUE | incumbent_REP == TRUE) 
+
+# How many post-war elections (18 and 2024) have there been 
+# where an incumbent president won? 
+reelect_president <- d_vote |> 
+  filter(winner) |> 
+  select(year, win_party = party, win_cand = candidate) |> 
+  mutate(win_party_last = lag(win_party, order_by = year),
+         win_cand_last = lag(win_cand, order_by = year)) |> 
+  mutate(reelect_president = win_cand_last == win_cand) |> 
+  filter(year > 1948 & year < 2024) |> 
+  group_by(reelect_president) |> 
+  summarize(Count = n()) |> 
+  mutate(Percent = round(Count/sum(Count) * 100, 2)) |>
+  rename(`Was the incumbent president re-elected` = reelect_president) |>
+  as.data.frame()
+
+# How many post-war elections have there been where the incumbent *party* won? 
+reelect_party <- d_vote |> 
+  filter(winner) |> 
+  select(year, win_party = party, win_cand = candidate) |> 
+  mutate(win_party_last = lag(win_party, order_by = year),
+         win_cand_last = lag(win_cand, order_by = year)) |> 
+  mutate(reelect_party = win_party_last == win_party) |> 
+  filter(year > 1948 & year < 2024) |> 
+  group_by(reelect_party) |> 
+  summarize(Count = n()) |> 
+  mutate(Percent = round(Count/sum(Count) * 100, 2)) |>
+  rename(`Was the incumbent party re-elected` = reelect_party) |>
+  as.data.frame()
+
+knitr::kable(reelect_president)
+knitr::kable(reelect_party)
+
+```
+
+## Historically, why do incumbents have this advantage?
+
+As seen above, incumbency presents a huge advantage for both presidents and their parties within general presidential elections. Scholar AG Cuzan 
+
+## Can incumbency build a predictive model?
+
+## Using this model, can we predit the results of the 2024 presidential election?
+
+
+
+
