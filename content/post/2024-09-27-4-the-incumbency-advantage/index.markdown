@@ -52,5 +52,88 @@ The table above uses both the 2016 model as well as the simplified 2020 model to
 ## Using this model, can we predit the results of the 2024 presidential election?
 
 
+```
+## # A tibble: 5 × 2
+##    year mean_match_rate
+##   <dbl>           <dbl>
+## 1  2004           0.647
+## 2  2008           0.608
+## 3  2012           0.765
+## 4  2016           0.804
+## 5  2020           0.824
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-2.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-3.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-4.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-5.png" width="672" />
+
+```
+## 
+##  0  1 
+##  9 42
+```
+
+```
+## [1] "Florida"        "Georgia"        "Iowa"           "Minnesota"     
+## [5] "New Hampshire"  "New Mexico"     "North Carolina" "Ohio"          
+## [9] "Texas"
+```
+
+```
+## # A tibble: 9 × 5
+##   state          cook_rating region         sabato_rating rating_match
+##   <chr>                <dbl> <chr>                  <dbl>        <dbl>
+## 1 Florida                  4 florida                    5            0
+## 2 Georgia                  4 georgia                    3            0
+## 3 Iowa                     4 iowa                       5            0
+## 4 Minnesota                3 minnesota                  2            0
+## 5 New Hampshire            3 new hampshire              2            0
+## 6 New Mexico               1 new mexico                 2            0
+## 7 North Carolina           4 north carolina             3            0
+## 8 Ohio                     4 ohio                       5            0
+## 9 Texas                    4 texas                      5            0
+```
+
+```
+##   cook_correct sabato_correct 
+##      0.8823529      0.9803922
+```
+
+```
+## [1] "Florida"        "Georgia"        "Iowa"           "North Carolina"
+## [5] "Ohio"           "Texas"
+```
+
+```
+## [1] "North Carolina"
+```
+
+```
+## # A tibble: 7 × 1
+##   state         
+##   <chr>         
+## 1 Arizona       
+## 2 Georgia       
+## 3 Michigan      
+## 4 Nevada        
+## 5 North Carolina
+## 6 Pennsylvania  
+## 7 Wisconsin
+```
+
+```
+##   cook_correct sabato_correct 
+##      0.8549020      0.9137255
+```
+
+```
+## # A tibble: 5 × 3
+##    year mean_cook_correct mean_sabato_correct
+##   <dbl>             <dbl>               <dbl>
+## 1  2004             0.824               0.961
+## 2  2008             0.804               0.784
+## 3  2012             0.863               0.961
+## 4  2016             0.902               0.882
+## 5  2020             0.882               0.980
+```
+
 
 
