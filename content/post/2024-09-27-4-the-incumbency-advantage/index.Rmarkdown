@@ -6,7 +6,7 @@ slug: []
 categories: []
 tags: []
 ---
-```{r    echo = FALSE, message=FALSE, warning=FALSE}
+```{r    echo = FALSE, message=FALSE, warning=FALSE }
 # Load libraries.
 ## install via `install.packages("name")`
 library(car)
@@ -58,7 +58,7 @@ d_poll_weeks <- d_pollav_natl |>
 **There have been 18 presidential elections since World War II, eleven of which had at least one incumbent president running, seven of whom won re-election.** Indeed, while an incumbent president has won re-election in 33% of the elections post WWII, the incumbent party has won over 44% of such presidential elections. These results point out a reality within U.S. politics: that incumbency is a major advantage for both politicians and parties within the context of a general election for President. 
 
 **How many incumbent presidents have been re-elected since WWII?**
-```{r    echo = FALSE, message=FALSE, warning=FALSE}
+```{r    echo = FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=5}
 
 ####----------------------------------------------------------#
 #### Descriptive statistics on the incumbency advantage. 
@@ -106,7 +106,7 @@ knitr::kable(reelect_president)
 ```
 
 **How many incumbent parties have been re-elected since WWII?**
-```{r     echo = FALSE, message=FALSE, warning=FALSE}
+```{r     echo = FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=5}
 knitr::kable(reelect_party)
 ```
 
@@ -117,7 +117,7 @@ As seen above, incumbency presents a huge advantage for both presidents and thei
 The law of incumbent advantage is, thus, specific to the office of the president. First and foremost, politicians are able to shape public opinion because of high esteem and recognition. Incumbents are able to begin their campaigns for re-election from the second that they arrive in the oval office, giving them a jumpstart on the race. Furthermore, according to Kriner and Reeves, Presidents can use the distribution of federal funds to garner electoral support.[(Kriner and Reeves, 2012)](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_journals_1018073231) One aspect of this spending, called pork barrel spending, targets certain politicians to help with their re-election campaigns.
 
 
-```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=12, fig.height=20}
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=16, fig.height=7}
 ####----------------------------------------------------------#
 #### Pork analysis. 
 ####----------------------------------------------------------#
@@ -165,7 +165,7 @@ plot2 <- d_pork_state |>
 library(gridExtra)
 
 # Create a combined plot with grid.arrange
-grid.arrange(plot1, plot2, ncol = 1)
+grid.arrange(plot1, plot2, nrow = 1)
 
 # Pork county model, use summary function to better understand results. 
 d_pork_county <- read_csv("data/fedgrants_bycounty_1988-2008.csv")
@@ -195,6 +195,79 @@ pork_state_mod <- lm(change_inc_pv2p ~ is_comp*change_grant_mil + as.factor(year
 **As seen above, federal grant spending in swing states is significantly higher than in non-swing states. Furthermore, this spending increases significantly in an election year.** Finally, this effect applies both to incumbents and their successors. To analyze the relationship between incumbent vote share and federal grant spending at the county level, a bivariate regression was run which resulted in an r-squared value of 0.4, meaning this model can explain 40% of the variance in incumbent vote share. *The model asserts that both grant spending and the competitiveness of states influence incumbent vote share, a finding which is statistically significant at the 0.001 level.* The model also indicates that the coefficients for years 1996, 2004, and 2008 are significantly larger than the base year, suggesting important temporal effects during these elections. When analyzing a separate bivariate regression model which uses grant data at the state level, these temporal effects persist in 1996 and 2004, indicating significant pork barrel spending by Bush and Clinton to support their re-election campaigns.
 
 ## Can incumbency build a predictive model?
+While federal grant data for 2024 is not yet available, incumbency can be easily incorporated into predictive models by incorporating whether or not a candidate is an incumbent as well as the president's approval rating. One such model which incorporates both of these statistics, as well as quarter 2 GDP growth, was made by the political scientist Alan Abramowitz. **Abramowitz's Time for Change model had a true out-of-sample PV prediction error of 1.7% between 1992 and 2016.**
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+####----------------------------------------------------------#
+#### Time for a change model. 
+####----------------------------------------------------------#
+
+# Join data for time for change model.
+d_tfc_train <- d_vote |> 
+  left_join(d_econ, by = "year") |> 
+  filter(incumbent_party) |>
+  mutate(incumbent = as.numeric(incumbent))
+
+# Estimate time for change model through 2016.
+tfc_mod_2016 <- lm(pv2p ~ GDP_growth_quarterly + incumbent + juneapp, 
+                   data = subset(d_tfc_train, year < 2020))
+
+
+
+
+# Estimate simplified time for change model for 2020. 
+# https://www-cambridge-org.ezp-prod1.hul.harvard.edu/core/services/aop-cambridge-core/content/view/47BBC0D5A2B7913DBB37FDA0542FD7E8/S1049096520001389a.pdf/its-the-pandemic-stupid-a-simplified-model-for-forecasting-the-2020-presidential-election.pdf
+tfc_mod_2020 <- lm(pv2p ~ juneapp, 
+                   data = subset(d_tfc_train, year < 2024))
+
+# use 2024 data to build a predictive model
+juneapp24 <- d_tfc_train |> 
+  filter(year == 2024) |> 
+  pull(juneapp)  
+
+GDP_growth_quarterly24 <- d_tfc_train |> 
+  filter(year == 2024) |> 
+  pull(GDP_growth_quarterly)
+
+incumbent24 <- d_tfc_train |> 
+  filter(year == 2024) |> 
+  pull(incumbent)
+
+new_data24 <- data.frame(
+  GDP_growth_quarterly = GDP_growth_quarterly24,
+  incumbent = incumbent24,
+  juneapp = juneapp24
+)
+
+new_data24 <- data.frame(
+  GDP_growth_quarterly = GDP_growth_quarterly24,
+  incumbent = incumbent24,
+  juneapp = juneapp24
+)
+
+new_data24pt2 <- data.frame(
+  juneapp = juneapp24
+)
+
+
+# Use the 2016 model to predict for 2024
+pred2024 <- predict(tfc_mod_2016, newdata = new_data24, interval = "prediction", level = 0.95)
+pred2024pt2 <- predict(tfc_mod_2020, newdata = new_data24pt2, interval = "prediction", level = 0.95)
+
+predictdf <- data.frame(
+  "Prediction Models" = c("Time for Change Model (2016)", "Simplified Time for Change Model (2020)"),
+  "Predicted 2024 Democratic Voteshare" = c(pred2024[, "fit"], pred2024pt2[, "fit"]),
+  "Lower Bound (95% PI)" = c(pred2024[, "lwr"], pred2024pt2[, "lwr"]),
+  "Upper Bound (95% PI)" = c(pred2024[, "upr"], pred2024pt2[, "upr"]),
+  check.names = FALSE
+)
+
+knitr::kable(predictdf)
+```
+
+The table above uses both the 2016 model as well as the simplified 2020 model to predict the results of the 2024 election. The 2016 model includes incumbency advantage (as determined by incumbency status as well as June approval ratings) as well as GDP growth quarterly. [To better understand the inclusion of economic fundamentals, refer to blog post two.](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/) **This model estimates a 48.93% two-party popular vote share for Vice President Harris.** To make this prediction, a prediction interval of 95% was used, meaning that there is only a 5% chance the real election outcome does not fall within the upper and lower bounds noted above. The 2020 time for change model only utilizes june approval ratings as a predictor, **estimating a 47.4% two-party popular vote share for Vice President Harris.** 
+
+**These two predictions differ significantly than those mode in previous weeks, primarily because they rely on Biden's incumbency status and approval ratings despite the reality that Biden is no longer the democratic candidate for president.** Indeed, in June (the month of the first presidential debate) Biden's approval rating was -22, which is certainly not the case for his younger successor Kamala Harris. The complicated narrative of this election makes it difficult to incorporate incumbency advantage into a prediction model.
 
 ## Using this model, can we predit the results of the 2024 presidential election?
 

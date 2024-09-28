@@ -78,9 +78,36 @@
 <h2 id="historically-why-do-incumbents-have-this-advantage">Historically, why do incumbents have this advantage?</h2>
 <p>As seen above, incumbency presents a huge advantage for both presidents and their parties within presidential elections. Scholar Alfred Cuzán describes this effect as one of the five laws of politics — <strong>the law of incumbent advantage</strong>. Cuzán&rsquo;s second of the five laws, however, paints a more complicated picture of this effect. <strong>The law of shrinking support</strong> asserts that despite the incumbent advantage in the presidential election, all but one incumbent’s party has lost vote share in midterm house election since WWII.<a href="https://www.cambridge.org/core/journals/ps-political-science-and-politics/article/abs/five-laws-of-politics/693D6F468706FB21FD043397D88FC0C3?utm_campaign=shareaholic&amp;utm_medium=copy_link&amp;utm_source=bookmark">(Cuzán, 2015)</a> This is often due to a phenomenon called mean reversion wherein parties who overperform and gain marginal seats in one election, will typically revert to the mean in the next election, returning to their historical average number of seats.</p>
 <p>The law of incumbent advantage is, thus, specific to the office of the president. First and foremost, politicians are able to shape public opinion because of high esteem and recognition. Incumbents are able to begin their campaigns for re-election from the second that they arrive in the oval office, giving them a jumpstart on the race. Furthermore, according to Kriner and Reeves, Presidents can use the distribution of federal funds to garner electoral support.<a href="https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_journals_1018073231">(Kriner and Reeves, 2012)</a> One aspect of this spending, called pork barrel spending, targets certain politicians to help with their re-election campaigns.</p>
-<img src="https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/index_files/figure-html/unnamed-chunk-4-1.png" width="1152" />
+<img src="https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/index_files/figure-html/unnamed-chunk-4-1.png" width="1536" />
 <p><strong>As seen above, federal grant spending in swing states is significantly higher than in non-swing states. Furthermore, this spending increases significantly in an election year.</strong> Finally, this effect applies both to incumbents and their successors. To analyze the relationship between incumbent vote share and federal grant spending at the county level, a bivariate regression was run which resulted in an r-squared value of 0.4, meaning this model can explain 40% of the variance in incumbent vote share. <em>The model asserts that both grant spending and the competitiveness of states influence incumbent vote share, a finding which is statistically significant at the 0.001 level.</em> The model also indicates that the coefficients for years 1996, 2004, and 2008 are significantly larger than the base year, suggesting important temporal effects during these elections. When analyzing a separate bivariate regression model which uses grant data at the state level, these temporal effects persist in 1996 and 2004, indicating significant pork barrel spending by Bush and Clinton to support their re-election campaigns.</p>
 <h2 id="can-incumbency-build-a-predictive-model">Can incumbency build a predictive model?</h2>
+<p>While federal grant data for 2024 is not yet available, incumbency can be easily incorporated into predictive models by incorporating whether or not a candidate is an incumbent as well as the president&rsquo;s approval rating. One such model which incorporates both of these statistics, as well as quarter 2 GDP growth, was made by the political scientist Alan Abramowitz. <strong>Abramowitz&rsquo;s Time for Change model had a true out-of-sample PV prediction error of 1.7% between 1992 and 2016.</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Prediction Models</th>
+          <th style="text-align: right">Predicted 2024 Democratic Voteshare</th>
+          <th style="text-align: right">Lower Bound (95% PI)</th>
+          <th style="text-align: right">Upper Bound (95% PI)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Time for Change Model (2016)</td>
+          <td style="text-align: right">48.92874</td>
+          <td style="text-align: right">43.09807</td>
+          <td style="text-align: right">54.75942</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Simplified Time for Change Model (2020)</td>
+          <td style="text-align: right">47.39554</td>
+          <td style="text-align: right">40.52536</td>
+          <td style="text-align: right">54.26573</td>
+      </tr>
+  </tbody>
+</table>
+<p>The table above uses both the 2016 model as well as the simplified 2020 model to predict the results of the 2024 election. The 2016 model includes incumbency advantage (as determined by incumbency status as well as June approval ratings) as well as GDP growth quarterly. <a href="https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/">To better understand the inclusion of economic fundamentals, refer to blog post two.</a> <strong>This model estimates a 48.93% two-party popular vote share for Vice President Harris.</strong> To make this prediction, a prediction interval of 95% was used, meaning that there is only a 5% chance the real election outcome does not fall within the upper and lower bounds noted above. The 2020 time for change model only utilizes june approval ratings as a predictor, <strong>estimating a 47.4% two-party popular vote share for Vice President Harris.</strong></p>
+<p><strong>These two predictions differ significantly than those mode in previous weeks, primarily because they rely on Biden&rsquo;s incumbency status and approval ratings despite the reality that Biden is no longer the democratic candidate for president.</strong> Indeed, in June (the month of the first presidential debate) Biden&rsquo;s approval rating was -22, which is certainly not the case for his younger successor Kamala Harris. The complicated narrative of this election makes it difficult to incorporate incumbency advantage into a prediction model.</p>
 <h2 id="using-this-model-can-we-predit-the-results-of-the-2024-presidential-election">Using this model, can we predit the results of the 2024 presidential election?</h2>
 
 </main>
