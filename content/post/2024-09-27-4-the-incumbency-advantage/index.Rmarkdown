@@ -103,14 +103,95 @@ reelect_party <- d_vote |>
 
 knitr::kable(reelect_president)
 
+```
 
+```{r     echo = FALSE, message=FALSE, warning=FALSE}
 knitr::kable(reelect_party)
-
 ```
 
 ## Historically, why do incumbents have this advantage?
 
-As seen above, incumbency presents a huge advantage for both presidents and their parties within general presidential elections. Scholar AG Cuzan 
+As seen above, incumbency presents a huge advantage for both presidents and their parties within presidential elections. Scholar Alfred Cuzán describes this effect as one of the five laws of politics — **the law of incumbent advantage**. Cuzán's second of the five laws, however, paints a more complicated picture of this effect. **The law of shrinking support** asserts that despite the incumbent advantage in the presidential election, all but one incumbent’s party has lost vote share in midterm house election since WWII.[(Cuzán, 2015)](https://www.cambridge.org/core/journals/ps-political-science-and-politics/article/abs/five-laws-of-politics/693D6F468706FB21FD043397D88FC0C3?utm_campaign=shareaholic&utm_medium=copy_link&utm_source=bookmark) This is often due to a phenomenon called mean reversion wherein parties who overperform and gain marginal seats in one election, will typically revert to the mean in the next election, returning to their historical average number of seats.
+
+The law of incumbent advantage is, thus, specific to the office of the president. First and foremost, politicians are able to shape public opinion because of high esteem and recognition. Incumbents are able to begin their campaigns for re-election from the second that they arrive in the oval office, giving them a jumpstart on the race. Furthermore, according to Kriner and Reeves, Presidents can use the distribution of federal funds to garner electoral support.[(Kriner and Reeves, 2012)](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_journals_1018073231) One aspect of this spending, called pork barrel spending, targets certain politicians to help with their re-election campaigns.
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=20, fig.height=7}
+####----------------------------------------------------------#
+#### Pork analysis. 
+####----------------------------------------------------------#
+ 
+# Read federal grants dataset from Kriner & Reeves (2008). 
+d_pork_state <- read_csv("data/fedgrants_bystate_1988-2008.csv")
+
+# What strategy do presidents pursue? 
+plot1 <- d_pork_state |> 
+  filter(!is.na(state_year_type)) |> 
+  group_by(state_year_type) |>
+  summarize(mean_grant = mean(grant_mil, na.rm = T), se_grant = sd(grant_mil, na.rm = T)/sqrt(n())) |> 
+  ggplot(aes(x = state_year_type, y = mean_grant, ymin = mean_grant-1.96*se_grant, ymax = mean_grant+1.96*se_grant)) + 
+  coord_flip() + 
+  geom_bar(stat = "identity", fill = "chartreuse4") + 
+  geom_errorbar(width = 0.2) + 
+  labs(x = "Type of State & Year", 
+       y = "Federal Grant Spending (Millions of $)", 
+       title = "Federal Grant Spending (Millions $) by State Election Type",
+       subtitle = "What strategy do presidents pursue?") + 
+  theme_minimal() + 
+  theme(plot.title = element_text(size = 20),
+        axis.title = element_text(size = 15),
+        axis.text = element_text(size = 12))
+
+# Do presidents strategize for their successor as well? 
+plot2 <- d_pork_state |> 
+  filter(!is.na(state_year_type2)) |> 
+  group_by(state_year_type2) |>
+  summarize(mean_grant = mean(grant_mil, na.rm = T), se_grant = sd(grant_mil, na.rm = T)/sqrt(n())) |> 
+  ggplot(aes(x = state_year_type2, y = mean_grant, ymin = mean_grant-1.96*se_grant, ymax = mean_grant+1.96*se_grant)) + 
+  coord_flip() + 
+  geom_bar(stat = "identity", fill = "chartreuse4") + 
+  geom_errorbar(width = 0.2) + 
+  labs(x = "Type of Candidate, State & Year", 
+       y = "Federal Grant Spending (Millions of $)", 
+       title = "Federal Grant Spending (Millions $) by State Election Type",
+       subtitle = "Do presidents strategize for their successor as well?") + 
+  theme_minimal() +
+  theme(plot.title = element_text(size = 20),
+        axis.title = element_text(size = 15),
+        axis.text = element_text(size = 12))
+
+# Load necessary library
+library(gridExtra)
+
+# Create a combined plot with grid.arrange
+grid.arrange(plot1, plot2, nrow = 1)
+
+# Pork county model, use summary function to better understand results. 
+d_pork_county <- read_csv("data/fedgrants_bycounty_1988-2008.csv")
+
+pork_mod_county_1 <- lm(dvoteswing_inc  ~ dpct_grants*comp_state + as.factor(year), 
+                      d_pork_county)
+
+# Pork state model, use summary function to better understand results. 
+d_pork_state_model <- d_state_vote |>
+  mutate(state_abb = state.abb[match(d_state_vote$state, state.name)]) |>
+  inner_join(d_pork_state, by = c("year", "state_abb")) |>
+  left_join(d_vote, by = "year") |>
+  filter(incumbent_party == TRUE) |>
+  mutate(inc_pv2p = ifelse(party == "REP", R_pv2p, D_pv2p)) |>
+  mutate(is_comp = case_when(state_year_type == "swing + election year" ~ 1,
+                             .default = 0)) |>
+  group_by(state) |>
+  mutate(change_grant_mil = (1-grant_mil/(lag(grant_mil, n = 1)))*100,
+         change_inc_pv2p = (1-inc_pv2p/(lag(inc_pv2p, n = 1)))*100) |>
+  ungroup() |>
+  select(state, year, is_comp, change_grant_mil, change_inc_pv2p)
+
+pork_state_mod <- lm(change_inc_pv2p ~ is_comp*change_grant_mil + as.factor(year),
+                     data = d_pork_state_model)
+```
+
+**As seen above, federal grant spending in swing states is significantly higher than in non-swing states. Furthermore, this spending increases significantly in an election year.** Finally, this effect applies both to incumbents and their successors. To analyze the relationship between incumbent vote share and federal grant spending at the county level, a bivariate regression was run which resulted in an r-squared value of 0.4, meaning this model can explain 40% of the variance in incumbent vote share. *The model asserts that both grant spending and the competitiveness of states influence incumbent vote share, a finding which is statistically significant at the 0.001 level.* The model also indicates that the coefficients for years 1996, 2004, and 2008 are significantly larger than the base year, suggesting important temporal effects during these elections. When analyzing a separate bivariate regression model which uses grant data at the state level, these temporal effects persist in 1996 and 2004, indicating significant pork barrel spending by Bush and Clinton to support their re-election campaigns.
 
 ## Can incumbency build a predictive model?
 
