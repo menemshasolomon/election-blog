@@ -51,38 +51,33 @@ The table above uses both the 2016 model as well as the simplified 2020 model to
 
 ## How do expert predictors use models such as these to predict election outcomes?
 
-Expert predictors, such as those from the [Cook Political Report](https://www.cookpolitical.com/ratings/presidential-race-ratings) and [Sabato's Crystal Ball](https://centerforpolitics.org/crystalball/2024-president/),use a combination of statistical modeling and expert qualitative insights to create comprehensive, real-time predictions. Much of the quantitative aspect of these models is similar to those crafted over the past few weeks; however, these prediction models also include qualitative adjustments based on expert judgement. Additionally, expert predictors often use a probabilistic framework, labeling states "Safe," "Likely," "Lean," or "Toss-up" based on the strength of each party’s position. Instead of predicting exact vote shares, these models indicate which states are too close to call and, thus, will become the focal point for this election cycle.
+Expert predictors, such as those from the [Cook Political Report](https://www.cookpolitical.com/ratings/presidential-race-ratings) and [Sabato's Crystal Ball](https://centerforpolitics.org/crystalball/2024-president/), use a combination of statistical modeling and expert qualitative insights to create comprehensive, real-time predictions. Much of the quantitative aspect of these models is similar to those crafted in my blogs over the past few weeks; however, these prediction models also include qualitative adjustments based on expert judgement. Additionally, expert predictors often use a probabilistic framework, labeling states "Safe," "Likely," "Lean," or "Toss-up" based on the strength of each party’s position. Instead of predicting exact vote shares, these models indicate which states are too close to call and, thus, will become the focal point for this election cycle.
 
-**2020 Electoral College Expert Predictions and the Reality**
-
-```
-## # A tibble: 5 × 2
-##    year mean_match_rate
-##   <dbl>           <dbl>
-## 1  2004           0.647
-## 2  2008           0.608
-## 3  2012           0.765
-## 4  2016           0.804
-## 5  2020           0.824
-```
-
+**2020 Electoral College Expert Predictions**
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="1248" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-2.png" width="1248" />
 
-```
-##   cook_correct sabato_correct 
-##      0.8549020      0.9137255
-```
+As seen in the maps above, Sabato's model seemingly had more success than Cook's model in prediction the results of the 2020 election. In reality, by including five toss-up states in his final model, Cook was not actually incorrect, rather in his pursuit of probabilistic accuracy decided to remain vague and label the states too close to call for one party. 
 
-```
-## # A tibble: 5 × 3
-##    year mean_cook_correct mean_sabato_correct
-##   <dbl>             <dbl>               <dbl>
-## 1  2004             0.824               0.961
-## 2  2008             0.804               0.784
-## 3  2012             0.863               0.961
-## 4  2016             0.902               0.882
-## 5  2020             0.882               0.980
-```
+Expert models can provide keep insights into a party's hold (or lack thereof) on certain states, which is key to predicting the electoral college. **Thus, going forward, insights from both Cook and Sabato will be important in determining which states to focus on for my electoral college predictions.**
 
+## Notes
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-09-27-4-the-incumbency-advantage/index.Rmarkdown). To learn more about expert predictions such as those made by the [Cook Political Report](https://www.cookpolitical.com/ratings/presidential-race-ratings) and [Sabato's Crystal Ball](https://centerforpolitics.org/crystalball/2024-president/), see here!
 
+**Sources**
+
+Abramowitz, Alan. "Time for Change Model Predicts Close Election with Slight Edge for Kamala 
+     Harris." The Center for Politics. Rector and Visitors of the University of Virginia. Last 
+     modified August 22, 2024. Accessed September 29, 2024. https://centerforpolitics.org/ 
+     crystalball/time-for-change-model-predicts-close-election-with-slight-edge-for-kamala-harris/. 
+ 
+Cuzán, Alfred G. "Five Laws of Politics." PS: Political Science & Politics 48, no. 03 (2015): 
+     415-19. https://doi.org/10.1017/s1049096515000165. 
+     
+Kriner, Douglas L., and Andrew Reeves. "The Influence of Federal Spending on Presidential 
+     Elections." American Political Science Review 106, no. 2 (2012): 348-66. https://doi.org/ 
+     10.1017/s0003055412000159. 
+
+**Data Sources**
+
+US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight and Gallup, also provided by the course.
 
