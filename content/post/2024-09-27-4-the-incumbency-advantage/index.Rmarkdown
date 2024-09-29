@@ -269,9 +269,12 @@ The table above uses both the 2016 model as well as the simplified 2020 model to
 
 **These two predictions differ significantly than those mode in previous weeks, primarily because they rely on Biden's incumbency status and approval ratings despite the reality that Biden is no longer the democratic candidate for president.** Indeed, in June (the month of the first presidential debate) Biden's approval rating was -22, which is certainly not the case for his younger successor Kamala Harris. The complicated narrative of this election makes it difficult to incorporate incumbency advantage into a prediction model.
 
-## Using this model, can we predit the results of the 2024 presidential election?
+## How do expert predictors use models such as these to predict election outcomes?
 
-```{r  echo = FALSE, message=FALSE, warning=FALSE}
+Expert predictors, such as those from the [Cook Political Report](https://www.cookpolitical.com/ratings/presidential-race-ratings) and [Sabato's Crystal Ball](https://centerforpolitics.org/crystalball/2024-president/),use a combination of statistical modeling and expert qualitative insights to create comprehensive, real-time predictions. Much of the quantitative aspect of these models is similar to those crafted over the past few weeks; however, these prediction models also include qualitative adjustments based on expert judgement. Additionally, expert predictors often use a probabilistic framework, labeling states "Safe," "Likely," "Lean," or "Toss-up" based on the strength of each party’s position. Instead of predicting exact vote shares, these models indicate which states are too close to call and, thus, will become the focal point for this election cycle.
+
+**2020 Electoral College Expert Predictions and the Reality**
+```{r  echo = FALSE, message=FALSE, warning=FALSE,  fig.width=13, fig.height=4}
 ####----------------------------------------------------------#
 #### Expert predictions. 
 ####----------------------------------------------------------#
@@ -379,7 +382,7 @@ color_palette <- c(
   "Safe Republican" = "firebrick"    # 7
 )
 
-sabato2020_map |>
+sabatoplot <- sabato2020_map |>
   ggplot(aes(long, lat, group = group)) +
   geom_polygon(aes(fill = factor(sabato_rating, 
                                  levels = 1:7, 
@@ -413,7 +416,7 @@ color_palette <- c(
   "Safe Republican" = "firebrick"    # 7
 )
 
-d_expert_2020map  |>
+cookplot <- d_expert_2020map  |>
   ggplot(aes(long, lat, group = group)) +
   geom_polygon(aes(fill = factor(cook_rating, 
                                  levels = 1:7, 
@@ -433,17 +436,12 @@ d_expert_2020map  |>
   theme_void() +
   ggtitle("Cook Prediction Map (2020)")
 
+grid.arrange(cookplot, sabatoplot, nrow = 1)
+
 d_expert_2020map$rating_match <- factor(d_expert_2020map$rating_match,
                                          levels = c(0, 1),
                                          labels = c("Different", "Same"))
 
-d_expert_2020map |>
-  ggplot(aes(long, lat, group = group)) +
-  geom_polygon(aes(fill = rating_match), color = "black") +
-  scale_fill_manual(values = c("Same" = "white", "Different" = "chartreuse4"), 
-                    name = "Rating Match") + 
-  theme_void() +
-  ggtitle("Prediction Map Differences (2020)")
 
 d_expertmap <- d_expert |>
   filter(year == 2020) |>
@@ -455,10 +453,10 @@ d_expertmap$cook_correct <- factor(d_expertmap$cook_correct ,
                                          levels = c(0, 1),
                                          labels = c("Incorrect", "Correct"))
 
-d_expertmap |>
+cookplot2 <- d_expertmap |>
   ggplot(aes(long, lat, group = group)) +
   geom_polygon(aes(fill = cook_correct), color = "black") +
-  scale_fill_manual(values = c("Incorrect" = "salmon", "Correct" = "chartreuse2"), 
+  scale_fill_manual(values = c("Incorrect" = "palevioletred2", "Correct" = "paleturquoise2"), 
                     name = "Validity") + 
   theme_void() +
   ggtitle("Was Cook Correct in 2020?")
@@ -467,57 +465,23 @@ d_expertmap$sabato_correct <- factor(d_expertmap$sabato_correct ,
                                          levels = c(0, 1),
                                          labels = c("Incorrect", "Correct"))
 
-d_expertmap |>
+sabatoplot2 <- d_expertmap |>
   ggplot(aes(long, lat, group = group)) +
   geom_polygon(aes(fill = sabato_correct), color = "black") +
-  scale_fill_manual(values = c("Incorrect" = "salmon", "Correct" = "chartreuse2"), 
+  scale_fill_manual(values = c("Incorrect" = "palevioletred2", "Correct" = "paleturquoise2"), 
                     name = "Validity") + 
   theme_void() +
   ggtitle("Was Sabato Correct in 2020?")
 
+grid.arrange(cookplot2, sabatoplot2, nrow = 1)
 
 
-d_expert_2020$rating_match |> table()
 
-d_expert_2020$state[d_expert_2020$rating_match == 0 & !is.na(d_expert_2020$sabato_rating)]
 # Why the NAs? Cook makes ratings for Maine and Nebraska districts separately. 
 # These may be important for the 2024 election, but are difficult to find data for. 
 
 d_expert_2020 <- d_expert_2020 |> 
   drop_na()
-
-# Compare rating mismatches for 2020.
-d_expert_2020[d_expert_2020$state %in% c(d_expert_2020$state[d_expert_2020$rating_match == 0]),]
-
-# Merge in 2020 state vote data. 
-d_state_vote_2020 <- d_state_vote |> 
-  filter(year == 2020) |> 
-  select(state, year, R_pv2p, D_pv2p) |> 
-  mutate(margin = D_pv2p - R_pv2p, 
-         winner = ifelse(D_pv2p > R_pv2p, "D", "R"))
-d_state_vote_2020[d_state_vote_2020$state == "District Of Columbia",]$state <- "District of Columbia"
-
-d_expert_2020 <- d_expert_2020 |>
-  left_join(d_state_vote_2020, by = "state")
-
-# See which expert group was more accurate for 2020 (counting toss ups as misses). 
-d_expert_2020 <- d_expert_2020 |> 
-  mutate(cook_correct = as.numeric((winner == "D" & cook_rating < 4) | 
-                                   (winner == "R" & cook_rating > 4)),
-         sabato_correct = as.numeric((winner == "D" & sabato_rating < 4) | 
-                                     (winner == "R" & sabato_rating > 4)))
-
-d_expert_2020 |>
-  select(cook_correct, sabato_correct) |> 
-  colMeans()
-
-# Which states did Cook miss? 
-d_expert_2020[d_expert_2020$cook_correct == 0,]$state
-d_expert_2020[d_expert_2020$cook_correct == 0,] |> view()
-
-# Sabato? 
-d_expert_2020[d_expert_2020$sabato_correct == 0,]$state
-d_expert_2020[d_expert_2020$sabato_correct == 0,] |> view()
 
 # 2024 Comparison:
 
@@ -537,9 +501,6 @@ d_expert_2020[d_expert_2020$sabato_correct == 0,] |> view()
 
 # Sabato: 
 # https://centerforpolitics.org/crystalball/2024-president/
-d_sabato |> 
-  filter(year == 2024 & rating == 4) |> 
-  select(state)
 
 # 226 D EV
 # 93 ? EV

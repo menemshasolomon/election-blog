@@ -49,8 +49,11 @@ The table above uses both the 2016 model as well as the simplified 2020 model to
 
 **These two predictions differ significantly than those mode in previous weeks, primarily because they rely on Biden's incumbency status and approval ratings despite the reality that Biden is no longer the democratic candidate for president.** Indeed, in June (the month of the first presidential debate) Biden's approval rating was -22, which is certainly not the case for his younger successor Kamala Harris. The complicated narrative of this election makes it difficult to incorporate incumbency advantage into a prediction model.
 
-## Using this model, can we predit the results of the 2024 presidential election?
+## How do expert predictors use models such as these to predict election outcomes?
 
+Expert predictors, such as those from the [Cook Political Report](https://www.cookpolitical.com/ratings/presidential-race-ratings) and [Sabato's Crystal Ball](https://centerforpolitics.org/crystalball/2024-president/),use a combination of statistical modeling and expert qualitative insights to create comprehensive, real-time predictions. Much of the quantitative aspect of these models is similar to those crafted over the past few weeks; however, these prediction models also include qualitative adjustments based on expert judgement. Additionally, expert predictors often use a probabilistic framework, labeling states "Safe," "Likely," "Lean," or "Toss-up" based on the strength of each party’s position. Instead of predicting exact vote shares, these models indicate which states are too close to call and, thus, will become the focal point for this election cycle.
+
+**2020 Electoral College Expert Predictions and the Reality**
 
 ```
 ## # A tibble: 5 × 2
@@ -63,61 +66,7 @@ The table above uses both the 2016 model as well as the simplified 2020 model to
 ## 5  2020           0.824
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-2.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-3.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-4.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-5.png" width="672" />
-
-```
-## 
-##  0  1 
-##  9 42
-```
-
-```
-## [1] "Florida"        "Georgia"        "Iowa"           "Minnesota"     
-## [5] "New Hampshire"  "New Mexico"     "North Carolina" "Ohio"          
-## [9] "Texas"
-```
-
-```
-## # A tibble: 9 × 5
-##   state          cook_rating region         sabato_rating rating_match
-##   <chr>                <dbl> <chr>                  <dbl>        <dbl>
-## 1 Florida                  4 florida                    5            0
-## 2 Georgia                  4 georgia                    3            0
-## 3 Iowa                     4 iowa                       5            0
-## 4 Minnesota                3 minnesota                  2            0
-## 5 New Hampshire            3 new hampshire              2            0
-## 6 New Mexico               1 new mexico                 2            0
-## 7 North Carolina           4 north carolina             3            0
-## 8 Ohio                     4 ohio                       5            0
-## 9 Texas                    4 texas                      5            0
-```
-
-```
-##   cook_correct sabato_correct 
-##      0.8823529      0.9803922
-```
-
-```
-## [1] "Florida"        "Georgia"        "Iowa"           "North Carolina"
-## [5] "Ohio"           "Texas"
-```
-
-```
-## [1] "North Carolina"
-```
-
-```
-## # A tibble: 7 × 1
-##   state         
-##   <chr>         
-## 1 Arizona       
-## 2 Georgia       
-## 3 Michigan      
-## 4 Nevada        
-## 5 North Carolina
-## 6 Pennsylvania  
-## 7 Wisconsin
-```
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="1248" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-2.png" width="1248" />
 
 ```
 ##   cook_correct sabato_correct 
