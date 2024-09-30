@@ -9,7 +9,7 @@ tags: []
 
 ## What is the advantage of incumbency in presidential elections?
 
-**There have been 18 presidential elections since World War II, eleven of which had at least one incumbent president running, seven of whom won re-election.** Indeed, while an incumbent president has won re-election in 33% of the elections post WWII, the incumbent party has won over 44% of such presidential elections. These results point out a reality within U.S. politics: that incumbency is a major advantage for both politicians and parties within the context of a presidential election. 
+**There have been 18 presidential elections since World War II, eleven of which featured an incumbent president running, seven of whom won re-election.** Indeed, while an incumbent president has won re-election in 33% of elections since WWII, the incumbent party has won over 44% of such presidential elections. These results highlight a key reality in U.S. politics: incumbency is a major advantage for both politicians and parties in the context of a presidential election.
 
 **How many incumbent presidents have been re-elected since WWII?**
 
@@ -53,15 +53,14 @@ The table above uses both Abramowit's 2016 model as well as his simplified 2020 
 
 ## How do expert predictors use models such as these to predict election outcomes?
 
-Expert predictors, such as those from the [Cook Political Report](https://www.cookpolitical.com/ratings/presidential-race-ratings) and [Sabato's Crystal Ball](https://centerforpolitics.org/crystalball/2024-president/), use a combination of statistical modeling and expert qualitative insights to create comprehensive, real-time predictions. Much of the quantitative aspect of these models is similar to those crafted in my blogs over the past few weeks; however, these prediction models also include qualitative adjustments based on expert judgement. Additionally, expert predictors often use a probabilistic framework, labeling states "Safe," "Likely," "Lean," or "Toss-up" based on the strength of each party’s position. Instead of predicting exact vote shares, these models indicate which states are too close to call and, thus, will become the focal point for this election cycle.
+Expert predictors, such as those from the [Cook Political Report](https://www.cookpolitical.com/ratings/presidential-race-ratings) and [Sabato's Crystal Ball](https://centerforpolitics.org/crystalball/2024-president/), use a combination of statistical modeling and expert qualitative insights to create comprehensive, real-time predictions. Much of the quantitative aspect of these models is similar to those I've crafted in my blogs over the past few weeks; however, these prediction models also include qualitative adjustments based on expert judgment. Additionally, expert predictors often use a probabilistic framework, labeling states "Safe," "Likely," "Lean," or "Toss-up" based on the strength of each party’s position. Instead of predicting exact vote shares, these models indicate which states are too close to call and, thus, will become the focal point for this election cycle.
 
 **2020 Electoral College Expert Predictions**
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="1248" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-2.png" width="1248" />
 
-As seen in the maps above, Sabato's model seemingly had more success than Cook's model in prediction the results of the 2020 election. In reality, by including five toss-up states in his final model, Cook was not actually incorrect, rather in his pursuit of probabilistic accuracy decided to remain vague and label the states too close to call for one party. 
+As seen in the maps above, Sabato's model seemingly had more success than Cook's model in predicting the results of the 2020 election. In reality, by including five toss-up states in his final model, Cook was not actually incorrect; rather, in his pursuit of probabilistic accuracy, he chose to remain vague and label the states as too close to call for either party.
 
-Expert models can provide keep insights into a party's hold (or lack thereof) on certain states, which is key to predicting the electoral college. **Thus, going forward, insights from both Cook and Sabato will be important in determining which states to focus on for my electoral college predictions.**
-
+Expert models can provide valuable insights into a party's hold (or lack thereof) on certain states, which is crucial for predicting the electoral college. **Therefore, moving forward, insights from both Cook and Sabato will be important in determining which states to focus on for my electoral college predictions.**
 ## Notes
 All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-09-27-4-the-incumbency-advantage/index.Rmarkdown). To learn more about expert predictions such as those made by the [Cook Political Report](https://www.cookpolitical.com/ratings/presidential-race-ratings) and [Sabato's Crystal Ball](https://centerforpolitics.org/crystalball/2024-president/), see here!
 
