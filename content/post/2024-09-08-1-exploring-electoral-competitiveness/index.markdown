@@ -57,7 +57,7 @@ Y_{2024_i} = 0.75 \times Y_{2020\_voteshare_i} + 0.25 \times Y_{2016\_voteshare_
 Based upon this naive prediction model, Harris is expected to win the key battle ground states of _Michigan (+2.06%), Nevada, Pennsylvania (+0.7%), and Wisconsin (+0.27%)_ while Trump will capture _Arizona (+0.7%), Georgia (+1.15%), and North Carolina (+1.98%)._ This would lead to a **Harris victory with 276 electoral votes** over Trump's 262 votes.
 
 ## Notes
-All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-09-08-1-exploring-electoral-competitiveness/index.Rmarkdown).
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog2/blob/main/content/post/2024-09-08-1-exploring-electoral-competitiveness/index.Rmarkdown).
 
 **Sources**
 

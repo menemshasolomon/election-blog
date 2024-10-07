@@ -19,7 +19,7 @@ library(maps)
 library(tidyverse)
 
 # Read presidential popular vote. 
-d_popvote <- read_csv("/Users/menasolomon/Desktop/election-blog/Lab1/popvote_1948-2020.csv")
+d_popvote <- read_csv("/Users/menasolomon/Desktop/election-blog2/Lab1/popvote_1948-2020.csv")
 
 ####----------------------------------------------------------#
 #### Visualize trends in national presidential popular vote. 
@@ -66,7 +66,7 @@ In presidential elections, it is not popular vote which determines election outc
 states_map <- map_data("state")
 
 # Read wide version of dataset that can be used to compare candidate votes with one another. 
-d_pvstate_wide <- read_csv("/Users/menasolomon/Desktop/election-blog/Lab1/clean_wide_state_2pv_1948_2020.csv")
+d_pvstate_wide <- read_csv("/Users/menasolomon/Desktop/election-blog2/Lab1/clean_wide_state_2pv_1948_2020.csv")
 
 # Merge d_pvstate_wide with state_map.
 d_pvstate_wide$region <- tolower(d_pvstate_wide$state)
@@ -165,7 +165,7 @@ pv2p_2024_states |>
 Based upon this naive prediction model, Harris is expected to win the key battle ground states of _Michigan (+2.06%), Nevada, Pennsylvania (+0.7%), and Wisconsin (+0.27%)_ while Trump will capture _Arizona (+0.7%), Georgia (+1.15%), and North Carolina (+1.98%)._ This would lead to a **Harris victory with 276 electoral votes** over Trump's 262 votes.
 
 ## Notes
-All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-09-08-1-exploring-electoral-competitiveness/index.Rmarkdown).
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog2/blob/main/content/post/2024-09-08-1-exploring-electoral-competitiveness/index.Rmarkdown).
 
 **Sources**
 
