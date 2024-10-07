@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>5. Demographics, Turnout, and Vote Choice | Election Prediction Blog</title>
+    <link rel="stylesheet" href="/election-blog/css/style.css" />
+    <link rel="stylesheet" href="/election-blog/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/election-blog/">Home</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title"><ol start="5">
+<li>Demographics, Turnout, and Vote Choice</li>
+</ol>
+</span></h1>
+<h2 class="author">Mena Solomon</h2>
+<h2 class="date">2024/10/02</h2>
+</div>
+
+<main>
+<h2 id="what-are-the-connections-if-any-between-demographics-and-voter-turnout">What are the connections, if any, between demographics and voter turnout?</h2>
+<p><strong>When visiting our class a month ago, FiveThirtyEight&rsquo;s Elliott Morris was asked what variable he  wishes he had complete access to for the sake of improving the predictive power of his forecasting models. His answer: voter turnout.</strong> While forecasters may be able to develop models which accurately gauge the sentiment of the electorate, without information on voter turnout there is no way to accurately extrapolate such &ldquo;temperature checks&rdquo; into accurate election predictions. Yet, pollsters struggle to accurately gauge voter turnout with survey data. Indeed, forecasters often turn to demographics, hoping to impute turnout based on the likelihood of certain populations to turn out to vote. <em>To do so, an assumption must be made that demographic information is able to predict voter turnout. This assumption will be explored below:</em></p>
+<p><strong>General Election Turnout in Pennsylvania Based on Demographic Information</strong>
+The charts below are a very basic demonstration of the average number of Pennsylvania general elections that individuals have voted in broken down by various demographic informants. Pennsylvania was chosen as it is a relatively diverse state in terms of demographic and political viewpoint as well as a key swing state in the upcoming election. When looking at the charts, it is important to keep in mind that relative population size is not incorporated into these models. Additionally, there is general election data every year going back 23 years.
+<img src="https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/index_files/figure-html/unnamed-chunk-4-1.png" width="1440" /></p>
+<p>The charts above illustrate that certain demographics — white, educated, older people — appear to vote more frequently than others in general elections. There are many reasons for these differences. In their book, The Turnout Myth, Shaw and Petrocik outline a few, most importantly: educated voters have more information and a greater sense of civic duty while older voters have more time and greater interest in government programs <a href="https://hollis.harvard.edu/primo-explore/fulldisplay?docid=01HVD_ALMA512333848630003941&amp;context=L&amp;vid=HVD2&amp;lang=en_US&amp;search_scope=everything&amp;adaptor=Local%20Search%20Engine&amp;tab=everything&amp;query=lsr01,contains,99153891089403941&amp;mode=basic&amp;offset=0">(Shaw and Petrocik, 2020)</a>. Yet, to understand how this information applies to election predicting, it is important to understand if this demographic information can predict vote choice in these elections. For a long time, forecasters operated under a <em>bias thesis</em> which assumed that democrats were more likely to turnout to vote because of these demographic indicators. The analysis below will determine if that is still true.</p>
+<h2 id="can-demographics-and-turnout-be-used-to-predict-election-outcomes">Can demographics and turnout be used to predict election outcomes?</h2>
+<p>To understand if demographics are predictive of vote choice, I recreated an analysis done by Kim and Zilinksy which uses a logistic regression model to determine which demographics have predictive power<a href="https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_unpaywall_primary_10_1007_s11109_022_09816_z&amp;vid=HVD2&amp;search_scope=everything&amp;tab=everything&amp;lang=en_US&amp;context=PC">(Kim and Zilinsky, 2024)</a>.</p>
+<p><strong>Evaluating in-sample fit:</strong></p>
+<p>Table: <span id="tab:unnamed-chunk-5"></span>Table 1: Logistic Regression Coefficients and Significance</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left"></th>
+          <th style="text-align: right">Estimate</th>
+          <th style="text-align: right">Standard Error</th>
+          <th style="text-align: right">z_value</th>
+          <th style="text-align: left">Significance</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">(Intercept)</td>
+          <td style="text-align: right">4.3583814</td>
+          <td style="text-align: right">0.4366803</td>
+          <td style="text-align: right">9.9807136</td>
+          <td style="text-align: left">***</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">age</td>
+          <td style="text-align: right">0.0006984</td>
+          <td style="text-align: right">0.0028117</td>
+          <td style="text-align: right">0.2483989</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">gender</td>
+          <td style="text-align: right">-0.4294732</td>
+          <td style="text-align: right">0.0934585</td>
+          <td style="text-align: right">-4.5953379</td>
+          <td style="text-align: left">***</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">race</td>
+          <td style="text-align: right">-0.5482380</td>
+          <td style="text-align: right">0.0605982</td>
+          <td style="text-align: right">-9.0470969</td>
+          <td style="text-align: left">***</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">educ</td>
+          <td style="text-align: right">-0.3398141</td>
+          <td style="text-align: right">0.0613322</td>
+          <td style="text-align: right">-5.5405495</td>
+          <td style="text-align: left">***</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">income</td>
+          <td style="text-align: right">0.0494349</td>
+          <td style="text-align: right">0.0468039</td>
+          <td style="text-align: right">1.0562135</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">religion</td>
+          <td style="text-align: right">-0.2148136</td>
+          <td style="text-align: right">0.0421012</td>
+          <td style="text-align: right">-5.1023208</td>
+          <td style="text-align: left">***</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">attend_church</td>
+          <td style="text-align: right">-0.2109916</td>
+          <td style="text-align: right">0.0331518</td>
+          <td style="text-align: right">-6.3644005</td>
+          <td style="text-align: left">***</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">southern</td>
+          <td style="text-align: right">-0.4096051</td>
+          <td style="text-align: right">0.1051603</td>
+          <td style="text-align: right">-3.8950560</td>
+          <td style="text-align: left">***</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">work_status</td>
+          <td style="text-align: right">0.0955178</td>
+          <td style="text-align: right">0.0458378</td>
+          <td style="text-align: right">2.0838220</td>
+          <td style="text-align: left">*</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">homeowner</td>
+          <td style="text-align: right">-0.1765531</td>
+          <td style="text-align: right">0.0822755</td>
+          <td style="text-align: right">-2.1458777</td>
+          <td style="text-align: left">*</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">married</td>
+          <td style="text-align: right">-0.0715981</td>
+          <td style="text-align: right">0.0276917</td>
+          <td style="text-align: right">-2.5855402</td>
+          <td style="text-align: left">**</td>
+      </tr>
+  </tbody>
+</table>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   Democrat Republican
+##   Democrat        746        336
+##   Republican      346        660
+##                                           
+##                Accuracy : 0.6734          
+##                  95% CI : (0.6528, 0.6935)
+##     No Information Rate : 0.523           
+##     P-Value [Acc &gt; NIR] : &lt;2e-16          
+##                                           
+##                   Kappa : 0.3456          
+##                                           
+##  Mcnemar's Test P-Value : 0.7304          
+##                                           
+##             Sensitivity : 0.6832          
+##             Specificity : 0.6627          
+##          Pos Pred Value : 0.6895          
+##          Neg Pred Value : 0.6561          
+##              Prevalence : 0.5230          
+##          Detection Rate : 0.3573          
+##    Detection Prevalence : 0.5182          
+##       Balanced Accuracy : 0.6729          
+##                                           
+##        'Positive' Class : Democrat        
+## 
+</code></pre>
+<p>According to the first table, the logistic regression finds six demographic variables significant in predicting vote choice at the 0.001 level. Those variables are gender, race, education, religion, church attendance, and whether or not a voter is from the south. Furthermore, marriage appears predictive at the 0.01 level and home ownership and employment at the 0.05 level. When looking at the confusion matrix, it appears that this model can accurately predict an individual&rsquo;s political party with 67% accuracy.</p>
+<p><strong>Evaluating out-of-sample fit:</strong></p>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##             Reference
+## Prediction   Democrat Republican
+##   Democrat        184         80
+##   Republican       88        169
+##                                           
+##                Accuracy : 0.6775          
+##                  95% CI : (0.6355, 0.7175)
+##     No Information Rate : 0.5221          
+##     P-Value [Acc &gt; NIR] : 4.301e-13       
+##                                           
+##                   Kappa : 0.3547          
+##                                           
+##  Mcnemar's Test P-Value : 0.5892          
+##                                           
+##             Sensitivity : 0.6765          
+##             Specificity : 0.6787          
+##          Pos Pred Value : 0.6970          
+##          Neg Pred Value : 0.6576          
+##              Prevalence : 0.5221          
+##          Detection Rate : 0.3532          
+##    Detection Prevalence : 0.5067          
+##       Balanced Accuracy : 0.6776          
+##                                           
+##        'Positive' Class : Democrat        
+## 
+</code></pre>
+<p>The out-of-sample confusion matrix yields similar results within a smaller subset of the data.</p>
+<p>These results, which assert that <strong>demographic data can explain about 60% of vote choice</strong>, are interesting. On the one hand, this number is significant and growing as voters become calcified within parties which are now split by identity politics. Yet, given the historical emphasis on the bias thesis, the finding that demographic data only explains 60% of vote choice is surprisingly low. Although factors which are strong indicators of turnout, like race and education, also serve as predictors of vote choice, the two do not appear to have a very strong correlation. Indeed, this suggests that other factors—such as candidate appeal, political issues, and voter sentiment—are increasingly important in influencing electoral turnout and vote choice.</p>
+<h2 id="using-this-model-how-can-demographics-predict-the-outcome-of-the-2024-election">Using this model, how can demographics predict the outcome of the 2024 election?</h2>
+<p>Although demographic can only explain 60% of vote choice, I was interested in using a version of the regression model generated above to understand the outcome of the election if we were to assume an individuals age, race, gender, and education status to be entirely predictive of their vote choice. That is to say, <strong>if political party were based solely on demographic, how would the seven most influential swing states in the upcoming election vote.</strong></p>
+<p>To build this prediction I utilized a random 1% sample of voter files for every registered voter in each of the swing states (data courtesy of <a href="https://statara.com/">Statara Solutions</a>). I then utilized a simplified version of the logistic regression model developed above to predict the number of individuals who would vote for each party based on their demographic information. <strong>The results are summarized here:</strong></p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">State</th>
+          <th style="text-align: right">Democrat</th>
+          <th style="text-align: right">Republican</th>
+          <th style="text-align: left">Winner</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Pennsylvania</td>
+          <td style="text-align: right">40007</td>
+          <td style="text-align: right">64378</td>
+          <td style="text-align: left">R</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Nevada</td>
+          <td style="text-align: right">11842</td>
+          <td style="text-align: right">13239</td>
+          <td style="text-align: left">R</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Arizona</td>
+          <td style="text-align: right">25873</td>
+          <td style="text-align: right">29731</td>
+          <td style="text-align: left">R</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Wisconsin</td>
+          <td style="text-align: right">17841</td>
+          <td style="text-align: right">43051</td>
+          <td style="text-align: left">R</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Michigan</td>
+          <td style="text-align: right">34541</td>
+          <td style="text-align: right">56722</td>
+          <td style="text-align: left">R</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">North Carolina</td>
+          <td style="text-align: right">36797</td>
+          <td style="text-align: right">45908</td>
+          <td style="text-align: left">R</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Georgia</td>
+          <td style="text-align: right">34541</td>
+          <td style="text-align: right">56722</td>
+          <td style="text-align: left">R</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Using demographic as a predictor of vote choice, the model generated above predicted that every swing state in the upcoming election voted Republican.</strong> Since these results were rather jarring, I decided to ensure the accuracy of my model by running the same prediction with New York State. The result was that based on demographic alone, New York would vote Democrat (as they have in every recent general election).</p>
+<p>**These results are incredibly interesting, asserting that demographic cannot possibly be entirely predictive of election outcomes, despite what calcification theory, identity politics, and the media would lead us to believe. **</p>
+
+</main>
+
+  <footer>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<script src="//cdn.jsdelivr.net/combine/npm/katex/dist/katex.min.js,npm/katex/dist/contrib/auto-render.min.js,npm/@xiee/utils/js/render-katex.js" defer></script>
+
+<script src="//cdn.jsdelivr.net/npm/@xiee/utils/js/center-img.min.js" defer></script>
+
+  
+  <hr/>
+  Mena Solomon | <a href="https://github.com/menemshasolomon/election-blog">Github</a> | 2024
+  
+  </footer>
+  </body>
+</html>
+

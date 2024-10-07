@@ -1,0 +1,498 @@
+---
+title: 5. Demographics, Turnout, and Vote Choice
+author: Mena Solomon
+date: '2024-10-02'
+slug: []
+categories: []
+tags: []
+---
+## What are the connections, if any, between demographics and voter turnout?
+
+**When visiting our class a month ago, FiveThirtyEight's Elliott Morris was asked what variable he  wishes he had complete access to for the sake of improving the predictive power of his forecasting models. His answer: voter turnout.** While forecasters may be able to develop models which accurately gauge the sentiment of the electorate, without information on voter turnout there is no way to accurately extrapolate such "temperature checks" into accurate election predictions. Yet, pollsters struggle to accurately gauge voter turnout with survey data. Indeed, forecasters often turn to demographics, hoping to impute turnout based on the likelihood of certain populations to turn out to vote. *To do so, an assumption must be made that demographic information is able to predict voter turnout. This assumption will be explored below:*
+
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+####----------------------------------------------------------#
+#### Preamble
+####----------------------------------------------------------#
+
+# Load libraries.
+## install via `install.packages("name")`
+library(car)
+library(caret)
+library(CVXR)
+library(foreign)
+library(glmnet)
+library(haven)
+library(janitor)
+library(kableExtra)
+library(maps)
+#library(mlr3)
+library(randomForest)
+library(ranger)
+library(RColorBrewer)
+library(sf)
+library(tidyverse)
+library(viridis)
+```
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+####----------------------------------------------------------#
+#### Read, merge, and process data.
+####----------------------------------------------------------#
+
+# Read popular vote datasets. 
+d_popvote <- read_csv("data/popvote_1948_2020.csv")
+d_state_popvote <- read_csv("data/state_popvote_1948_2020.csv")
+
+# Read elector distribution dataset. 
+d_ec <- read_csv("data/corrected_ec_1948_2024 (2).csv")
+
+# Read and merge demographics data. 
+d_demos <- read_csv("data/demographics.csv")[,-1]
+
+# Read primary turnout data. 
+d_turnout <- read_csv("data/turnout_1789_2020.csv")
+d_state_turnout <- read_csv("data/state_turnout_1980_2022.csv")
+d_state_turnout <- d_state_turnout |> 
+  mutate(vep_turnout = as.numeric(str_remove(vep_turnout, "%"))/100) |> 
+  select(year, state, vep_turnout)
+
+# Read polling data. 
+d_polls <- read_csv("data/national_polls_1968-2024.csv")
+d_state_polls <- read_csv("data/state_polls_1968-2024.csv")
+
+# Process state-level polling data. 
+d_pollav_state <- d_state_polls |> 
+  group_by(year, state, party) |>
+  mutate(mean_pollav = mean(poll_support, na.rm = TRUE)) |>
+  top_n(1, poll_date) |> 
+  rename(latest_pollav = poll_support) |>
+  select(-c(weeks_left, days_left, poll_date, candidate, before_convention)) |>
+  pivot_wider(names_from = party, values_from = c(latest_pollav, mean_pollav))
+
+
+```
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+####----------------------------------------------------------#
+#### Voterfile loading/descriptives/analysis. 
+####----------------------------------------------------------#
+
+# Read and merge 1% voterfile data into one dataset. 
+voterfile.sample.files <- list.files("data/state_1pc_samples_aug24")
+
+voterfile.complete <- read_csv(paste0("data/state_1pc_samples_aug24/", voterfile.sample.files[1]))
+for(i in 2:length(voterfile.sample.files)) {
+  temp <- read_csv(paste0("data/state_1pc_samples_aug24/", voterfile.sample.files[i]))
+  voterfile.complete <- rbind(voterfile.complete, temp)
+}
+
+```
+
+**General Election Turnout in Pennsylvania Based on Demographic Information**
+The charts below are a very basic demonstration of the average number of Pennsylvania general elections that individuals have voted in broken down by various demographic informants. Pennsylvania was chosen as it is a relatively diverse state in terms of demographic and political viewpoint as well as a key swing state in the upcoming election. When looking at the charts, it is important to keep in mind that relative population size is not incorporated into these models. Additionally, there is general election data every year going back 23 years.
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width = 15, fig.height = 10}
+vf_pa <- read_csv("data/state_1pc_samples_aug24/PA_sample.csv")
+
+
+plot1 <- vf_pa |>
+  drop_na(sii_gender, svi_vote_all_general) |>
+  mutate(sii_gender = if_else(sii_gender == "F", "Female", "Male")) |>
+  ggplot(aes(x = sii_gender, y = svi_vote_all_general, fill = sii_gender)) +
+  stat_summary(fun = mean, geom = "bar") +
+  labs(x = "Gender", y = "Mean Number of General Elections Voted In", fill = "Gender") +
+  scale_fill_brewer(palette = "Blues")
+
+plot2 <- vf_pa |>
+  mutate(sii_race = case_when(sii_race == "B" ~ "African-American",
+                              sii_race == "A" ~ "Asian",
+                              sii_race == "W" ~ "Caucasian",
+                              sii_race == "H" ~ "Hispanic",
+                              sii_race == "N" ~ "Native American",
+                              TRUE ~ NA)) |>
+  drop_na(sii_race, svi_vote_all_general) |>
+  ggplot(aes(x = sii_race, y = svi_vote_all_general, fill = sii_race)) +
+  stat_summary(fun = mean, geom = "bar") +
+  labs(x = "Race", y = "Mean Number of General Elections Voted In", fill = "Race") +
+  scale_fill_brewer(palette = "Blues")
+
+plot3 <- vf_pa |>
+  mutate(sii_age_range = case_when(sii_age_range == "A" ~ "18-29",
+                              sii_age_range == "B" ~ "30-39",
+                              sii_age_range == "C" ~ "40-49",
+                              sii_age_range == "D" ~ "50-64",
+                              sii_age_range == "E" ~ "65-74",
+                              sii_age_range == "F" ~ "75+",
+                              TRUE ~ NA)) |>
+  drop_na(sii_age_range, svi_vote_all_general) |>
+  ggplot(aes(x = sii_age_range, y = svi_vote_all_general, fill = sii_age_range)) +
+  stat_summary(fun = mean, geom = "bar") +
+  labs(x = "Age", y = "Mean Number of General Elections Voted In", fill = "Age") +
+  scale_fill_brewer(palette = "Blues")
+
+plot4 <- vf_pa |>
+  mutate(svi_party_registration = case_when(svi_party_registration == "D" ~ "Democrat",
+                                            svi_party_registration == "R" ~ "Republican",
+                                            TRUE ~ NA)) |>
+  drop_na(svi_party_registration, svi_vote_all_general) |>
+  ggplot(aes(x = svi_party_registration, y = svi_vote_all_general, fill = svi_party_registration)) +
+  stat_summary(fun = mean, geom = "bar") +
+  labs(x = "Party Registration", y = "Mean Number of General Elections Voted In", fill = "Party") +
+  scale_fill_brewer(palette = "Blues")
+
+plot5 <- vf_pa |>
+  mutate(sii_education_level = case_when(sii_education_level == "A" ~ "Completed High School",
+                                         sii_education_level == "E" ~ "Some College or Higher",
+                                         sii_education_level == "B" ~ "Completed College",
+                                         sii_education_level == "C" ~ "Completed Graduate School",
+                                         sii_education_level == "D" ~ "Attended Vocational/Technical",
+                                         TRUE ~ NA )) |>
+  drop_na(sii_education_level, svi_vote_all_general) |>
+  ggplot(aes(x = sii_education_level, y = svi_vote_all_general, fill = sii_education_level)) +
+  stat_summary(fun = mean, geom = "bar") +
+  labs(x = "Education Level", y = "Mean Number of General Elections Voted In", fill = "Education") +
+  scale_fill_brewer(palette = "Blues")
+
+library(gridExtra)
+
+grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow = 2) 
+```
+
+The charts above illustrate that certain demographics — white, educated, older people — appear to vote more frequently than others in general elections. There are many reasons for these differences. In their book, The Turnout Myth, Shaw and Petrocik outline a few, most importantly: educated voters have more information and a greater sense of civic duty while older voters have more time and greater interest in government programs [(Shaw and Petrocik, 2020)](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=01HVD_ALMA512333848630003941&context=L&vid=HVD2&lang=en_US&search_scope=everything&adaptor=Local%20Search%20Engine&tab=everything&query=lsr01,contains,99153891089403941&mode=basic&offset=0). Yet, to understand how this information applies to election predicting, it is important to understand if this demographic information can predict vote choice in these elections. For a long time, forecasters operated under a *bias thesis* which assumed that democrats were more likely to turnout to vote because of these demographic indicators. The analysis below will determine if that is still true.
+
+## Can demographics and turnout be used to predict election outcomes?
+
+To understand if demographics are predictive of vote choice, I recreated an analysis done by Kim and Zilinksy which uses a logistic regression model to determine which demographics have predictive power[(Kim and Zilinsky, 2024)](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=TN_cdi_unpaywall_primary_10_1007_s11109_022_09816_z&vid=HVD2&search_scope=everything&tab=everything&lang=en_US&context=PC).
+
+**Evaluating in-sample fit:**
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+####----------------------------------------------------------#
+#### Replication of Kim & Zilinsky (2023).
+####----------------------------------------------------------#
+# Read processed ANES data. 
+anes <- read_dta("data/anes_timeseries_cdf_stata_20220916.dta.zip") # Total ANES Cumulative Data File. 
+
+anes <- anes |> 
+  mutate(year = VCF0004,
+         pres_vote = case_when(VCF0704a == 1 ~ 1, 
+                               VCF0704a == 2 ~ 2, 
+                               .default = NA), 
+         # Demographics
+         age = VCF0101, 
+         gender = VCF0104, # 1 = Male; 2 = Female; 3 = Other
+         race = VCF0105b, # 1 = White non-Hispanic; 2 = Black non-Hispanic, 3 == Hispanic; 4 = Other or multiple races, non-Hispanic; 9 = missing/DK
+         educ = VCF0110, # 0 = DK; 1 = Less than high school; 2. High school; 3 = Some college; 4 = College+ 
+         income = VCF0114, # 1 = 0-16 percentile; 2 = 17-33 percentile; 3 = 34-67; 4 = 68 to 95; 5 = 96 to 100. 
+         religion = VCF0128, # 0 = DK; 1 = Protestant; 2 = Catholic; 3 = Jewish; 4 = Other
+         attend_church = case_when(
+           VCF0004 < 1972 ~ as.double(as.character(VCF0131)),
+           TRUE ~ as.double(as.character(VCF0130))
+         ), # 1 = every week - regularly; 2 = almost every week - often; 3 = once or twice a month; 4 = a few times a year - seldom; 5 = never ; 6 = no religious preference
+         southern = VCF0113,
+         region = VCF0113, 
+         work_status = VCF0118,
+         homeowner = VCF0146, 
+         married = VCF0147,
+        
+         # 7-point PID
+         pid7 = VCF0301, # 0 = DK; 1 = Strong Democrat; 2 = Weak Democrat; 3 = Independent - Democrat; 4 = Independent - Independent; 5 = Independent - Republican; 6 = Weak Republican; 7 = Strong Republican
+         
+         # 3-point PID
+         pid3 = VCF0303, # 0 = DK; 1 = Democrats; 2 = Independents; 3 = Republicans. 
+         
+         # 3-point ideology. 
+         ideo = VCF0804 # 0, 9 = DK; 1 = Liberal; 2 = Moderate; 3 = Conservative
+         ) |> 
+  select(year, pres_vote, age, gender, race, educ, income, religion, attend_church, southern, 
+         region, work_status, homeowner, married, pid7, pid3, ideo)
+
+# How well do demographics predict vote choice? 
+anes_year <- anes[anes$year == 2016,] |> 
+  select(-c(year, pid7, pid3, ideo)) |>
+  mutate(pres_vote = factor(pres_vote, levels = c(1, 2), labels = c("Democrat", "Republican"))) |> 
+  filter(!is.na(pres_vote)) |>
+  clean_names()
+
+n_features <- length(setdiff(names(anes_year), "pres_vote"))
+
+#split training and test data probabilistically (80% in training, 20% in test)
+set.seed(02138)
+train.ind <- createDataPartition(anes_year$pres_vote, p = 0.8, list = FALSE)
+
+anes_train <- anes_year[train.ind,]
+anes_test <- anes_year[-train.ind,]
+
+# LOGISTIC REGRESSION: 
+logit_fit <- glm(pres_vote ~ ., 
+                 family = "binomial", 
+                 data = anes_train)
+
+
+# In-sample goodness-of-fit. 
+logit_summary <- summary(logit_fit)
+coeff_table <- as.data.frame(logit_summary$coefficients)
+
+colnames(coeff_table) <- c("Estimate", "Standard Error", "z_value", "Significance")
+
+coeff_table$Significance <- cut(coeff_table$`Significance`, 
+                                breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf), 
+                                labels = c("***", "**", "*", ".", " "))
+
+library(knitr)
+kable(coeff_table, caption = "Logistic Regression Coefficients and Significance")
+
+
+# In-sample accuracy. (testing, cutoff is 0.5 between democrat and republican for sake of logit)
+logit.is <- factor(ifelse(predict(logit_fit, type = "response") > 0.5, 2, 1), 
+                   levels = c(1, 2), labels = c("Democrat", "Republican"))
+#outputs a confusion matrix of in-sample fit
+(cm.rf.logit.is <- confusionMatrix(logit.is, anes_train$pres_vote))
+
+```
+
+According to the first table, the logistic regression finds six demographic variables significant in predicting vote choice at the 0.001 level. Those variables are gender, race, education, religion, church attendance, and whether or not a voter is from the south. Furthermore, marriage appears predictive at the 0.01 level and home ownership and employment at the 0.05 level. When looking at the confusion matrix, it appears that this model can accurately predict an individual's political party with 67% accuracy. 
+
+**Evaluating out-of-sample fit:**
+
+```{r  echo = FALSE, message=FALSE, warning=FALSE}
+# Out-of-sample accuracy. 
+logit_pred <- factor(ifelse(predict(logit_fit, anes_test, type = "response") > 0.5, 2, 1), 
+                     levels = c(1, 2), labels = c("Democrat", "Republican"))
+(cm.rf.logit.oos <- confusionMatrix(logit_pred, anes_test$pres_vote))
+```
+The out-of-sample confusion matrix yields similar results within a smaller subset of the data.
+
+These results, which assert that **demographic data can explain about 60% of vote choice**, are interesting. On the one hand, this number is significant and growing as voters become calcified within parties which are now split by identity politics. Yet, given the historical emphasis on the bias thesis, the finding that demographic data only explains 60% of vote choice is surprisingly low. Although factors which are strong indicators of turnout, like race and education, also serve as predictors of vote choice, the two do not appear to have a very strong correlation. Indeed, this suggests that other factors—such as candidate appeal, political issues, and voter sentiment—are increasingly important in influencing electoral turnout and vote choice.
+
+## Using this model, how can demographics predict the outcome of the 2024 election?
+
+Although demographic can only explain 60% of vote choice, I was interested in using a version of the regression model generated above to understand the outcome of the election if we were to assume an individuals age, race, gender, and education status to be entirely predictive of their vote choice. That is to say, **if political party were based solely on demographic, how would the seven most influential swing states in the upcoming election vote.**
+
+To build this prediction I utilized a random 1% sample of voter files for every registered voter in each of the swing states (data courtesy of [Statara Solutions](https://statara.com/)). I then utilized a simplified version of the logistic regression model developed above to predict the number of individuals who would vote for each party based on their demographic information. **The results are summarized here:**
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+
+# LOGISTIC REGRESSION: 
+logit_fit2 <- glm(pres_vote ~ age + gender + race + educ, 
+                 family = "binomial", 
+                 data = anes_year)
+
+
+vf_pa_anes <- vf_pa |>
+  select(sii_race, sii_age, sii_gender, sii_education_level) |>
+  mutate(race = case_when(sii_race == "B" ~ 2,
+                              sii_race == "A" ~ 4,
+                              sii_race == "W" ~ 1,
+                              sii_race == "H" ~ 3,
+                              sii_race == "N" ~ 4,
+                              TRUE ~ NA),
+         gender = case_when(sii_gender == "F" ~ 2,
+                            sii_gender == "M" ~ 1,
+                            TRUE ~ NA),
+         educ = case_when(sii_education_level == "A" ~ 2,
+                          sii_education_level == "E" ~ 3,
+                          sii_education_level == "B" ~ 4,
+                          sii_education_level == "C" ~ 4,
+                          sii_education_level == "D" ~ 4,
+                          TRUE ~ NA ),
+         age = sii_age) |>
+  drop_na(race, age, gender, educ) |>
+  select(race, gender, educ, age)
+
+pred2024_pa <- predict(logit_fit2, newdata = vf_pa_anes, type = "response")
+pred_class_pa <- factor(ifelse(pred2024_pa > 0.5, 2, 1), levels = c(1, 2), labels = c("Democrat", "Republican"))
+
+  
+vf_nv <- read_csv("data/state_1pc_samples_aug24/NV_sample.csv")
+vf_nv_anes <- vf_nv |>
+  select(sii_race, sii_age, sii_gender, sii_education_level) |>
+  mutate(race = case_when(sii_race == "B" ~ 2,
+                              sii_race == "A" ~ 4,
+                              sii_race == "W" ~ 1,
+                              sii_race == "H" ~ 3,
+                              sii_race == "N" ~ 4,
+                              TRUE ~ NA),
+         gender = case_when(sii_gender == "F" ~ 2,
+                            sii_gender == "M" ~ 1,
+                            TRUE ~ NA),
+         educ = case_when(sii_education_level == "A" ~ 2,
+                          sii_education_level == "E" ~ 3,
+                          sii_education_level == "B" ~ 4,
+                          sii_education_level == "C" ~ 4,
+                          sii_education_level == "D" ~ 4,
+                          TRUE ~ NA ),
+         age = sii_age) |>
+  drop_na(race, age, gender, educ) |>
+  select(race, gender, educ, age)
+
+pred2024_nv <- predict(logit_fit2, newdata = vf_nv_anes, type = "response")
+pred_class_nv <- factor(ifelse(pred2024_nv > 0.5, 2, 1), levels = c(1, 2), labels = c("Democrat", "Republican"))
+
+
+vf_az <- read_csv("data/state_1pc_samples_aug24/AZ_sample.csv")
+vf_az_anes <- vf_az |>
+  select(sii_race, sii_age, sii_gender, sii_education_level) |>
+  mutate(race = case_when(sii_race == "B" ~ 2,
+                              sii_race == "A" ~ 4,
+                              sii_race == "W" ~ 1,
+                              sii_race == "H" ~ 3,
+                              sii_race == "N" ~ 4,
+                              TRUE ~ NA),
+         gender = case_when(sii_gender == "F" ~ 2,
+                            sii_gender == "M" ~ 1,
+                            TRUE ~ NA),
+         educ = case_when(sii_education_level == "A" ~ 2,
+                          sii_education_level == "E" ~ 3,
+                          sii_education_level == "B" ~ 4,
+                          sii_education_level == "C" ~ 4,
+                          sii_education_level == "D" ~ 4,
+                          TRUE ~ NA ),
+         age = sii_age) |>
+  drop_na(race, age, gender, educ) |>
+  select(race, gender, educ, age)
+
+pred2024_az <- predict(logit_fit2, newdata = vf_az_anes, type = "response")
+pred_class_az <- factor(ifelse(pred2024_az > 0.5, 2, 1), levels = c(1, 2), labels = c("Democrat", "Republican"))
+
+
+vf_wi <- read_csv("data/state_1pc_samples_aug24/WI_sample.csv")
+vf_wi_anes <- vf_wi |>
+  select(sii_race, sii_age, sii_gender, sii_education_level) |>
+  mutate(race = case_when(sii_race == "B" ~ 2,
+                              sii_race == "A" ~ 4,
+                              sii_race == "W" ~ 1,
+                              sii_race == "H" ~ 3,
+                              sii_race == "N" ~ 4,
+                              TRUE ~ NA),
+         gender = case_when(sii_gender == "F" ~ 2,
+                            sii_gender == "M" ~ 1,
+                            TRUE ~ NA),
+         educ = case_when(sii_education_level == "A" ~ 2,
+                          sii_education_level == "E" ~ 3,
+                          sii_education_level == "B" ~ 4,
+                          sii_education_level == "C" ~ 4,
+                          sii_education_level == "D" ~ 4,
+                          TRUE ~ NA ),
+         age = sii_age) |>
+  drop_na(race, age, gender, educ) |>
+  select(race, gender, educ, age)
+
+pred2024_wi <- predict(logit_fit2, newdata = vf_wi_anes, type = "response")
+pred_class_wi <- factor(ifelse(pred2024_wi > 0.5, 2, 1), levels = c(1, 2), labels = c("Democrat", "Republican"))
+
+
+vf_mi <- read_csv("data/state_1pc_samples_aug24/MI_sample.csv")
+vf_mi_anes <- vf_mi |>
+  select(sii_race, sii_age, sii_gender, sii_education_level) |>
+  mutate(race = case_when(sii_race == "B" ~ 2,
+                              sii_race == "A" ~ 4,
+                              sii_race == "W" ~ 1,
+                              sii_race == "H" ~ 3,
+                              sii_race == "N" ~ 4,
+                              TRUE ~ NA),
+         gender = case_when(sii_gender == "F" ~ 2,
+                            sii_gender == "M" ~ 1,
+                            TRUE ~ NA),
+         educ = case_when(sii_education_level == "A" ~ 2,
+                          sii_education_level == "E" ~ 3,
+                          sii_education_level == "B" ~ 4,
+                          sii_education_level == "C" ~ 4,
+                          sii_education_level == "D" ~ 4,
+                          TRUE ~ NA ),
+         age = sii_age) |>
+  drop_na(race, age, gender, educ) |>
+  select(race, gender, educ, age)
+
+pred2024_mi <- predict(logit_fit2, newdata = vf_mi_anes, type = "response")
+pred_class_mi <- factor(ifelse(pred2024_mi > 0.5, 2, 1), levels = c(1, 2), labels = c("Democrat", "Republican"))
+
+
+vf_nc <- read_csv("data/state_1pc_samples_aug24/NC_sample.csv")
+vf_nc_anes <- vf_nc |>
+  select(sii_race, sii_age, sii_gender, sii_education_level) |>
+  mutate(race = case_when(sii_race == "B" ~ 2,
+                              sii_race == "A" ~ 4,
+                              sii_race == "W" ~ 1,
+                              sii_race == "H" ~ 3,
+                              sii_race == "N" ~ 4,
+                              TRUE ~ NA),
+         gender = case_when(sii_gender == "F" ~ 2,
+                            sii_gender == "M" ~ 1,
+                            TRUE ~ NA),
+         educ = case_when(sii_education_level == "A" ~ 2,
+                          sii_education_level == "E" ~ 3,
+                          sii_education_level == "B" ~ 4,
+                          sii_education_level == "C" ~ 4,
+                          sii_education_level == "D" ~ 4,
+                          TRUE ~ NA ),
+         age = sii_age) |>
+  drop_na(race, age, gender, educ) |>
+  select(race, gender, educ, age)
+
+pred2024_nc <- predict(logit_fit2, newdata = vf_nc_anes, type = "response")
+pred_class_nc <- factor(ifelse(pred2024_nc > 0.5, 2, 1), levels = c(1, 2), labels = c("Democrat", "Republican"))
+
+
+vf_ga <- read_csv("data/state_1pc_samples_aug24/GA_sample.csv")
+vf_ga_anes <- vf_mi |>
+  select(sii_race, sii_age, sii_gender, sii_education_level) |>
+  mutate(race = case_when(sii_race == "B" ~ 2,
+                              sii_race == "A" ~ 4,
+                              sii_race == "W" ~ 1,
+                              sii_race == "H" ~ 3,
+                              sii_race == "N" ~ 4,
+                              TRUE ~ NA),
+         gender = case_when(sii_gender == "F" ~ 2,
+                            sii_gender == "M" ~ 1,
+                            TRUE ~ NA),
+         educ = case_when(sii_education_level == "A" ~ 2,
+                          sii_education_level == "E" ~ 3,
+                          sii_education_level == "B" ~ 4,
+                          sii_education_level == "C" ~ 4,
+                          sii_education_level == "D" ~ 4,
+                          TRUE ~ NA ),
+         age = sii_age) |>
+  drop_na(race, age, gender, educ) |>
+  select(race, gender, educ, age)
+
+pred2024_ga <- predict(logit_fit2, newdata = vf_ga_anes, type = "response")
+pred_class_ga <- factor(ifelse(pred2024_ga > 0.5, 2, 1), levels = c(1, 2), labels = c("Democrat", "Republican"))
+
+
+
+predictions_list <- list()
+
+
+predictions_list[["Pennsylvania"]] <- table(pred_class_pa)
+predictions_list[["Nevada"]] <- table(pred_class_nv)
+predictions_list[["Arizona"]] <- table(pred_class_az)
+predictions_list[["Wisconsin"]] <- table(pred_class_wi)
+predictions_list[["Michigan"]] <- table(pred_class_mi)
+predictions_list[["North Carolina"]] <- table(pred_class_nc)
+predictions_list[["Georgia"]] <- table(pred_class_ga)
+
+prediction_summary_df <- do.call(rbind, lapply(names(predictions_list), function(state) {
+  pred <- predictions_list[[state]]
+  democrat_count <- ifelse("Democrat" %in% names(pred), pred["Democrat"], 0)
+  republican_count <- ifelse("Republican" %in% names(pred), pred["Republican"], 0)
+  winner <- ifelse(democrat_count > republican_count, "D", "R")
+  
+  data.frame(State = state, 
+             Democrat = democrat_count, 
+             Republican = republican_count,
+             Winner = winner)
+}))
+
+# Print the table
+kable(prediction_summary_df)
+
+```
+
+**Using demographic as a predictor of vote choice, the model generated above predicted that every swing state in the upcoming election voted Republican.** Since these results were rather jarring, I decided to ensure the accuracy of my model by running the same prediction with New York State. The result was that based on demographic alone, New York would vote Democrat (as they have in every recent general election).
+
+**These results are incredibly interesting, asserting that demographic cannot possibly be entirely predictive of election outcomes, despite what calcification theory, identity politics, and the media would lead us to believe. **
+

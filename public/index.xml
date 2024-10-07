@@ -6,8 +6,15 @@
     <description>Recent content in Home on Election Prediction Blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 27 Sep 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 02 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://menemshasolomon.github.io/election-blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>5. Demographics, Turnout, and Vote Choice</title>
+      <link>https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/</link>
+      <pubDate>Wed, 02 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/</guid>
+      <description>&lt;h2 id=&#34;what-are-the-connections-if-any-between-demographics-and-voter-turnout&#34;&gt;What are the connections, if any, between demographics and voter turnout?&lt;/h2&gt;&#xA;&lt;p&gt;&lt;strong&gt;When visiting our class a month ago, FiveThirtyEight&amp;rsquo;s Elliott Morris was asked what variable he  wishes he had complete access to for the sake of improving the predictive power of his forecasting models. His answer: voter turnout.&lt;/strong&gt; While forecasters may be able to develop models which accurately gauge the sentiment of the electorate, without information on voter turnout there is no way to accurately extrapolate such &amp;ldquo;temperature checks&amp;rdquo; into accurate election predictions. Yet, pollsters struggle to accurately gauge voter turnout with survey data. Indeed, forecasters often turn to demographics, hoping to impute turnout based on the likelihood of certain populations to turn out to vote. &lt;em&gt;To do so, an assumption must be made that demographic information is able to predict voter turnout. This assumption will be explored below:&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>4. The Incumbency Advantage</title>
       <link>https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/</link>
