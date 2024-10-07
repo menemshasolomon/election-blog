@@ -157,7 +157,7 @@ plot5 <- vf_pa |>
 
 library(gridExtra)
 
-grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow = 2) 
+grid.arrange(plot1, plot2, plot3, plot4, plot5, nrow = 3) 
 ```
 
 The charts above illustrate that certain demographics — white, educated, older people — appear to vote more frequently than others in general elections. There are many reasons for these differences. In their book, The Turnout Myth, Shaw and Petrocik outline a few, most importantly: educated voters have more information and a greater sense of civic duty while older voters have more time and greater interest in government programs [(Shaw and Petrocik, 2020)](https://hollis.harvard.edu/primo-explore/fulldisplay?docid=01HVD_ALMA512333848630003941&context=L&vid=HVD2&lang=en_US&search_scope=everything&adaptor=Local%20Search%20Engine&tab=everything&query=lsr01,contains,99153891089403941&mode=basic&offset=0). Yet, to understand how this information applies to election predicting, it is important to understand if this demographic information can predict vote choice in these elections. For a long time, forecasters operated under a *bias thesis* which assumed that democrats were more likely to turnout to vote because of these demographic indicators. The analysis below will determine if that is still true.
