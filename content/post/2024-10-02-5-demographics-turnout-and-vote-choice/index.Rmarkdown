@@ -8,7 +8,7 @@ tags: []
 ---
 ## What are the connections, if any, between demographics and voter turnout?
 
-**When visiting our class a month ago, FiveThirtyEight's Elliott Morris was asked what variable he  wishes he had complete access to for the sake of improving the predictive power of his forecasting models. His answer: voter turnout.** While forecasters may be able to develop models which accurately gauge the sentiment of the electorate, without information on voter turnout there is no way to accurately extrapolate such "temperature checks" into accurate election predictions. Yet, pollsters struggle to accurately gauge voter turnout with survey data. Indeed, forecasters often turn to demographics, hoping to impute turnout based on the likelihood of certain populations to turn out to vote. *To do so, an assumption must be made that demographic information is able to predict voter turnout. This assumption will be explored below:*
+**When visiting our class a month ago, FiveThirtyEight's Elliott Morris was asked what variable he wishes he had complete access to for the sake of improving the predictive power of his forecasting models. His answer: voter turnout.** While forecasters may be able to develop models which accurately gauge the sentiment of the electorate, without information on voter turnout there is no way to accurately extrapolate such "temperature checks" into accurate election predictions. Yet, pollsters struggle to accurately gauge voter turnout with survey data. Indeed, forecasters often turn to demographics, hoping to impute turnout based on the likelihood of certain populations to turn out to vote. *To do so, an assumption must be made that demographic information is able to predict voter turnout. This assumption will be explored below:*
 
 
 
@@ -494,7 +494,7 @@ kable(prediction_summary_df)
 
 **Using demographic as a predictor of vote choice, the model generated above predicted that every swing state in the upcoming election voted Republican.** Since these results were rather jarring, I decided to ensure the accuracy of my model by running the same prediction with New York State. The result was that based on demographic alone, New York would vote Democrat (as they have in every recent general election).
 
-Indeed, accepting htis model as relatively unsophisticated but correct, the table above indicates that using demographic as a sole predictor would lead to former president Trump receiving 312 electoral college votes. **These results are incredibly interesting, asserting that demographic cannot possibly be entirely predictive of election outcomes, despite what calcification theory, identity politics, and the media would lead us to believe. **
+Indeed, accepting htis model as relatively unsophisticated but correct, the table above indicates that using demographic as a sole predictor would lead to former president Trump receiving 312 electoral college votes. **These results are incredibly interesting, asserting that demographic cannot possibly be entirely predictive of election outcomes, despite what calcification theory, identity politics, and the media would lead us to believe.**
 
 ## Notes
 All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-09-27-4-the-incumbency-advantage/index.Rmarkdown).
