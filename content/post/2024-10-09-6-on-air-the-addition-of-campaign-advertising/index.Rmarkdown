@@ -80,18 +80,67 @@ d_turnout <- read_csv("data/state_turnout_1980_2022.csv")
 
 Political advertising has two main effects — persuasion and mobilization. There are two main pieces of literature which have found proof of the influence of campaign advertising. First, Gerber and his team used a randomized control trial in Rick Perry's Texas Gubernatorial race to understand the persuasive influence of certain advertisements. By randomizing which county saw what ad, that campaign was able to determine that televised campaign ads have sizable persuasive effects, especially on undecided voters, though those effects tend to fade over time [(Gerber et al, 2011).]() Huber and Arceneaux added to this existing literature with a study of spillover media markets from battleground states, with massive ad funding, into non-battleground states, which typically have almost no ad budget. The authors found that a large influx of advertising, as is often found in battleground states, led places that saw commercials to have their votes changed as compared to the places that did not see the swing-state volume of advertisements [(Huber and Arceneaux, 2019)]().
 
-To understand these effects in practice, is is important to first analyze some descriptive statistics on ads and campaign spending over time.
+*To understand these effects in practice, is is important to first analyze some descriptive statistics on ads and campaign spending over time.*
 
-The first graphic displays the volume of campaign spending in the 2008 Obama vs. McCain election. This graphic displays plainly the disparities between election ad spending in swing states vs. non-competitive states. The second emphasizes the timing of this spending, emphasizing the importance of ad spending right before election day due to the lack of ad durability (voters are often unable to retain what they learned in an advertisement for a long period). Both of these graphics also point to an important reality — campaign spending is often evenly matched. Many scholars assert that this equal game of tug-of-war is often why campaigns have a very small effect on outcomes. Indeed, if either party were to let go of the rope, voters may be influenced; however, while the even game continues, neither will make substaintial gains.
+**The first two graphics display the volume of campaign spending in the 2000, 2004, 2008, and 2012. These graphics highlight the disparities between election ad spending in swing states vs. non-competitive states.** Interestingly, the volume of advertising as well as the states deemed most competitive have changed throughout the years. Generally speaking, however, as elections haev become more competitive over the past 25 years, campaign ad spending has increased dramatically. 
 
-```{r  echo = FALSE, message=FALSE, warning=FALSE}
+**The third emphasizes the timing of this spending, emphasizing the importance of ad spending right before election day due to the lack of ad durability (voters are often unable to retain what they learned in an advertisement for a long period). Both of these graphics also point to an important reality — campaign spending is often evenly matched.** Many scholars assert that this equal game of tug-of-war is often why campaigns have a very small effect on outcomes. Indeed, if either party were to let go of the rope, voters may be influenced; however, while the even game continues, neither will make substantial gains.
+
+```{r  echo = FALSE, message=FALSE, warning=FALSE, fig.width=18, fig.height=9}
 
 ####--------------------------------------------------------------#
 #### Descriptive statistics on ads and campaign spending over time. 
 ####--------------------------------------------------------------#
 
-## The State-level Air War in 2008 (Obama vs. McCain)
-ad_campaigns |>
+ad_campaigns00 <- ad_campaigns |>
+  mutate(year = as.numeric(substr(air_date, 1, 4))) |>
+  mutate(month = as.numeric(substr(air_date, 6, 7))) |>
+  mutate(state = state.name[match(state, state.abb)]) |>
+  filter(cycle == 2000) |>
+  left_join(d_state_popvote |> filter(year == 2000) |> select(-year), by="state") |>
+  mutate(winner=ifelse(D_pv2p > R_pv2p, "democrat", "republican")) |>
+  group_by(cycle, state, air_date, party, winner) |>
+  summarise(total_cost = sum(total_cost)) |>
+  filter(!is.na(state)) |>
+  # ggplot(aes(x=air_date, y=log(total_cost+1), color=party)) +
+  ggplot(aes(x=party, y=total_cost, fill=party)) +
+  geom_bar(stat="identity") +
+  geom_rect(aes(fill=winner), xmin=-Inf, xmax=Inf, ymin=18.3*10^6, ymax=24*10^6) +
+  facet_geo(~ state, scales="free_x") +
+  scale_fill_manual(values = c("blue", "red")) +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6)) +
+  xlab("") + ylab("ad spend") +
+  theme_bw() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+
+ad_campaigns04 <- ad_campaigns |>
+  mutate(year = as.numeric(substr(air_date, 1, 4))) |>
+  mutate(month = as.numeric(substr(air_date, 6, 7))) |>
+  mutate(state = state.name[match(state, state.abb)]) |>
+  filter(cycle == 2004) |>
+  left_join(d_state_popvote |> filter(year == 2004) |> select(-year), by="state") |>
+  mutate(winner=ifelse(D_pv2p > R_pv2p, "democrat", "republican")) |>
+  group_by(cycle, state, air_date, party, winner) |>
+  summarise(total_cost = sum(total_cost)) |>
+  filter(!is.na(state)) |>
+  # ggplot(aes(x=air_date, y=log(total_cost+1), color=party)) +
+  ggplot(aes(x=party, y=total_cost, fill=party)) +
+  geom_bar(stat="identity") +
+  geom_rect(aes(fill=winner), xmin=-Inf, xmax=Inf, ymin=58.3*10^6, ymax=64*10^6) +
+  facet_geo(~ state, scales="free_x") +
+  scale_fill_manual(values = c("blue", "red")) +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6)) +
+  xlab("") + ylab("ad spend") +
+  theme_bw() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+
+ad_campaigns08 <- ad_campaigns |>
   mutate(year = as.numeric(substr(air_date, 1, 4))) |>
   mutate(month = as.numeric(substr(air_date, 6, 7))) |>
   mutate(state = state.name[match(state, state.abb)]) |>
@@ -113,6 +162,35 @@ ad_campaigns |>
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
+
+ad_campaigns12 <-ad_campaigns |>
+  mutate(year = as.numeric(substr(air_date, 1, 4))) |>
+  mutate(month = as.numeric(substr(air_date, 6, 7))) |>
+  mutate(state = state.name[match(state, state.abb)]) |>
+  filter(cycle == 2012) |>
+  left_join(d_state_popvote |> filter(year == 2012) |> select(-year), by="state") |>
+  mutate(winner=ifelse(D_pv2p > R_pv2p, "democrat", "republican")) |>
+  group_by(cycle, state, air_date, party, winner) |>
+  summarise(total_cost = sum(total_cost)) |>
+  filter(!is.na(state)) |>
+  # ggplot(aes(x=air_date, y=log(total_cost+1), color=party)) +
+  ggplot(aes(x=party, y=total_cost, fill=party)) +
+  geom_bar(stat="identity") +
+  geom_rect(aes(fill=winner), xmin=-Inf, xmax=Inf, ymin=116.3*10^6, ymax=122*10^6) +
+  facet_geo(~ state, scales="free_x") +
+  scale_fill_manual(values = c("blue", "red")) +
+  scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6)) +
+  xlab("") + ylab("ad spend") +
+  theme_bw() +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+
+library(gridExtra)
+
+grid.arrange(ad_campaigns00, ad_campaigns04, nrow = 1)
+grid.arrange(ad_campaigns08, ad_campaigns12,nrow = 1)
 
 ## When to Buy Ads? 
 ad_campaigns |>
@@ -137,11 +215,13 @@ ad_campaigns |>
 
 Despite this hypothesis, advertising is still an important way that campaigns convey their message to the general public. Furthermore, despite similarities in the volume of these advertisements, the content differences between parties are immense. The graphics below highlight differentials in terms of the policy and tone of both parties' advertisements.
 
-```{r}
+The first two explore campaign aids by tone and purpose. For the most part, the proportions in each graph are similar, showing that trends in political advertising content are somewhat consistent. The one exception to this trend would be the purpose of advertisements in 2016. The main reason for this difference is that 2016 data was imputed, as it is not yet available in the correct format.
+
+```{r   echo = FALSE, message=FALSE, warning=FALSE, fig.width = 16, fig.height = 6}
 
 
 # Tone and Political Ads. 
-ad_campaigns |>
+tone <- ad_campaigns |>
   left_join(ad_creative) |>
   group_by(cycle, party) |> mutate(tot_n=n()) |> ungroup() |>
   group_by(cycle, party, ad_tone) |> summarise(pct=n()*100/first(tot_n)) |>
@@ -150,7 +230,7 @@ ad_campaigns |>
   geom_bar(stat = "identity") +
   scale_x_continuous(breaks = seq(2000, 2012, 4)) +
   ggtitle("Campaign Ads Aired By Tone") +
-  scale_fill_manual(values = c("red","orange","gray","darkgreen","white"), name = "tone") +
+  scale_fill_manual(values = c("darkseagreen1","forestgreen","lightgreen","darkgreen","white"), name = "tone") +
   xlab("") + ylab("%") +
   facet_wrap(~ party) + theme_minimal() +
   theme(axis.title = element_text(size=20),
@@ -158,7 +238,7 @@ ad_campaigns |>
         strip.text.x = element_text(size = 20))
 
 ## The Purpose of Political Ads (2016 personal outlier, comes from dif. data source)
-ad_campaigns |>
+purpose <- ad_campaigns |>
   left_join(ad_creative) |>
   group_by(cycle, party) |> mutate(tot_n=n()) |> ungroup() |>
   group_by(cycle, party, ad_purpose) |> summarise(pct=n()*100/first(tot_n)) |>
@@ -174,72 +254,21 @@ ad_campaigns |>
   ggplot(aes(x = cycle, y = pct, fill = ad_purpose, group = party)) +
   geom_bar(stat = "identity") +
   scale_x_continuous(breaks = seq(2000, 2016, 4)) +
-  # ggtitle("Campaign Ads Aired By Purpose") +
-  scale_fill_manual(values = c("grey","red","darkgreen","black","white"), name = "purpose") +
+  ggtitle("Campaign Ads Aired By Purpose") +
+  scale_fill_manual(values = c("deeppink1","deeppink4","mistyrose","lightpink1","white"), name = "purpose") +
   xlab("") + ylab("%") +
   facet_wrap(~ party) + theme_minimal() +
   theme(axis.title = element_text(size=20),
         axis.text = element_text(size=15),
         strip.text.x = element_text(size = 20))
 
-## The Elections and Their Issues
-top_issues <- ad_campaigns |> 
-  left_join(ad_creative) |>
-  filter(!grepl("None|Other", ad_issue)) |>
-  group_by(cycle, ad_issue) |> summarise(n=n()) |> top_n(5, n)
+grid.arrange(tone, purpose, nrow = 1)
 
-### making each plot in a grid to have its own x-axis (issue name)
-### is tricky with `facet_wrap`, so we use this package `cowplot`
-### which allows us to take a list of separate plots and grid them together
-plist <- lapply(c(2000,2004,2008,2012), function(c) {
-  top_issues |> filter(cycle == c) |> 
-    ggplot(aes(x = reorder(ad_issue, n), y = n)) +
-    geom_bar(stat = "identity") + coord_flip() + theme_bw() +
-    xlab("") + ylab("number ads aired") + ggtitle(paste("Top 5 Ad\nIssues in",c))
-  
-})
-cowplot::plot_grid(plotlist = plist, nrow = 2, ncol = 2, align = "hv")
+```
 
-## Campaign Ads Aired By Issue and Party: 2000
-party_issues2000 <- ad_campaigns |>
-  filter(cycle == 2000) |>
-  left_join(ad_creative) |>
-  filter(ad_issue != "None") |>
-  ## this `group_by` is to get our denominator
-  group_by(ad_issue) |> mutate(tot_n=n()) |> ungroup() |>
-  ## this one is get numerator and calculate % by party
-  group_by(ad_issue, party) |> summarise(p_n=n()*100/first(tot_n)) |> ungroup() |>
-  ## finally, this one so we can sort the issue names
-  ## by D% of issue ad-share instead of alphabetically
-  group_by(ad_issue) |> mutate(Dp_n = ifelse(first(party) == "democrat", first(p_n), 0))
+Furthermore, the figure below emphasizes bipartisan shifts in tone depending on the election cycle. While the 2000 and 2008 campaigns focused on promotional content, 2004 and 2012 carried a lot of attack ads. One potential reason for this could be the role of incumbency, wherein Bush and Obama did not have to focus as heavily on promoting their views while Cheney and Romney were forced to attack the incumbent to make headway in the election.
 
-ggplot(party_issues2000, aes(x = reorder(ad_issue, Dp_n), y = p_n, fill = party)) + 
-  geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("blue", "red")) +
-  ylab("% of ads on topic from each party") + xlab("issue") + 
-  # ggtitle("Campaign Ads Aired by Topic in 2000") +
-  coord_flip() + 
-  theme_bw()
-
-## Campaign Ads Aired By Issue and Party: 2012
-party_issues2012 <- ad_campaigns |>
-  filter(cycle == 2012) |>
-  left_join(ad_creative) |>
-  filter(ad_issue != "None") |>
-  group_by(cycle, ad_issue) |> mutate(tot_n=n()) |> ungroup() |>
-  group_by(cycle, ad_issue, party) |> summarise(p_n=n()*100/first(tot_n)) |> ungroup() |>
-  group_by(cycle, ad_issue) |> mutate(Dp_n = ifelse(first(party) == "democrat", first(p_n), 0))
-
-ggplot(party_issues2012, aes(x = reorder(ad_issue, Dp_n), y = p_n, fill = party)) + 
-  geom_bar(stat = "identity") +
-  scale_fill_manual(values = c("blue", "red")) +
-  ylab("% of ads on topic from each party") + xlab("issue") +
-  # ggtitle("Campaign Ads Aired by Topic in 2012") +
-  coord_flip() + 
-  theme_bw()
-
-
-
+```{r}
 ## Tone in Political Ads
 ad_campaigns |>
   left_join(ad_creative) |>
@@ -254,8 +283,8 @@ ad_campaigns |>
   ungroup() |>
   ggplot(aes(x=air_date, y=total_cost, fill=ad_tone, color=ad_tone)) +
   # scale_x_date(date_labels = "%b") +
-  scale_fill_manual(values = c("purple","green"), name = "ad tone") +
-  scale_color_manual(values = c("purple","green"), name = "ad tone") +
+  scale_fill_manual(values = c("lightpink1","darkseagreen1"), name = "ad tone") +
+  scale_color_manual(values = c("lightpink1","darkseagreen1"), name = "ad tone") +
   geom_bar(stat = "identity") +
   facet_wrap(cycle ~ ., scales="free") +
   xlab("") + ylab("% of ads bought on day") +
@@ -263,55 +292,58 @@ ad_campaigns |>
   theme(axis.title = element_text(size=20),
         axis.text = element_text(size=10),
         strip.text.x = element_text(size = 20))
-
-# Visualizing Facebook ads and Biden Facebook ads in 2020. 
-d_facebook <- facebook_ads_2020 |> 
-  rename(date = from_date, new_ads = num_of_new_ads) |> 
-  group_by(date) |> 
-  summarize(new_spend = sum(new_spend, na.rm = T),
-            new_ads = sum(new_ads, na.rm = T))
-
-d_facebook |> 
-  ggplot(aes(x = date, y = new_ads)) + 
-  geom_line() +
-  geom_smooth(method = "lm", se = TRUE) +
-  labs(x = "Date", 
-       y = "New Facebook Ads") +
-  theme_minimal()
-
-d_facebook |> 
-  ggplot(aes(x = date, y = new_spend)) +
-  geom_line() +
-  scale_y_continuous(labels = dollar_format()) +
-  geom_smooth(method = "lm", se = TRUE) + 
-  labs(x = "Date", 
-       y = "New Facebook Ad Spending") +
-  theme_minimal()
-  
-d_facebook_biden <- facebook_ads_biden_2020 |> 
-  rename(date = from_date, new_ads = num_of_new_ads) |> 
-  group_by(date) |> 
-  summarize(new_spend = sum(new_spend, na.rm = T),
-            new_ads = sum(new_ads, na.rm = T))
-
-d_facebook_biden |>
-  ggplot(aes(x = date, y = new_ads)) + 
-  geom_line() +
-  geom_smooth(method = "lm", se = TRUE) +
-  labs(x = "Date", 
-       y = "New Facebook Ads (Biden Only)") +
-  theme_minimal()
-
-d_facebook_biden |>
-  ggplot(aes(x = date, y = new_spend)) +
-  geom_line() +
-  scale_y_continuous(labels = dollar_format()) +
-  geom_smooth(method = "lm", se = TRUE) + 
-  labs(x = "Date", 
-       y = "New Facebook Ad Spending (Biden Only)")
-  theme_minimal()
 ```
 
+
+The final figure displays campaign ads aired by issue and party in both 2000 and 2012. As discussed above, there are consistencies across party and year with regard to the tone and purpose of advertising; however, the policy discussed changes substantially depending on the election cycle. As discussed above, advertisements are done with the goal of persuading voters to select a certain candidate. Since fundamental factors cannot be controlled, ads are used to convince voters that a candidate will better serve the electorate on each of these contested factors. As seen by the graphs, in 2000 Democrats were focused on poverty and other social issues while Repulicans were focused on drugs and China. In 2012, however, Republicans were still focused on drugs and crime while democrats were now consumed with the war on Afghanistan. 
+
+```{r, fig.width = 16, fig.height = 6}
+
+## Campaign Ads Aired By Issue and Party: 2000
+party_issues2000 <- ad_campaigns |>
+  filter(cycle == 2000) |>
+  left_join(ad_creative) |>
+  filter(ad_issue != "None") |>
+  ## this `group_by` is to get our denominator
+  group_by(ad_issue) |> mutate(tot_n=n()) |> ungroup() |>
+  ## this one is get numerator and calculate % by party
+  group_by(ad_issue, party) |> summarise(p_n=n()*100/first(tot_n)) |> ungroup() |>
+  ## finally, this one so we can sort the issue names
+  ## by D% of issue ad-share instead of alphabetically
+  group_by(ad_issue) |> mutate(Dp_n = ifelse(first(party) == "democrat", first(p_n), 0))
+
+party_issues2000_graph <- ggplot(party_issues2000, aes(x = reorder(ad_issue, Dp_n), y = p_n, fill = party)) + 
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("blue", "red")) +
+  ylab("% of ads on topic from each party") + xlab("issue") + 
+  # ggtitle("Campaign Ads Aired by Topic in 2000") +
+  coord_flip() + 
+  theme_bw()
+
+## Campaign Ads Aired By Issue and Party: 2012
+party_issues2012 <- party_issues2012 <- ad_campaigns |>
+  filter(cycle == 2012) |>
+  left_join(ad_creative) |>
+  filter(ad_issue != "None") |>
+  group_by(cycle, ad_issue) |> mutate(tot_n=n()) |> ungroup() |>
+  group_by(cycle, ad_issue, party) |> summarise(p_n=n()*100/first(tot_n)) |> ungroup() |>
+  group_by(cycle, ad_issue) |> mutate(Dp_n = ifelse(first(party) == "democrat", first(p_n), 0))
+
+party_issues2012_graph <-  ggplot(party_issues2012, aes(x = reorder(ad_issue, Dp_n), y = p_n, fill = party)) + 
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("blue", "red")) +
+  ylab("% of ads on topic from each party") + xlab("issue") +
+  # ggtitle("Campaign Ads Aired by Topic in 2012") +
+  coord_flip() + 
+  theme_bw()
+party_issues2000_grob <- ggplotGrob(party_issues2000_graph)
+party_issues2012_grob <- ggplotGrob(party_issues2012_graph)
+
+grid.arrange(party_issues2000_grob, party_issues2012_grob, nrow = 1)
+
+```
+
+## How can campaign spending be used to predict election outcomes?
 
 ```{r   echo = FALSE, message=FALSE, warning=FALSE}
 # Estimate state-level regression of vote share on campaign spending. 
