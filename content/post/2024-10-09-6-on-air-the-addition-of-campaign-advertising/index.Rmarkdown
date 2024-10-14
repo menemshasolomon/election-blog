@@ -86,7 +86,7 @@ Political advertising has two main effects — persuasion and mobilization. Ther
 
 **The third emphasizes the timing of this spending, emphasizing the importance of ad spending right before election day due to the lack of ad durability (voters are often unable to retain what they learned in an advertisement for a long period). Both of these graphics also point to an important reality — campaign spending is often evenly matched.** Many scholars assert that this equal game of tug-of-war is often why campaigns have a very small effect on outcomes. Indeed, if either party were to let go of the rope, voters may be influenced; however, while the even game continues, neither will make substantial gains.
 
-```{r  echo = FALSE, message=FALSE, warning=FALSE, fig.width=18, fig.height=9}
+```{r  echo = FALSE, message=FALSE, warning=FALSE, fig.width = 13, fig.height = 8}
 
 ####--------------------------------------------------------------#
 #### Descriptive statistics on ads and campaign spending over time. 
@@ -187,11 +187,15 @@ ad_campaigns12 <-ad_campaigns |>
         axis.ticks.x=element_blank())
 
 
-library(gridExtra)
+ad_campaigns00
+ad_campaigns04
+ad_campaigns08
+ad_campaigns12
 
-grid.arrange(ad_campaigns00, ad_campaigns04, nrow = 1)
-grid.arrange(ad_campaigns08, ad_campaigns12,nrow = 1)
+```
 
+
+```{r   echo = FALSE, message=FALSE, warning=FALSE, fig.width = 12, fig.height = 7}
 ## When to Buy Ads? 
 ad_campaigns |>
   mutate(year = as.numeric(substr(air_date, 1, 4))) |>
@@ -210,8 +214,8 @@ ad_campaigns |>
   theme(axis.title = element_text(size=20),
         axis.text = element_text(size=11),
         strip.text.x = element_text(size = 20))
-
 ```
+
 
 Despite this hypothesis, advertising is still an important way that campaigns convey their message to the general public. Furthermore, despite similarities in the volume of these advertisements, the content differences between parties are immense. The graphics below highlight differentials in terms of the policy and tone of both parties' advertisements.
 
@@ -262,13 +266,15 @@ purpose <- ad_campaigns |>
         axis.text = element_text(size=15),
         strip.text.x = element_text(size = 20))
 
+library(gridExtra)
+
 grid.arrange(tone, purpose, nrow = 1)
 
 ```
 
 Furthermore, the figure below emphasizes bipartisan shifts in tone depending on the election cycle. While the 2000 and 2008 campaigns focused on promotional content, 2004 and 2012 carried a lot of attack ads. One potential reason for this could be the role of incumbency, wherein Bush and Obama did not have to focus as heavily on promoting their views while Cheney and Romney were forced to attack the incumbent to make headway in the election.
 
-```{r}
+```{r   echo = FALSE, message=FALSE, warning=FALSE}
 ## Tone in Political Ads
 ad_campaigns |>
   left_join(ad_creative) |>
@@ -288,6 +294,7 @@ ad_campaigns |>
   geom_bar(stat = "identity") +
   facet_wrap(cycle ~ ., scales="free") +
   xlab("") + ylab("% of ads bought on day") +
+  ggtitle("Campaign Ads Bought By Tone") +
   theme_bw() +
   theme(axis.title = element_text(size=20),
         axis.text = element_text(size=10),
@@ -297,7 +304,7 @@ ad_campaigns |>
 
 The final figure displays campaign ads aired by issue and party in both 2000 and 2012. As discussed above, there are consistencies across party and year with regard to the tone and purpose of advertising; however, the policy discussed changes substantially depending on the election cycle. As discussed above, advertisements are done with the goal of persuading voters to select a certain candidate. Since fundamental factors cannot be controlled, ads are used to convince voters that a candidate will better serve the electorate on each of these contested factors. As seen by the graphs, in 2000 Democrats were focused on poverty and other social issues while Repulicans were focused on drugs and China. In 2012, however, Republicans were still focused on drugs and crime while democrats were now consumed with the war on Afghanistan. 
 
-```{r, fig.width = 16, fig.height = 6}
+```{r,   echo = FALSE, message=FALSE, warning=FALSE, fig.width = 16, fig.height = 6}
 
 ## Campaign Ads Aired By Issue and Party: 2000
 party_issues2000 <- ad_campaigns |>
@@ -316,7 +323,7 @@ party_issues2000_graph <- ggplot(party_issues2000, aes(x = reorder(ad_issue, Dp_
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("blue", "red")) +
   ylab("% of ads on topic from each party") + xlab("issue") + 
-  # ggtitle("Campaign Ads Aired by Topic in 2000") +
+  ggtitle("Campaign Ads Aired by Topic in 2000") +
   coord_flip() + 
   theme_bw()
 
@@ -333,7 +340,7 @@ party_issues2012_graph <-  ggplot(party_issues2012, aes(x = reorder(ad_issue, Dp
   geom_bar(stat = "identity") +
   scale_fill_manual(values = c("blue", "red")) +
   ylab("% of ads on topic from each party") + xlab("issue") +
-  # ggtitle("Campaign Ads Aired by Topic in 2012") +
+  ggtitle("Campaign Ads Aired by Topic in 2012") +
   coord_flip() + 
   theme_bw()
 party_issues2000_grob <- ggplotGrob(party_issues2000_graph)
@@ -345,6 +352,9 @@ grid.arrange(party_issues2000_grob, party_issues2012_grob, nrow = 1)
 
 ## How can campaign spending be used to predict election outcomes?
 
+To understand the impact of campaign spending on voters, a regression was run which attempted to ascertain this effect. Acknowledging the extreme differences between states in advertising, this relationship was measured at the state level. Furthermore, the values below represent a logistic transformation of this regression so as to normalize the variable which had been right skewed.
+
+
 ```{r   echo = FALSE, message=FALSE, warning=FALSE}
 # Estimate state-level regression of vote share on campaign spending. 
 d_campaign_spending <- d_state_popvote |> 
@@ -353,34 +363,70 @@ d_campaign_spending <- d_state_popvote |>
   filter(year >= 2008)
 
 lm(D_pv ~ contribution_receipt_amount, 
-   data = d_campaign_spending) |> summary()
+   data = d_campaign_spending) 
 
 # when pv2p is the outcome variable, campaign spending is typically less predictive because both campaigns are usually neck and neck in spending (and) so as to diminish the effect of spending on support
 
 lm(D_pv2p ~ contribution_receipt_amount, 
-   data = d_campaign_spending) |> summary()
+   data = d_campaign_spending) 
 
 lm(D_pv ~ contribution_receipt_amount + factor(state), 
-   data = d_campaign_spending) |> summary()
+   data = d_campaign_spending) 
 
 lm(D_pv2p ~ contribution_receipt_amount + factor(state), 
-   data = d_campaign_spending) |> summary()
+   data = d_campaign_spending) 
 
 
 # Log transformation of spending. - makes the variable far less right skewed 
 lm(D_pv ~ log(contribution_receipt_amount), 
-   data = d_campaign_spending) |> summary()
+   data = d_campaign_spending) 
 
 lm(D_pv2p ~ log(contribution_receipt_amount), 
-   data = d_campaign_spending) |> summary()
+   data = d_campaign_spending) 
 
 lm(D_pv ~ log(contribution_receipt_amount) + factor(state), 
+   data = d_campaign_spending) 
+
+summary_log_pv <- lm(D_pv ~ log(contribution_receipt_amount) + factor(state), 
    data = d_campaign_spending) |> summary()
+coeff_table <- as.data.frame(summary_log_pv$coefficients)
+
+colnames(coeff_table) <- c("Estimate", "Standard Error", "z_value", "Significance")
+
+coeff_table$Significance <- cut(coeff_table$`Significance`, 
+                                breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf), 
+                                labels = c("***", "**", "*", ".", " "))
+
+library(knitr)
+kable(coeff_table, caption = "Estimate State-level Log Regression of Democratic Vote Share on Campaign Spending")
 
 lm(D_pv2p ~ log(contribution_receipt_amount) + factor(state), 
-   data = d_campaign_spending) |> summary() # Why might this be? 
+   data = d_campaign_spending)
+
+summary_log_pv2p <- lm(D_pv2p ~ log(contribution_receipt_amount) + factor(state), 
+   data = d_campaign_spending) |> summary() 
+coeff_table2 <- as.data.frame(summary_log_pv2p$coefficients)
+
+colnames(coeff_table2) <- c("Estimate", "Standard Error", "z_value", "Significance")
+
+coeff_table2$Significance <- cut(coeff_table2$`Significance`, 
+                                breaks = c(-Inf, 0.001, 0.01, 0.05, 0.1, Inf), 
+                                labels = c("***", "**", "*", ".", " "))
+
+library(knitr)
+kable(coeff_table2, caption = "Estimate State-level Log Regression of Democratic Two-Party Vote Share on Campaign Spending")
+
+
 
 ```
+
+
+There are many interesting findings within these results:
+- **As contribution amounts increase, the vote percentage difference increases more substantially.** This general effect can be seen across both models as well as the varios states within the fixed effect model.
+- **Looking at two-party vote share versus raw vote percentage yields different results.**  The general coefficient on contribution receipt amount for the regression which analyzes two-party vote share is both larger than that of raw vote percentage as well as statistically significant. This result is surprising as scholars often assume increased spending to have a minimal effect on two-party vote share due to the tug-of-war effect discussed above, wherein both major parties have nearly equal funding. 
+- **Looking more closely at the seven swing states in this upcoming election — Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania — we see the literature hold that large increases in campaign funding have only marginal effects on two party vote share.** For each of the aforementioned states, the coefficients in the second model were substantially lower than those of the first model, indicating that the large influx of spending during the election cycle is often balanced, thus it does not have a major effect on two-party vote share. The data does indicate, however, that the coefficients of each of these states is statistically significant at the 0.001 level. 
+
+**While campaign spending cannot determine election outcomes, these results indicate that it is a significant part of the story when attempting to predict the outcome of the 2024 election.**
 
 Take a prior belief about the prability of a certain outcome, combine it with data, then update final belief
 - bayesian is flexible to many different probability distributions (OLD is biased towards only accepting normal distributions)
