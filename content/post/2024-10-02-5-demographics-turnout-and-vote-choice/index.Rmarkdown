@@ -589,7 +589,6 @@ pred.mat <- data.frame(state = rep(d_test_simp$state, m),
 
 j <- 1
 for (i in 1:m) {
-  print(i)
   vep_turnout <- sapply(d_turnout_avg$vep_turnout, function(mu) {
     rnorm(1, mean = mu, sd = 0.05) # Simulate turnout from Gaussian centered on state average with 5% SD.
   })
@@ -638,7 +637,7 @@ CI.table <- pred.mat |>
 
 
 ## Notes
-All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-09-27-4-the-incumbency-advantage/index.Rmarkdown).
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-10-02-5-demographics-turnout-and-vote-choice/index.Rmarkdown).
 
 **Sources**
  

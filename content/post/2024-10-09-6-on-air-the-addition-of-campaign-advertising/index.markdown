@@ -22,7 +22,7 @@ Throughout the past five weeks, my blog has focused on exploring fundamentals li
 
 **To reach the largest number of potential voters, campaigns often turn to mass media to present their message.** The meaning of mass media has changed throughout time; however, its largest sector for the past half century has been television advertising. Indeed, according to [EMarketer](https://www.emarketer.com/press-releases/2024-political-ad-spending-will-jump-nearly-30-vs-2020/), total US political ad spending will hit $12.32 billion in 2024. 
 
-Political advertising has two main effects — persuasion and mobilization. There are two main pieces of literature which have found proof of the influence of campaign advertising. First, Gerber and his team used a randomized control trial in Rick Perry's Texas Gubernatorial race to understand the persuasive influence of certain advertisements. By randomizing which county saw what ad, that campaign was able to determine that televised campaign ads have sizable persuasive effects, especially on undecided voters, though those effects tend to fade over time [(Gerber et al, 2011).]() Huber and Arceneaux added to this existing literature with a study of spillover media markets from battleground states, with massive ad funding, into non-battleground states, which typically have almost no ad budget. The authors found that a large influx of advertising, as is often found in battleground states, led places that saw commercials to have their votes changed as compared to the places that did not see the swing-state volume of advertisements [(Huber and Arceneaux, 2019)]().
+Political advertising has two main effects — persuasion and mobilization. There are two main pieces of literature which have found proof of the influence of campaign advertising. First, Gerber and his team used a randomized control trial in Rick Perry's Texas Gubernatorial race to understand the persuasive influence of certain advertisements. By randomizing which county saw what ad, that campaign was able to determine that televised campaign ads have sizable persuasive effects, especially on undecided voters, though those effects tend to fade over time [(Gerber et al, 2011).](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_miscellaneous_881466543) Huber and Arceneaux added to this existing literature with a study of spillover media markets from battleground states, with massive ad funding, into non-battleground states, which typically have almost no ad budget. The authors found that a large influx of advertising, as is often found in battleground states, led places that saw commercials to have their votes changed as compared to the places that did not see the swing-state volume of advertisements [(Huber and Arceneaux, 2019)](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_miscellaneous_59786011).
 
 *To understand these effects in practice, is is important to first analyze some descriptive statistics on ads and campaign spending over time.*
 
@@ -54,231 +54,6 @@ The final figure displays campaign ads aired by issue and party in both 2000 and
 ## How can campaign spending be used to predict election outcomes?
 
 To understand the impact of campaign spending on voters, a regression was run which attempted to ascertain this effect. Acknowledging the extreme differences between states in advertising, this relationship was measured at the state level. Furthermore, the values below represent a logistic transformation of this regression so as to normalize the variable which had been right skewed.
-
-
-
-```
-## 
-## Call:
-## lm(formula = D_pv ~ contribution_receipt_amount, data = d_campaign_spending)
-## 
-## Coefficients:
-##                 (Intercept)  contribution_receipt_amount  
-##                   4.526e+01                    1.683e-07
-```
-
-```
-## 
-## Call:
-## lm(formula = D_pv2p ~ contribution_receipt_amount, data = d_campaign_spending)
-## 
-## Coefficients:
-##                 (Intercept)  contribution_receipt_amount  
-##                   4.681e+01                    1.749e-07
-```
-
-```
-## 
-## Call:
-## lm(formula = D_pv ~ contribution_receipt_amount + factor(state), 
-##     data = d_campaign_spending)
-## 
-## Coefficients:
-##                 (Intercept)  contribution_receipt_amount  
-##                   3.686e+01                    5.327e-08  
-##         factor(state)Alaska         factor(state)Arizona  
-##                   2.576e+00                    8.750e+00  
-##       factor(state)Arkansas      factor(state)California  
-##                  -9.433e-01                    1.730e+01  
-##       factor(state)Colorado     factor(state)Connecticut  
-##                   1.440e+01                    2.057e+01  
-##       factor(state)Delaware         factor(state)Florida  
-##                   2.117e+01                    1.063e+01  
-##        factor(state)Georgia          factor(state)Hawaii  
-##                   9.431e+00                    2.942e+01  
-##          factor(state)Idaho        factor(state)Illinois  
-##                  -4.617e+00                    1.968e+01  
-##        factor(state)Indiana            factor(state)Iowa  
-##                   6.020e+00                    1.105e+01  
-##         factor(state)Kansas        factor(state)Kentucky  
-##                   2.334e+00                   -7.378e-02  
-##      factor(state)Louisiana           factor(state)Maine  
-##                   2.689e+00                    1.597e+01  
-##       factor(state)Maryland   factor(state)Massachusetts  
-##                   2.422e+01                    2.282e+01  
-##       factor(state)Michigan       factor(state)Minnesota  
-##                   1.493e+01                    1.401e+01  
-##    factor(state)Mississippi        factor(state)Missouri  
-##                   5.078e+00                    6.110e+00  
-##        factor(state)Montana        factor(state)Nebraska  
-##                   4.429e+00                    1.191e+00  
-##         factor(state)Nevada   factor(state)New Hampshire  
-##                   1.430e+01                    1.436e+01  
-##     factor(state)New Jersey      factor(state)New Mexico  
-##                   1.918e+01                    1.593e+01  
-##       factor(state)New York  factor(state)North Carolina  
-##                   1.806e+01                    1.068e+01  
-##   factor(state)North Dakota            factor(state)Ohio  
-##                  -1.301e+00                    1.029e+01  
-##       factor(state)Oklahoma          factor(state)Oregon  
-##                  -4.809e+00                    1.696e+01  
-##   factor(state)Pennsylvania    factor(state)Rhode Island  
-##                   1.309e+01                    2.287e+01  
-## factor(state)South Carolina    factor(state)South Dakota  
-##                   6.209e+00                    1.100e+00  
-##      factor(state)Tennessee           factor(state)Texas  
-##                   1.094e+00                    5.065e+00  
-##           factor(state)Utah         factor(state)Vermont  
-##                  -5.934e+00                    2.678e+01  
-##       factor(state)Virginia      factor(state)Washington  
-##                   1.382e+01                    1.787e+01  
-##  factor(state)West Virginia       factor(state)Wisconsin  
-##                  -3.341e+00                    1.404e+01  
-##        factor(state)Wyoming  
-##                  -9.864e+00
-```
-
-```
-## 
-## Call:
-## lm(formula = D_pv2p ~ contribution_receipt_amount + factor(state), 
-##     data = d_campaign_spending)
-## 
-## Coefficients:
-##                 (Intercept)  contribution_receipt_amount  
-##                   3.758e+01                    2.460e-08  
-##         factor(state)Alaska         factor(state)Arizona  
-##                   4.377e+00                    9.548e+00  
-##       factor(state)Arkansas      factor(state)California  
-##                  -3.483e-01                    2.277e+01  
-##       factor(state)Colorado     factor(state)Connecticut  
-##                   1.627e+01                    2.145e+01  
-##       factor(state)Delaware         factor(state)Florida  
-##                   2.178e+01                    1.152e+01  
-##        factor(state)Georgia          factor(state)Hawaii  
-##                   9.852e+00                    3.164e+01  
-##          factor(state)Idaho        factor(state)Illinois  
-##                  -3.527e+00                    2.139e+01  
-##        factor(state)Indiana            factor(state)Iowa  
-##                   6.542e+00                    1.198e+01  
-##         factor(state)Kansas        factor(state)Kentucky  
-##                   3.028e+00                    1.783e-01  
-##      factor(state)Louisiana           factor(state)Maine  
-##                   2.885e+00                    1.808e+01  
-##       factor(state)Maryland   factor(state)Massachusetts  
-##                   2.613e+01                    2.578e+01  
-##       factor(state)Michigan       factor(state)Minnesota  
-##                   1.576e+01                    1.559e+01  
-##    factor(state)Mississippi        factor(state)Missouri  
-##                   4.912e+00                    6.636e+00  
-##        factor(state)Montana        factor(state)Nebraska  
-##                   5.454e+00                    1.865e+00  
-##         factor(state)Nevada   factor(state)New Hampshire  
-##                   1.540e+01                    1.524e+01  
-##     factor(state)New Jersey      factor(state)New Mexico  
-##                   1.997e+01                    1.805e+01  
-##       factor(state)New York  factor(state)North Carolina  
-##                   2.460e+01                    1.124e+01  
-##   factor(state)North Dakota            factor(state)Ohio  
-##                  -4.783e-01                    1.102e+01  
-##       factor(state)Oklahoma          factor(state)Oregon  
-##                  -4.819e+00                    1.944e+01  
-##   factor(state)Pennsylvania    factor(state)Rhode Island  
-##                   1.393e+01                    2.414e+01  
-## factor(state)South Carolina    factor(state)South Dakota  
-##                   6.514e+00                    1.673e+00  
-##      factor(state)Tennessee           factor(state)Texas  
-##                   1.412e+00                    6.227e+00  
-##           factor(state)Utah         factor(state)Vermont  
-##                  -3.206e+00                    3.000e+01  
-##       factor(state)Virginia      factor(state)Washington  
-##                   1.513e+01                    2.056e+01  
-##  factor(state)West Virginia       factor(state)Wisconsin  
-##                  -3.187e+00                    1.487e+01  
-##        factor(state)Wyoming  
-##                  -9.082e+00
-```
-
-```
-## 
-## Call:
-## lm(formula = D_pv ~ log(contribution_receipt_amount), data = d_campaign_spending)
-## 
-## Coefficients:
-##                      (Intercept)  log(contribution_receipt_amount)  
-##                           -23.97                              4.61
-```
-
-```
-## 
-## Call:
-## lm(formula = D_pv2p ~ log(contribution_receipt_amount), data = d_campaign_spending)
-## 
-## Coefficients:
-##                      (Intercept)  log(contribution_receipt_amount)  
-##                          -23.093                             4.659
-```
-
-```
-## 
-## Call:
-## lm(formula = D_pv ~ log(contribution_receipt_amount) + factor(state), 
-##     data = d_campaign_spending)
-## 
-## Coefficients:
-##                      (Intercept)  log(contribution_receipt_amount)  
-##                           0.8159                            2.4420  
-##              factor(state)Alaska              factor(state)Arizona  
-##                           4.2876                            6.4501  
-##            factor(state)Arkansas           factor(state)California  
-##                          -0.5393                           15.1284  
-##            factor(state)Colorado          factor(state)Connecticut  
-##                          11.0099                           17.4151  
-##            factor(state)Delaware              factor(state)Florida  
-##                          21.9221                            6.2710  
-##             factor(state)Georgia               factor(state)Hawaii  
-##                           6.4667                           29.4045  
-##               factor(state)Idaho             factor(state)Illinois  
-##                          -2.8521                           15.3483  
-##             factor(state)Indiana                 factor(state)Iowa  
-##                           4.7607                           10.7887  
-##              factor(state)Kansas             factor(state)Kentucky  
-##                           2.8087                           -0.3147  
-##           factor(state)Louisiana                factor(state)Maine  
-##                           2.5954                           15.7602  
-##            factor(state)Maryland        factor(state)Massachusetts  
-##                          20.0725                           18.4482  
-##            factor(state)Michigan            factor(state)Minnesota  
-##                          12.0270                           11.4768  
-##         factor(state)Mississippi             factor(state)Missouri  
-##                           7.4131                            4.3124  
-##             factor(state)Montana             factor(state)Nebraska  
-##                           6.0958                            2.8531  
-##              factor(state)Nevada        factor(state)New Hampshire  
-##                          13.6415                           13.9050  
-##          factor(state)New Jersey           factor(state)New Mexico  
-##                          15.3878                           14.3679  
-##            factor(state)New York       factor(state)North Carolina  
-##                          14.1120                            7.5762  
-##        factor(state)North Dakota                 factor(state)Ohio  
-##                           3.7015                            7.4367  
-##            factor(state)Oklahoma               factor(state)Oregon  
-##                          -4.8534                           14.2587  
-##        factor(state)Pennsylvania         factor(state)Rhode Island  
-##                           9.1872                           23.2334  
-##      factor(state)South Carolina         factor(state)South Dakota  
-##                           5.6123                            4.9169  
-##           factor(state)Tennessee                factor(state)Texas  
-##                          -0.5135                            0.6800  
-##                factor(state)Utah              factor(state)Vermont  
-##                          -5.7113                           26.6028  
-##            factor(state)Virginia           factor(state)Washington  
-##                           9.7776                           13.8421  
-##       factor(state)West Virginia            factor(state)Wisconsin  
-##                          -1.1641                           12.3482  
-##             factor(state)Wyoming  
-##                          -7.1046
-```
 
 
 
@@ -337,67 +112,6 @@ Table: <span id="tab:unnamed-chunk-8"></span>Table 1: Estimate State-level Log R
 |factor(state)West Virginia       | -1.1641218|      2.6375444| -0.4413658|             |
 |factor(state)Wisconsin           | 12.3481502|      2.6034893|  4.7429233|***          |
 |factor(state)Wyoming             | -7.1045965|      2.6995004| -2.6318190|**           |
-
-```
-## 
-## Call:
-## lm(formula = D_pv2p ~ log(contribution_receipt_amount) + factor(state), 
-##     data = d_campaign_spending)
-## 
-## Coefficients:
-##                      (Intercept)  log(contribution_receipt_amount)  
-##                         21.48288                           1.09101  
-##              factor(state)Alaska              factor(state)Arizona  
-##                          5.14020                           8.52501  
-##            factor(state)Arkansas           factor(state)California  
-##                         -0.16807                          21.90979  
-##            factor(state)Colorado          factor(state)Connecticut  
-##                         14.76283                          20.05052  
-##            factor(state)Delaware              factor(state)Florida  
-##                         22.11824                           9.59767  
-##             factor(state)Georgia               factor(state)Hawaii  
-##                          8.53439                          31.63148  
-##               factor(state)Idaho             factor(state)Illinois  
-##                         -2.73951                          19.47483  
-##             factor(state)Indiana                 factor(state)Iowa  
-##                          5.98174                          11.86190  
-##              factor(state)Kansas             factor(state)Kentucky  
-##                          3.23932                           0.07087  
-##           factor(state)Louisiana                factor(state)Maine  
-##                          2.84318                          17.98910  
-##            factor(state)Maryland        factor(state)Massachusetts  
-##                         24.29554                          23.84887  
-##            factor(state)Michigan            factor(state)Minnesota  
-##                         14.46828                          14.46096  
-##         factor(state)Mississippi             factor(state)Missouri  
-##                          5.95377                           5.83582  
-##             factor(state)Montana             factor(state)Nebraska  
-##                          6.19785                           2.60674  
-##              factor(state)Nevada        factor(state)New Hampshire  
-##                         15.10382                          15.03743  
-##          factor(state)New Jersey           factor(state)New Mexico  
-##                         18.28879                          17.35467  
-##            factor(state)New York       factor(state)North Carolina  
-##                         22.89934                           9.86668  
-##        factor(state)North Dakota                 factor(state)Ohio  
-##                          1.75481                           9.75033  
-##            factor(state)Oklahoma               factor(state)Oregon  
-##                         -4.83824                          18.24442  
-##        factor(state)Pennsylvania         factor(state)Rhode Island  
-##                         12.19744                          24.29843  
-##      factor(state)South Carolina         factor(state)South Dakota  
-##                          6.24806                           3.37583  
-##           factor(state)Tennessee                factor(state)Texas  
-##                          0.69663                           4.29190  
-##                factor(state)Utah              factor(state)Vermont  
-##                         -3.10638                          29.92059  
-##            factor(state)Virginia           factor(state)Washington  
-##                         13.34024                          18.78371  
-##       factor(state)West Virginia            factor(state)Wisconsin  
-##                         -2.21587                          14.12055  
-##             factor(state)Wyoming  
-##                         -7.85053
-```
 
 
 
@@ -459,258 +173,51 @@ Table: <span id="tab:unnamed-chunk-8"></span>Table 1: Estimate State-level Log R
 
 
 There are many interesting findings within these results:
+
 - **As contribution amounts increase, the vote percentage difference increases more substantially.** This general effect can be seen across both models as well as the varios states within the fixed effect model.
+
 - **Looking at two-party vote share versus raw vote percentage yields different results.**  The general coefficient on contribution receipt amount for the regression which analyzes two-party vote share is both larger than that of raw vote percentage as well as statistically significant. This result is surprising as scholars often assume increased spending to have a minimal effect on two-party vote share due to the tug-of-war effect discussed above, wherein both major parties have nearly equal funding. 
+
 - **Looking more closely at the seven swing states in this upcoming election — Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania — we see the literature hold that large increases in campaign funding have only marginal effects on two party vote share.** For each of the aforementioned states, the coefficients in the second model were substantially lower than those of the first model, indicating that the large influx of spending during the election cycle is often balanced, thus it does not have a major effect on two-party vote share. The data does indicate, however, that the coefficients of each of these states is statistically significant at the 0.001 level. 
 
 **While campaign spending cannot determine election outcomes, these results indicate that it is a significant part of the story when attempting to predict the outcome of the 2024 election.**
 
-Take a prior belief about the prability of a certain outcome, combine it with data, then update final belief
-- bayesian is flexible to many different probability distributions (OLD is biased towards only accepting normal distributions)
-- random variable with probability distribution
-- uncertainty takes the form of credible intervals, 95% that real value is within the constructed interval
-- conditional probability of one even occurring conditional on other event is the probability of both events occurring / probability of the conditional occurring
-- see slides for more information! 
+## Including campaign spending into the 2024 election prediction
 
-frequentist statistics (what we have been using this far) assume that paramneters are fixed and unknown, they they rely on the central limit theory that using repeated sampling the estimators converge and are unbiased
-- uncertainty takes the form of confidence internals i.e. 95% of intervals trap the true parameter value
+As I have done in the previous three weeks, I will be predicting for the seven states which [expert predictors like Cook and Sabato](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. This prediction model includes the significant variables identified throughout previous analyses including: [state vote history as a proxy for demographic and turnout](https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/), [GDP growth in Q2 before the election](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/), [incumbency status](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/), and [the latest poll averages](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/). Based off of this week's analysis, this model will also incoporate campaign ad spending. While past data is provided by the course through AdImpact, the 2024 AdImpact campaign ad data is not yet available. Indeed, the most recent available data is from May when Biden was still the candidate and advertising had not yet picked up. While this data is merely a proxy, it is likely statistically insignificant and may even bias our model [(NPR, 2024)](https://www.npr.org/2024/05/24/nx-s1-4980821/ad-spending-presidential-election-biden-trump). To account for this, the data here will be updated as soon as new AdImpacct information becomes available.
 
-linear regression can have a bayesian analogue IF we treat the model parameters as random variables with probability distributions.
 
-```
-## 
-## Call:
-## lm(formula = D_pv2p ~ latest_pollav_DEM + mean_pollav_DEM + D_pv2p_lag1 + 
-##     D_pv2p_lag2, data = d.train)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -10.4485  -2.0088  -0.4128   1.7700   9.8659 
-## 
-## Coefficients:
-##                   Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)        9.03700    1.84335   4.902 1.97e-06 ***
-## latest_pollav_DEM  0.88022    0.08197  10.739  < 2e-16 ***
-## mean_pollav_DEM   -0.27845    0.07428  -3.749 0.000233 ***
-## D_pv2p_lag1        0.44393    0.04578   9.698  < 2e-16 ***
-## D_pv2p_lag2       -0.17487    0.03974  -4.400 1.77e-05 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-## 
-## Residual standard error: 3.383 on 197 degrees of freedom
-## Multiple R-squared:  0.7767,	Adjusted R-squared:  0.7722 
-## F-statistic: 171.3 on 4 and 197 DF,  p-value: < 2.2e-16
-```
+|   |state          | prediction| lower_CI| upper_CI|Winner |
+|:--|:--------------|----------:|--------:|--------:|:------|
+|1  |Arizona        |   48.78994| 45.54016| 52.03972|Trump  |
+|11 |Nevada         |   49.58943| 46.19746| 52.98139|Trump  |
+|12 |North Carolina |   48.71165| 45.37879| 52.04450|Trump  |
+|13 |Michigan       |   50.35126| 47.08552| 53.61700|Harris |
+|14 |Wisconsin      |   50.03782| 46.71100| 53.36465|Harris |
+|15 |Georgia        |   49.26430| 46.02230| 52.50629|Trump  |
+|16 |Pennsylvania   |   50.01836| 46.72100| 53.31571|Harris |
 
-```
-##             state year simp_pred_dem simp_pred_rep     winner stateab electors
-## 1         Arizona 2024      52.46572      47.53428   Democrat      AZ       11
-## 2      California 2024      63.98963      36.01037   Democrat      CA       54
-## 3         Florida 2024      51.11625      48.88375   Democrat      FL       30
-## 4         Georgia 2024      53.02358      46.97642   Democrat      GA       16
-## 5        Maryland 2024      65.01586      34.98414   Democrat      MD       10
-## 6        Michigan 2024      53.52353      46.47647   Democrat      MI       15
-## 7       Minnesota 2024      55.22069      44.77931   Democrat      MN       10
-## 8        Missouri 2024      45.74964      54.25036 Republican      MO       10
-## 9         Montana 2024      44.15693      55.84307 Republican      MT        4
-## 10         Nevada 2024      53.72355      46.27645   Democrat      NV        6
-## 11  New Hampshire 2024      54.82356      45.17644   Democrat      NH        4
-## 12     New Mexico 2024      54.27571      45.72429   Democrat      NM        5
-## 13       New York 2024      59.47919      40.52081   Democrat      NY       28
-## 14 North Carolina 2024      52.74411      47.25589   Democrat      NC       16
-## 15           Ohio 2024      48.45776      51.54224 Republican      OH       17
-## 16   Pennsylvania 2024      53.07083      46.92917   Democrat      PA       19
-## 17          Texas 2024      50.34049      49.65951   Democrat      TX       40
-## 18       Virginia 2024      55.23023      44.76977   Democrat      VA       13
-## 19      Wisconsin 2024      53.35418      46.64582   Democrat      WI       10
-```
+This table displays the results of the model in the seven key battleground states. According to this prediction, **Harris will win the election with 270 electoral votes while Trump will have 268 electoral votes.**
 
-```
-##             state
-## 1         Arizona
-## 2      California
-## 3         Florida
-## 4         Georgia
-## 5        Maryland
-## 6        Michigan
-## 7       Minnesota
-## 8          Nevada
-## 9   New Hampshire
-## 10     New Mexico
-## 11       New York
-## 12 North Carolina
-## 13   Pennsylvania
-## 14          Texas
-## 15       Virginia
-## 16      Wisconsin
-```
 
-```
-##      state
-## 1 Missouri
-## 2  Montana
-## 3     Ohio
-```
+## Notes
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-10-09-6-on-air-the-addition-of-campaign-advertising/index.Rmarkdown).
 
-```
-## # A tibble: 2 × 3
-##   winner         n    ec
-##   <chr>      <int> <dbl>
-## 1 Democrat      16   287
-## 2 Republican     3    31
-```
+**Sources**
+     
+Gerber, Alan S., James G. Gimpel, Donald P. Green, and Daron R. Shaw. "How Large and Long-lasting 
+     Are the Persuasive Effects of Televised Campaign Ads? Results from a Randomized Field 
+     Experiment." American Political Science Review 105, no. 1 (2011): 135-50. https://doi.org/ 
+     10.1017/s000305541000047x. 
 
-```
-## Running /Library/Frameworks/R.framework/Resources/bin/R CMD SHLIB foo.c
-## using C compiler: ‘Apple clang version 15.0.0 (clang-1500.3.9.4)’
-## using SDK: ‘MacOSX14.4.sdk’
-## clang -arch arm64 -I"/Library/Frameworks/R.framework/Resources/include" -DNDEBUG   -I"/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/Rcpp/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/RcppEigen/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/RcppEigen/include/unsupported"  -I"/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/BH/include" -I"/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/StanHeaders/include/src/"  -I"/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/StanHeaders/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/RcppParallel/include/"  -I"/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/rstan/include" -DEIGEN_NO_DEBUG  -DBOOST_DISABLE_ASSERTS  -DBOOST_PENDING_INTEGER_LOG2_HPP  -DSTAN_THREADS  -DUSE_STANC3 -DSTRICT_R_HEADERS  -DBOOST_PHOENIX_NO_VARIADIC_EXPRESSION  -D_HAS_AUTO_PTR_ETC=0  -include '/Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp'  -D_REENTRANT -DRCPP_PARALLEL_USE_TBB=1   -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  -c foo.c -o foo.o
-## In file included from <built-in>:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/StanHeaders/include/stan/math/prim/fun/Eigen.hpp:22:
-## In file included from /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/RcppEigen/include/Eigen/Dense:1:
-## In file included from /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/RcppEigen/include/Eigen/Core:19:
-## /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/library/RcppEigen/include/Eigen/src/Core/util/Macros.h:679:10: fatal error: 'cmath' file not found
-## #include <cmath>
-##          ^~~~~~~
-## 1 error generated.
-## make: *** [foo.o] Error 1
-```
+Huber, Gregory A., and Kevin Arceneaux. "Identifying the Persuasive Effects of Presidential 
+     Advertising." American Journal of Political Science 51, no. 4 (2007): 957-77. https://doi.org/ 
+     10.1111/j.1540-5907.2007.00291.x. 
 
-```
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 1).
-## Chain 1: 
-## Chain 1: Gradient evaluation took 4.9e-05 seconds
-## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.49 seconds.
-## Chain 1: Adjust your expectations accordingly!
-## Chain 1: 
-## Chain 1: 
-## Chain 1: Iteration:    1 / 4000 [  0%]  (Warmup)
-## Chain 1: Iteration:  400 / 4000 [ 10%]  (Warmup)
-## Chain 1: Iteration:  800 / 4000 [ 20%]  (Warmup)
-## Chain 1: Iteration: 1001 / 4000 [ 25%]  (Sampling)
-## Chain 1: Iteration: 1400 / 4000 [ 35%]  (Sampling)
-## Chain 1: Iteration: 1800 / 4000 [ 45%]  (Sampling)
-## Chain 1: Iteration: 2200 / 4000 [ 55%]  (Sampling)
-## Chain 1: Iteration: 2600 / 4000 [ 65%]  (Sampling)
-## Chain 1: Iteration: 3000 / 4000 [ 75%]  (Sampling)
-## Chain 1: Iteration: 3400 / 4000 [ 85%]  (Sampling)
-## Chain 1: Iteration: 3800 / 4000 [ 95%]  (Sampling)
-## Chain 1: Iteration: 4000 / 4000 [100%]  (Sampling)
-## Chain 1: 
-## Chain 1:  Elapsed Time: 0.792 seconds (Warm-up)
-## Chain 1:                2.426 seconds (Sampling)
-## Chain 1:                3.218 seconds (Total)
-## Chain 1: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 2).
-## Chain 2: 
-## Chain 2: Gradient evaluation took 1e-05 seconds
-## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
-## Chain 2: Adjust your expectations accordingly!
-## Chain 2: 
-## Chain 2: 
-## Chain 2: Iteration:    1 / 4000 [  0%]  (Warmup)
-## Chain 2: Iteration:  400 / 4000 [ 10%]  (Warmup)
-## Chain 2: Iteration:  800 / 4000 [ 20%]  (Warmup)
-## Chain 2: Iteration: 1001 / 4000 [ 25%]  (Sampling)
-## Chain 2: Iteration: 1400 / 4000 [ 35%]  (Sampling)
-## Chain 2: Iteration: 1800 / 4000 [ 45%]  (Sampling)
-## Chain 2: Iteration: 2200 / 4000 [ 55%]  (Sampling)
-## Chain 2: Iteration: 2600 / 4000 [ 65%]  (Sampling)
-## Chain 2: Iteration: 3000 / 4000 [ 75%]  (Sampling)
-## Chain 2: Iteration: 3400 / 4000 [ 85%]  (Sampling)
-## Chain 2: Iteration: 3800 / 4000 [ 95%]  (Sampling)
-## Chain 2: Iteration: 4000 / 4000 [100%]  (Sampling)
-## Chain 2: 
-## Chain 2:  Elapsed Time: 0.808 seconds (Warm-up)
-## Chain 2:                2.936 seconds (Sampling)
-## Chain 2:                3.744 seconds (Total)
-## Chain 2: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 3).
-## Chain 3: 
-## Chain 3: Gradient evaluation took 1e-05 seconds
-## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
-## Chain 3: Adjust your expectations accordingly!
-## Chain 3: 
-## Chain 3: 
-## Chain 3: Iteration:    1 / 4000 [  0%]  (Warmup)
-## Chain 3: Iteration:  400 / 4000 [ 10%]  (Warmup)
-## Chain 3: Iteration:  800 / 4000 [ 20%]  (Warmup)
-## Chain 3: Iteration: 1001 / 4000 [ 25%]  (Sampling)
-## Chain 3: Iteration: 1400 / 4000 [ 35%]  (Sampling)
-## Chain 3: Iteration: 1800 / 4000 [ 45%]  (Sampling)
-## Chain 3: Iteration: 2200 / 4000 [ 55%]  (Sampling)
-## Chain 3: Iteration: 2600 / 4000 [ 65%]  (Sampling)
-## Chain 3: Iteration: 3000 / 4000 [ 75%]  (Sampling)
-## Chain 3: Iteration: 3400 / 4000 [ 85%]  (Sampling)
-## Chain 3: Iteration: 3800 / 4000 [ 95%]  (Sampling)
-## Chain 3: Iteration: 4000 / 4000 [100%]  (Sampling)
-## Chain 3: 
-## Chain 3:  Elapsed Time: 0.93 seconds (Warm-up)
-## Chain 3:                2.543 seconds (Sampling)
-## Chain 3:                3.473 seconds (Total)
-## Chain 3: 
-## 
-## SAMPLING FOR MODEL 'anon_model' NOW (CHAIN 4).
-## Chain 4: 
-## Chain 4: Gradient evaluation took 1e-05 seconds
-## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.1 seconds.
-## Chain 4: Adjust your expectations accordingly!
-## Chain 4: 
-## Chain 4: 
-## Chain 4: Iteration:    1 / 4000 [  0%]  (Warmup)
-## Chain 4: Iteration:  400 / 4000 [ 10%]  (Warmup)
-## Chain 4: Iteration:  800 / 4000 [ 20%]  (Warmup)
-## Chain 4: Iteration: 1001 / 4000 [ 25%]  (Sampling)
-## Chain 4: Iteration: 1400 / 4000 [ 35%]  (Sampling)
-## Chain 4: Iteration: 1800 / 4000 [ 45%]  (Sampling)
-## Chain 4: Iteration: 2200 / 4000 [ 55%]  (Sampling)
-## Chain 4: Iteration: 2600 / 4000 [ 65%]  (Sampling)
-## Chain 4: Iteration: 3000 / 4000 [ 75%]  (Sampling)
-## Chain 4: Iteration: 3400 / 4000 [ 85%]  (Sampling)
-## Chain 4: Iteration: 3800 / 4000 [ 95%]  (Sampling)
-## Chain 4: Iteration: 4000 / 4000 [100%]  (Sampling)
-## Chain 4: 
-## Chain 4:  Elapsed Time: 0.954 seconds (Warm-up)
-## Chain 4:                2.673 seconds (Sampling)
-## Chain 4:                3.627 seconds (Total)
-## Chain 4:
-```
+Montanaro, Domenico. "Ad Spending Shows Where the Presidential Campaign Is Really Taking Place." 
+     NPR. Last modified May 26, 2024. https://www.npr.org/2024/05/24/nx-s1-4980821/ 
+     ad-spending-presidential-election-biden-trump. 
 
-```
-##       (Intercept) latest_pollav_DEM   mean_pollav_DEM       D_pv2p_lag1 
-##         9.0369974         0.8802244        -0.2784522         0.4439321 
-##       D_pv2p_lag2 
-##        -0.1748684
-```
+**Data Sources**
 
-```
-##                        2.5 %      97.5 %
-## (Intercept)        5.4017628 12.67223205
-## latest_pollav_DEM  0.7185804  1.04186839
-## mean_pollav_DEM   -0.4249335 -0.13197084
-## D_pv2p_lag1        0.3536576  0.53420663
-## D_pv2p_lag2       -0.2532440 -0.09649291
-```
-
-```
-## Inference for Stan model: anon_model.
-## 4 chains, each with iter=4000; warmup=1000; thin=1; 
-## post-warmup draws per chain=3000, total post-warmup draws=12000.
-## 
-##        mean se_mean   sd  2.5%   25%   50%   75% 97.5% n_eff Rhat
-## alpha  9.02    0.02 1.86  5.43  7.78  9.00 10.26 12.74  8316    1
-## beta1  0.88    0.00 0.08  0.72  0.83  0.88  0.94  1.04  5758    1
-## beta2 -0.28    0.00 0.07 -0.42 -0.33 -0.28 -0.23 -0.13  6044    1
-## beta3  0.44    0.00 0.05  0.36  0.41  0.44  0.48  0.53  7890    1
-## beta4 -0.17    0.00 0.04 -0.25 -0.20 -0.18 -0.15 -0.10  8187    1
-## sigma  3.41    0.00 0.18  3.08  3.28  3.40  3.52  3.77  7748    1
-## 
-## Samples were drawn using NUTS(diag_e) at Mon Oct 14 11:08:49 2024.
-## For each parameter, n_eff is a crude measure of effective sample size,
-## and Rhat is the potential scale reduction factor on split chains (at 
-## convergence, Rhat=1).
-```
-
+US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight and Gallup, also provided by the course. U.S. election soendign data sources from AdImpact.

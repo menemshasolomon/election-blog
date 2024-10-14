@@ -69,8 +69,7 @@ campaign_spending <- read_csv("data/FEC_contributions_by_state_2008_2024.csv")
 d_polls <- read_csv("data/national_polls_1968-2024.csv")
 d_state_polls <- read_csv("data/state_polls_1968-2024.csv")
 
-# Read turnout data. 
-d_turnout <- read_csv("data/state_turnout_1980_2022.csv")
+
 
 ```
 
@@ -78,7 +77,7 @@ d_turnout <- read_csv("data/state_turnout_1980_2022.csv")
 
 **To reach the largest number of potential voters, campaigns often turn to mass media to present their message.** The meaning of mass media has changed throughout time; however, its largest sector for the past half century has been television advertising. Indeed, according to [EMarketer](https://www.emarketer.com/press-releases/2024-political-ad-spending-will-jump-nearly-30-vs-2020/), total US political ad spending will hit $12.32 billion in 2024. 
 
-Political advertising has two main effects — persuasion and mobilization. There are two main pieces of literature which have found proof of the influence of campaign advertising. First, Gerber and his team used a randomized control trial in Rick Perry's Texas Gubernatorial race to understand the persuasive influence of certain advertisements. By randomizing which county saw what ad, that campaign was able to determine that televised campaign ads have sizable persuasive effects, especially on undecided voters, though those effects tend to fade over time [(Gerber et al, 2011).]() Huber and Arceneaux added to this existing literature with a study of spillover media markets from battleground states, with massive ad funding, into non-battleground states, which typically have almost no ad budget. The authors found that a large influx of advertising, as is often found in battleground states, led places that saw commercials to have their votes changed as compared to the places that did not see the swing-state volume of advertisements [(Huber and Arceneaux, 2019)]().
+Political advertising has two main effects — persuasion and mobilization. There are two main pieces of literature which have found proof of the influence of campaign advertising. First, Gerber and his team used a randomized control trial in Rick Perry's Texas Gubernatorial race to understand the persuasive influence of certain advertisements. By randomizing which county saw what ad, that campaign was able to determine that televised campaign ads have sizable persuasive effects, especially on undecided voters, though those effects tend to fade over time [(Gerber et al, 2011).](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_miscellaneous_881466543) Huber and Arceneaux added to this existing literature with a study of spillover media markets from battleground states, with massive ad funding, into non-battleground states, which typically have almost no ad budget. The authors found that a large influx of advertising, as is often found in battleground states, led places that saw commercials to have their votes changed as compared to the places that did not see the swing-state volume of advertisements [(Huber and Arceneaux, 2019)](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_miscellaneous_59786011).
 
 *To understand these effects in practice, is is important to first analyze some descriptive statistics on ads and campaign spending over time.*
 
@@ -110,6 +109,7 @@ ad_campaigns00 <- ad_campaigns |>
   scale_fill_manual(values = c("blue", "red")) +
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6)) +
   xlab("") + ylab("ad spend") +
+  ggtitle("Campaign Spending by State, 2000") +
   theme_bw() +
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
@@ -134,6 +134,7 @@ ad_campaigns04 <- ad_campaigns |>
   scale_fill_manual(values = c("blue", "red")) +
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6)) +
   xlab("") + ylab("ad spend") +
+   ggtitle("Campaign Spending by State, 2004") +
   theme_bw() +
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
@@ -158,6 +159,7 @@ ad_campaigns08 <- ad_campaigns |>
   scale_fill_manual(values = c("blue", "red")) +
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6)) +
   xlab("") + ylab("ad spend") +
+  ggtitle("Campaign Spending by State, 2008") +
   theme_bw() +
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
@@ -181,6 +183,7 @@ ad_campaigns12 <-ad_campaigns |>
   scale_fill_manual(values = c("blue", "red")) +
   scale_y_continuous(labels = unit_format(unit = "M", scale = 1e-6)) +
   xlab("") + ylab("ad spend") +
+  ggtitle("Campaign Spending by State, 2012") +
   theme_bw() +
   theme(axis.title.x=element_blank(),
         axis.text.x=element_blank(),
@@ -362,33 +365,11 @@ d_campaign_spending <- d_state_popvote |>
   left_join(campaign_spending |> filter(party == "Democrat"), by = c("year" = "election_year", "state_abb" = "contribution_state")) |> 
   filter(year >= 2008)
 
-lm(D_pv ~ contribution_receipt_amount, 
-   data = d_campaign_spending) 
-
-# when pv2p is the outcome variable, campaign spending is typically less predictive because both campaigns are usually neck and neck in spending (and) so as to diminish the effect of spending on support
-
-lm(D_pv2p ~ contribution_receipt_amount, 
-   data = d_campaign_spending) 
-
-lm(D_pv ~ contribution_receipt_amount + factor(state), 
-   data = d_campaign_spending) 
-
-lm(D_pv2p ~ contribution_receipt_amount + factor(state), 
-   data = d_campaign_spending) 
 
 
-# Log transformation of spending. - makes the variable far less right skewed 
-lm(D_pv ~ log(contribution_receipt_amount), 
-   data = d_campaign_spending) 
 
-lm(D_pv2p ~ log(contribution_receipt_amount), 
-   data = d_campaign_spending) 
-
-lm(D_pv ~ log(contribution_receipt_amount) + factor(state), 
-   data = d_campaign_spending) 
-
-summary_log_pv <- lm(D_pv ~ log(contribution_receipt_amount) + factor(state), 
-   data = d_campaign_spending) |> summary()
+summary_log_pv <- summary(lm(D_pv ~ log(contribution_receipt_amount) + factor(state), 
+   data = d_campaign_spending)) 
 coeff_table <- as.data.frame(summary_log_pv$coefficients)
 
 colnames(coeff_table) <- c("Estimate", "Standard Error", "z_value", "Significance")
@@ -400,11 +381,9 @@ coeff_table$Significance <- cut(coeff_table$`Significance`,
 library(knitr)
 kable(coeff_table, caption = "Estimate State-level Log Regression of Democratic Vote Share on Campaign Spending")
 
-lm(D_pv2p ~ log(contribution_receipt_amount) + factor(state), 
-   data = d_campaign_spending)
 
-summary_log_pv2p <- lm(D_pv2p ~ log(contribution_receipt_amount) + factor(state), 
-   data = d_campaign_spending) |> summary() 
+summary_log_pv2p <- summary(lm(D_pv2p ~ log(contribution_receipt_amount) + factor(state), 
+   data = d_campaign_spending))
 coeff_table2 <- as.data.frame(summary_log_pv2p$coefficients)
 
 colnames(coeff_table2) <- c("Estimate", "Standard Error", "z_value", "Significance")
@@ -422,58 +401,54 @@ kable(coeff_table2, caption = "Estimate State-level Log Regression of Democratic
 
 
 There are many interesting findings within these results:
+
 - **As contribution amounts increase, the vote percentage difference increases more substantially.** This general effect can be seen across both models as well as the varios states within the fixed effect model.
+
 - **Looking at two-party vote share versus raw vote percentage yields different results.**  The general coefficient on contribution receipt amount for the regression which analyzes two-party vote share is both larger than that of raw vote percentage as well as statistically significant. This result is surprising as scholars often assume increased spending to have a minimal effect on two-party vote share due to the tug-of-war effect discussed above, wherein both major parties have nearly equal funding. 
+
 - **Looking more closely at the seven swing states in this upcoming election — Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania — we see the literature hold that large increases in campaign funding have only marginal effects on two party vote share.** For each of the aforementioned states, the coefficients in the second model were substantially lower than those of the first model, indicating that the large influx of spending during the election cycle is often balanced, thus it does not have a major effect on two-party vote share. The data does indicate, however, that the coefficients of each of these states is statistically significant at the 0.001 level. 
 
 **While campaign spending cannot determine election outcomes, these results indicate that it is a significant part of the story when attempting to predict the outcome of the 2024 election.**
 
-Take a prior belief about the prability of a certain outcome, combine it with data, then update final belief
-- bayesian is flexible to many different probability distributions (OLD is biased towards only accepting normal distributions)
-- random variable with probability distribution
-- uncertainty takes the form of credible intervals, 95% that real value is within the constructed interval
-- conditional probability of one even occurring conditional on other event is the probability of both events occurring / probability of the conditional occurring
-- see slides for more information! 
+## Including campaign spending into the 2024 election prediction
 
-frequentist statistics (what we have been using this far) assume that paramneters are fixed and unknown, they they rely on the central limit theory that using repeated sampling the estimators converge and are unbiased
-- uncertainty takes the form of confidence internals i.e. 95% of intervals trap the true parameter value
+As I have done in the previous three weeks, I will be predicting for the seven states which [expert predictors like Cook and Sabato](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. This prediction model includes the significant variables identified throughout previous analyses including: [state vote history as a proxy for demographic and turnout](https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/), [GDP growth in Q2 before the election](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/), [incumbency status](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/), and [the latest poll averages](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/). Based off of this week's analysis, this model will also incoporate campaign ad spending. While past data is provided by the course through AdImpact, the 2024 AdImpact campaign ad data is not yet available. Indeed, the most recent available data is from May when Biden was still the candidate and advertising had not yet picked up. While this data is merely a proxy, it is likely statistically insignificant and may even bias our model [(NPR, 2024)](https://www.npr.org/2024/05/24/nx-s1-4980821/ad-spending-presidential-election-biden-trump). To account for this, the data here will be updated as soon as new AdImpacct information becomes available.
 
-linear regression can have a bayesian analogue IF we treat the model parameters as random variables with probability distributions.
 ```{r   echo = FALSE, message=FALSE, warning=FALSE}
-####--------------------------------------------------------------#
-#### Bayesianism.
-####--------------------------------------------------------------#
+d_state_polls <- read_csv("data/state_polls_1968-2024.csv")
 
-# Process state-level polling data.
-d_pollav_state <- d_state_polls |>
+d_pollav_state <- d_state_polls |> 
   group_by(year, state, party) |>
   mutate(mean_pollav = mean(poll_support, na.rm = TRUE)) |>
-  top_n(1, poll_date) |>
+  top_n(1, poll_date) |> 
   rename(latest_pollav = poll_support) |>
   select(-c(weeks_left, days_left, poll_date, candidate, before_convention)) |>
   pivot_wider(names_from = party, values_from = c(latest_pollav, mean_pollav))
 
-# Merge data.
-d <- d_pollav_state |>
-  left_join(d_state_popvote, by = c("year", "state")) |>
-  left_join(d_popvote |> filter(party == "democrat"), by = "year") |>
-  left_join(d_turnout, by = c("year", "state")) |>
-  filter(year >= 1980) |>
+d_econ <- read_csv("~/Desktop/election-blog2/content/post/2024-09-27-4-the-incumbency-advantage/data/fred_econ.csv") |> 
+  filter(quarter == 2) |>
+  select(year, GDP_growth_quarterly) |>
+  filter(year >= 1980)
+
+d_2024 <- data.frame(
+  year = rep(2024, 7),
+  state = c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada"),
+  contribution_receipt_amount = c(10700000, 8600000, 4300000, 4300000, 3400000, 1900000, 1800000)
+)
+
+d_campaign_spending_predict <- d_campaign_spending|>
+  select(year, state, contribution_receipt_amount)
+
+d_campaign_spending_predict <- rbind(d_campaign_spending_predict, d_2024)
+
+d <- d_pollav_state |> 
+  left_join(d_state_popvote, by = c("year", "state")) |>  
+  left_join(d_popvote |> filter(party == "democrat"), by = "year") |> 
+  left_join(d_campaign_spending_predict, by = c("year", "state")) |>
+  left_join(d_econ, by = "year") |>
+  filter(year >= 1980) |> 
   ungroup()
 
-# Sequester states for which we have polling data for 2024.
-states.2024 <- unique(d$state[d$year == 2024])
-states.2024 <- states.2024[-which(states.2024 == "Nebraska Cd 2")]
-d <- d |>
-  filter(state %in% states.2024)
-
-# Separate into training and testing for simple poll prediction model. 
-d.train <- d |> filter(year < 2024) |> select(year, state, D_pv2p, latest_pollav_DEM, mean_pollav_DEM, 
-                                              D_pv2p_lag1, D_pv2p_lag2) |> drop_na()
-d.test <- d |> filter(year == 2024) |> select(year, state, D_pv2p, latest_pollav_DEM, mean_pollav_DEM, 
-                                              D_pv2p_lag1, D_pv2p_lag2)
-
-# Add back in lagged vote share for 2024. 
 t <- d |> 
   filter(year >= 2016) |> 
   arrange(year) |> 
@@ -486,81 +461,133 @@ t <- d |>
   filter(year == 2024) |> 
   select(state, year, D_pv2p, R_pv2p, D_pv2p_lag1, R_pv2p_lag1, D_pv2p_lag2, R_pv2p_lag2) 
 
-# Subset testing data to only relevant variables for our simple model. 
-d.test <- d.test |> 
-  select(-c(D_pv2p, D_pv2p_lag1, D_pv2p_lag2)) |> 
-  left_join(t, by = c("state", "year"))
+# Sequester states for which we have polling data for 2024. 
+states.2024 <- unique(d$state[d$year == 2024])
+states.2024 <- states.2024[-which(states.2024 == "Nebraska Cd 2")]
 
-# Standard frequentist linear regression. (what we ahve been doing thus far in the class)
-reg.ols <- lm(D_pv2p ~ latest_pollav_DEM + mean_pollav_DEM + D_pv2p_lag1 + D_pv2p_lag2, 
-              data = d.train)
-summary(reg.ols)
-pred.ols.dem <- predict(reg.ols, newdata = d.test)
+# Subset and split data.
+d <- d |> 
+  filter(state %in% states.2024)
 
-# Create dataset to summarize winners and EC vote distributions. 
-win_pred <- data.frame(state = d.test$state,
-                       year = rep(2024, length(d.test$state)),
-                       simp_pred_dem = pred.ols.dem,
-                       simp_pred_rep = 100 - pred.ols.dem) |> 
-            mutate(winner = ifelse(simp_pred_dem > simp_pred_rep, "Democrat", "Republican")) |>
-            left_join(d_ec, by = c("state", "year"))
+d_train <- d |> 
+  filter(year < 2024)
+d_test <- d |> 
+  filter(year == 2024) |>
+  left_join(t, by = "state")
 
-win_pred
+d_unique_states_test <- d_test |>
+  distinct(state, .keep_all = TRUE) 
 
-win_pred |> 
-  filter(winner == "Democrat") |> 
-  select(state)
+d_unique_states_test <- d_unique_states_test |> 
+  rename(D_pv2p_lag1 = D_pv2p_lag1.y,
+         D_pv2p_lag2 = D_pv2p_lag2.y)
 
-win_pred |> 
-  filter(winner == "Republican") |> 
-  select(state)
 
-win_pred |> 
-  group_by(winner) |> 
-  summarize(n = n(), ec = sum(electors))
+mod_lm_dem <- lm(D_pv2p ~ D_pv2p_lag1 + D_pv2p_lag2 + latest_pollav_DEM + GDP_growth_quarterly +
+                        log(contribution_receipt_amount) + incumbent,
+                      data = d_train)   
 
-# Bayesian linear regression using STAN. (new model who requires a list of data not a data frame)
-stan.data <- list(N = nrow(d.train), 
-                  D_pv2p = d.train$D_pv2p, 
-                  latest_pollav_DEM = d.train$latest_pollav_DEM, 
-                  mean_pollav_DEM = d.train$mean_pollav_DEM, 
-                  D_pv2p_lag1 = d.train$D_pv2p_lag1, 
-                  D_pv2p_lag2 = d.train$D_pv2p_lag2)
 
-# 3 parts of bayesian model: data, pramateres, model --> in this case, frequentist alighs with bayesian (and bayuesian is not necessarily helpful in this case)
-stan.code <- "
-data {
-  int<lower=0> N;
-  vector[N] D_pv2p;
-  vector[N] latest_pollav_DEM;
-  vector[N] mean_pollav_DEM;
-  vector[N] D_pv2p_lag1;
-  vector[N] D_pv2p_lag2;
-} "
+d_test_Arizona <- d_unique_states_test |>
+  filter(state == "Arizona") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, incumbent)
+         
+pred2024_Arizona <- predict(mod_lm_dem, newdata = d_test_Arizona, interval = "prediction", level = 0.95)
 
-# four coefficients correspond to four variable chosen above
-stan.code <- paste(stan.code, "
-parameters {
-  real alpha;
-  real beta1;
-  real beta2;
-  real beta3;
-  real beta4;
-  real<lower=0> sigma;
-} ")
 
-stan.code <- paste(stan.code, "
-model {
-  D_pv2p ~ normal(alpha + beta1*latest_pollav_DEM + beta2*mean_pollav_DEM + beta3*D_pv2p_lag1 + beta4*D_pv2p_lag2, sigma);
-} ")
+d_test_Nevada <- d_unique_states_test |>
+  filter(state == "Nevada") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, incumbent)
+         
+pred2024_Nevada <- predict(mod_lm_dem, newdata = d_test_Nevada, interval = "prediction", level = 0.95)
 
-stan.model <- stan_model(model_code = stan.code)
 
-stan.fit <- sampling(stan.model, data = stan.data, chains = 4, iter = 4000, warmup = 1000)
+d_test_NC <- d_unique_states_test |>
+  filter(state == "North Carolina") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, incumbent)
+         
+pred2024_NC <- predict(mod_lm_dem, newdata = d_test_NC, interval = "prediction", level = 0.95)
 
-# Compare coefficients from frequentist and Bayesian linear regressions. 
-coef(reg.ols)
-confint(reg.ols)
-print(stan.fit, pars = c("alpha", "beta1", "beta2", "beta3", "beta4", "sigma"))
+
+d_test_Michigan <- d_unique_states_test |>
+  filter(state == "Michigan") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, incumbent)
+         
+pred2024_Michigan <- predict(mod_lm_dem, newdata = d_test_Michigan, interval = "prediction", level = 0.95)
+
+
+d_test_Wisconsin <- d_unique_states_test |>
+  filter(state == "Wisconsin") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, incumbent)
+         
+pred2024_Wisconsin <- predict(mod_lm_dem, newdata = d_test_Wisconsin, interval = "prediction", level = 0.95)
+
+
+d_test_Georgia <- d_unique_states_test |>
+  filter(state == "Georgia") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, incumbent)
+         
+pred2024_Georgia <- predict(mod_lm_dem, newdata = d_test_Georgia, interval = "prediction", level = 0.95)
+
+d_test_Pennsylvania <- d_unique_states_test |>
+  filter(state == "Pennsylvania") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, incumbent)
+         
+pred2024_Pennsylvania  <- predict(mod_lm_dem, newdata = d_test_Pennsylvania , interval = "prediction", level = 0.95)
+
+
+
+pred2024_Arizona <- data.frame(state = "Arizona", pred2024_Arizona)
+pred2024_Nevada <- data.frame(state = "Nevada", pred2024_Nevada)
+pred2024_NC <- data.frame(state = "North Carolina", pred2024_NC)
+pred2024_Michigan <- data.frame(state = "Michigan", pred2024_Michigan)
+pred2024_Wisconsin <- data.frame(state = "Wisconsin", pred2024_Wisconsin)
+pred2024_Georgia <- data.frame(state = "Georgia", pred2024_Georgia)
+pred2024_Pennsylvania <- data.frame(state = "Pennsylvania", pred2024_Pennsylvania)
+
+
+colnames(pred2024_Arizona) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Nevada) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_NC) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Michigan) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Wisconsin) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Georgia) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Pennsylvania) <- c("state", "prediction", "lower_CI", "upper_CI")
+
+
+pred2024_combined <- rbind(pred2024_Arizona, pred2024_Nevada, pred2024_NC, 
+                           pred2024_Michigan, pred2024_Wisconsin, 
+                           pred2024_Georgia, pred2024_Pennsylvania)
+
+pred2024_combined <- pred2024_combined |>
+  mutate(Winner = if_else(prediction >= 50, "Harris", "Trump"))
+
+
+knitr::kable(pred2024_combined)
+
 ```
 
+This table displays the results of the model in the seven key battleground states. According to this prediction, **Harris will win the election with 270 electoral votes while Trump will have 268 electoral votes.**
+
+
+## Notes
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-10-09-6-on-air-the-addition-of-campaign-advertising/index.Rmarkdown).
+
+**Sources**
+     
+Gerber, Alan S., James G. Gimpel, Donald P. Green, and Daron R. Shaw. "How Large and Long-lasting 
+     Are the Persuasive Effects of Televised Campaign Ads? Results from a Randomized Field 
+     Experiment." American Political Science Review 105, no. 1 (2011): 135-50. https://doi.org/ 
+     10.1017/s000305541000047x. 
+
+Huber, Gregory A., and Kevin Arceneaux. "Identifying the Persuasive Effects of Presidential 
+     Advertising." American Journal of Political Science 51, no. 4 (2007): 957-77. https://doi.org/ 
+     10.1111/j.1540-5907.2007.00291.x. 
+
+Montanaro, Domenico. "Ad Spending Shows Where the Presidential Campaign Is Really Taking Place." 
+     NPR. Last modified May 26, 2024. https://www.npr.org/2024/05/24/nx-s1-4980821/ 
+     ad-spending-presidential-election-biden-trump. 
+
+**Data Sources**
+
+US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight and Gallup, also provided by the course. U.S. election soendign data sources from AdImpact.
