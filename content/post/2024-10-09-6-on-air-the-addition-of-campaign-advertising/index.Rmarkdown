@@ -9,7 +9,7 @@ tags: []
 
 ## What role does the campaign play in determining election outcomes?
 
-Throughout the past five weeks, my blog has focused on exploring fundamentals like [the economy](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/), [polling](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/) [incumbency](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/), and [demographics](https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/). These discussions may generate a false understanding that elections are pre-determined, as they are predictable on a small set of fundamental variables. In reality, fundamentals only represent a partial understanding of the temperature of the American electorate. **To truly predict the outcome of presidential elections, it is also important to take into account the 6.6 billion dollar presidential campaign industry.** 
+Throughout the past five weeks, my blog has focused on exploring fundamentals like [the economy](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/), [polling](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/), [incumbency](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/), and [demographics](https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/). These discussions may generate a false understanding that elections are pre-determined, as they are predictable on a small set of fundamental variables. In reality, fundamentals only represent a partial understanding of the temperature of the American electorate. **To truly predict the outcome of presidential elections, it is also important to take into account the 6.6 billion dollar presidential campaign industry.** 
 
 **Presidential campaigns have three main purposes — to convince donors, persuade voters, and mobilize the electorate. There are many mechanisms by which campaigns attempt to fulfill these purposes, the largest of which — the air war of mass media — will be explored below.**
 
@@ -73,7 +73,7 @@ d_state_polls <- read_csv("data/state_polls_1968-2024.csv")
 
 ```
 
-##What is the air war? How does it influence voters?
+## What is the air war? How does it influence voters?
 
 **To reach the largest number of potential voters, campaigns often turn to mass media to present their message.** The meaning of mass media has changed throughout time; however, its largest sector for the past half century has been television advertising. Indeed, according to [EMarketer](https://www.emarketer.com/press-releases/2024-political-ad-spending-will-jump-nearly-30-vs-2020/), total US political ad spending will hit $12.32 billion in 2024. 
 
@@ -81,7 +81,7 @@ Political advertising has two main effects — persuasion and mobilization. Ther
 
 *To understand these effects in practice, is is important to first analyze some descriptive statistics on ads and campaign spending over time.*
 
-**The first two graphics display the volume of campaign spending in the 2000, 2004, 2008, and 2012. These graphics highlight the disparities between election ad spending in swing states vs. non-competitive states.** Interestingly, the volume of advertising as well as the states deemed most competitive have changed throughout the years. Generally speaking, however, as elections haev become more competitive over the past 25 years, campaign ad spending has increased dramatically. 
+**The first four graphics display the volume of campaign spending in the 2000, 2004, 2008, and 2012. These graphics highlight the disparities between election ad spending in swing states vs. non-competitive states.** Interestingly, the volume of advertising as well as the states deemed most competitive have changed throughout the years. Generally speaking, however, as elections haev become more competitive over the past 25 years, campaign ad spending has increased dramatically. 
 
 **The third emphasizes the timing of this spending, emphasizing the importance of ad spending right before election day due to the lack of ad durability (voters are often unable to retain what they learned in an advertisement for a long period). Both of these graphics also point to an important reality — campaign spending is often evenly matched.** Many scholars assert that this equal game of tug-of-war is often why campaigns have a very small effect on outcomes. Indeed, if either party were to let go of the rope, voters may be influenced; however, while the even game continues, neither will make substantial gains.
 
