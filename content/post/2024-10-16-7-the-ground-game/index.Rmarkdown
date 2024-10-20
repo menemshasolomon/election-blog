@@ -1,0 +1,323 @@
+---
+title: 7. The Ground Game
+author: Mena Solomon
+date: '2024-10-16'
+slug: []
+categories: []
+tags: []
+---
+
+## What role does the campaign play in determining election outcomes?
+
+**Presidential campaigns have three main purposes — to convince donors, persuade voters, and mobilize the electorate.** Last weeks blog discussed one of the mechanisms by which campaigns seek to attain this goal: the air war of mass media campaign advertising. This week's post will explore the ground game, through which campaigns attempt to target individual voters. 
+
+**Individual targeting, which often takes the form of phone calls, door-knocks, and text messages out of localized field offices, attempts to psychologically target a voter for the sake of persuasion and mobilization.** Indeed, the ground game used to be the only way for campaigns to get out the vote and spread their message. In an age of mass media, however, the air war became increasingly popular as a way of marketing candidates to a large audience like products. The turning point occurred in the Obama McCain race, when then Senator Obama, aware of the over-saturation of campaign advertising and hoping to connect directly with emerging sectors of the electorate, decided to re-focus on the ground game. 
+
+**The first graphic shows the difference in field office location between the 2012 Obama v. Romney campaign and the 2016 Clinton v. Trump campaign.** This graphic not only displays the different numbers of field offices between candidates and years — In 2012 Obama ran 965 field offices while Romney had 283, in 2016 Clinton had 538 to Trump's 165 — but also the various locations of said offices.
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+####----------------------------------------------------------#
+#### Preamble
+####----------------------------------------------------------#
+
+# Load libraries.
+## install via `install.packages("name")`
+library(geofacet)
+library(ggpubr)
+library(ggthemes)
+library(haven)
+library(kableExtra)
+library(maps)
+library(mgcv)
+library(mgcViz)
+library(RColorBrewer)
+library(scales)
+library(sf)
+library(spData)
+library(stargazer)
+library(tidygeocoder)
+library(tidyverse)
+library(tigris)
+library(tmap)
+library(tmaptools)
+library(viridis)
+
+## set working directory here
+# setwd("~")
+
+####----------------------------------------------------------#
+#### Read, merge, and process data.
+####----------------------------------------------------------#
+
+# Read popular vote datasets. 
+d_popvote <- read_csv("data/popvote_1948_2020.csv")
+d_state_popvote <- read_csv("data/state_popvote_1948_2020.csv")
+d_state_popvote[d_state_popvote$state == "District of Columbia",]$state <- "District Of Columbia"
+
+# Read elector distribution dataset. 
+d_ec <- read_csv("data/corrected_ec_1948_2024.csv")
+
+# Read polling data. 
+d_polls <- read_csv("data/national_polls_1968-2024.csv")
+d_state_polls <- read_csv("data/state_polls_1968-2024.csv")
+
+# Read turnout data. 
+d_turnout <- read_csv("data/state_turnout_1980_2022.csv")
+
+# Read county turnout. 
+d_county_turnout <- read_csv("data/county_turnout.csv")
+
+# Read state-level demographics.
+d_state_demog <- read_csv("data/demographics.csv")
+
+# Read county demographics. 
+d_county_demog <- read_csv("data/county_demographics.csv")
+
+# Read campaign events datasets. 
+d_campaign_events <- read_csv("data/campaigns_2016_2024.csv")[,-1]
+```
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Field Strategies of Obama, Romney, Clinton, and Trump in 2016. 
+fo_add <- read_csv("data/fieldoffice_2012-2016_byaddress.csv")
+
+us_geo <- counties(cb = TRUE) |> 
+  shift_geometry() |> 
+  filter(STUSPS %in% unique(fo_add$state))
+
+obama12 <- subset(fo_add, year == 2012 & candidate == "Obama") %>%
+  select(longitude, latitude)
+romney12 <- subset(fo_add, year == 2012 & candidate == "Romney") %>%
+  select(longitude, latitude)
+clinton16 <- subset(fo_add, year == 2016 & candidate == "Clinton") %>%
+  select(longitude, latitude)
+trump16 <- subset(fo_add, year == 2016 & candidate == "Trump") %>%
+  select(longitude, latitude)
+
+obama12transformed <- st_as_sf(obama12, coords = c("longitude", "latitude"), crs = 4326) |> 
+  st_transform(crs = st_crs(us_geo)) |> 
+  shift_geometry()
+romney12transformed <- st_as_sf(romney12, coords = c("longitude", "latitude"), crs = 4326) |>
+  st_transform(crs = st_crs(us_geo)) |>
+  shift_geometry()
+clinton16transformed <- st_as_sf(clinton16, coords = c("longitude", "latitude"), crs = 4326) |>
+  st_transform(crs = st_crs(us_geo)) |>
+  shift_geometry()
+trump16transformed <- st_as_sf(trump16, coords = c("longitude", "latitude"), crs = 4326) |>
+  st_transform(crs = st_crs(us_geo)) |>
+  shift_geometry()
+
+(ob12 <- ggplot() +
+  geom_sf(data = us_geo) + 
+  geom_sf(data = obama12transformed, color = "dodgerblue4", alpha = 0.75, pch = 3) +
+  ggtitle("Obama 2012 Field Offices") +
+  theme_void())
+
+(ro12 <- ggplot() +
+  geom_sf(data = us_geo) + 
+  geom_sf(data = romney12transformed, color = "firebrick", alpha = 0.75, pch = 3) +
+  ggtitle("Romney 2012 Field Offices") +
+  theme_void())
+
+(cl16 <- ggplot() + 
+  geom_sf(data = us_geo) + 
+  geom_sf(data = clinton16transformed, color = "dodgerblue4", alpha = 0.75, pch = 3) +
+  ggtitle("Clinton 2016 Field Offices") +
+  theme_void())
+
+(tr16 <- ggplot() +
+  geom_sf(data = us_geo) + 
+  geom_sf(data = trump16transformed, color = "firebrick", alpha = 0.75, pch = 3) +
+  ggtitle("Trump 2016 Field Offices") +
+  theme_void())
+
+ggarrange(ob12, ro12, cl16, tr16, nrow = 2, ncol = 2)
+
+```
+
+**The second graphic displays the difference in field offices between Clinton in 2016 and Obama in 2012 as well as Trump in 2016 and Romney in 2012.** As expressed in the graph, Clinton utilized significantly less field offices than Obama, only adding in Pennsylvania — 54 to 57 offices — and New Hampshire — 22 to 26 offices. The more drastic shift, however, is seen from Romney to Trump, wherein the number of field offices decreases across all states.
+
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width = 12}
+
+# Clinton 2016 Field Offices - Obama 2008 Field Offices. 
+ClintonObama <-  fo_add %>%
+  subset(candidate %in% c("Clinton", "Obama") &
+           state %in% c("CO", "VA", "IA", "FL", "NH", "OH", "NV", "AZ", "NC", "PA", "WI", "MI", "GA")) %>%
+  group_by(state, candidate) %>%
+  summarize(fo = n()) %>%
+  spread(key = candidate, value = fo) %>%
+  mutate(diff = Clinton - Obama) %>%
+  select(state, diff) %>%
+  ggplot(aes(y = diff, x = state, fill = (diff > 0))) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  ylim(-50, 15) +
+  scale_y_continuous(breaks=seq(-50,10,10)) +
+  xlab("State") +
+  ylab("Clinton Field Offices - Obama '12 field offices")+
+  theme_minimal() +
+  theme(legend.position = "none",
+        text = element_text(size = 15))
+
+TrumpRomney <- fo_add %>%
+  subset(candidate %in% c("Trump", "Romney") &
+           state %in% c("CO", "VA", "IA", "FL", "NH", "OH", "NV", "AZ", "NC", "PA", "WI", "MI", "GA")) %>%
+  group_by(state, candidate) %>%
+  summarize(fo = n()) %>%
+  spread(key = candidate, value = fo) %>%
+  mutate(diff = Trump - Romney) %>%
+  select(state, diff) %>%
+  ggplot(aes(y = diff, x = state, fill = (diff > 0))) +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  ylim(-50, 15) +
+  scale_y_continuous(breaks=seq(-50,10,10)) +
+  xlab("State") +
+  ylab("Trump Field Offices - Romney '12 field offices")+
+  theme_minimal() +
+  theme(legend.position = "none",
+        text = element_text(size = 15))
+
+ggarrange(ClintonObama, TrumpRomney, nrow = 1, ncol = 2)
+```
+
+
+**When it comes to the efficacy of field offices, one of the most popular narratives surrounding the shift in campaign strategy from Obama to Clinton that is visualized above asserts that Clinton's removal of Wisconsin field offices lost her the state in 2016.** Below, this effect is visualized, displaying that some areas where Clinton decreased the number of field offices from 2012 to 2016 appeared to swing Republican. 
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Case Study: Wisconsin Field Offices in 2012 and 2016 
+obama12_wi <- subset(fo_add, year == 2012 & candidate == "Obama" & state == "WI") %>%
+  select(longitude, latitude)
+clinton16_wi <- subset(fo_add, year == 2016 & candidate == "Clinton" & state == "WI") %>%
+  select(longitude, latitude)
+
+obama12_wi_transformed <- st_as_sf(obama12_wi, coords = c("longitude", "latitude"), crs = 4326) |> 
+  st_transform(crs = st_crs(us_geo)) |> 
+  shift_geometry()
+clinton16_wi_transformed <- st_as_sf(clinton16_wi, coords = c("longitude", "latitude"), crs = 4326) |>
+  st_transform(crs = st_crs(us_geo)) |>
+  shift_geometry()
+
+obama_wi <- ggplot() +
+  geom_sf(data = us_geo |> filter(STUSPS == "WI")) + 
+  geom_sf(data = obama12_wi_transformed, color = "dodgerblue4", alpha = 0.75, pch=3, size=3, stroke=1) +
+  ggtitle("Obama 2012 Field Offices in Wisconsin") +
+  theme_void()
+
+clinton_wi <- ggplot() +
+  geom_sf(data = us_geo |> filter(STUSPS == "WI")) + 
+  geom_sf(data = clinton16_wi_transformed, color = "dodgerblue4", alpha = 0.75, pch=3, size=3, stroke=1) +
+  ggtitle("Clinton 2016 Field Offices in Wisconsin") +
+  theme_void()
+
+ggarrange(obama_wi, clinton_wi)
+
+pvcounty_wi <- read_csv("data/popvote_bycounty_2012-2016_WI.csv")
+pv12_wi <- subset(pvcounty_wi, year == 2012) 
+pv16_wi <- subset(pvcounty_wi, year == 2016) 
+
+us_geo_12 <- us_geo |> 
+  left_join(pv12_wi, by = c("NAME" = "county"))
+
+us_geo_16 <- us_geo |>
+  left_join(pv16_wi, by = c("NAME" = "county"))
+
+obama_wis <- 
+  ggplot() + 
+  geom_sf(data = us_geo_12 |> filter(STUSPS == "WI"), aes(fill = D_win_margin)) + 
+  geom_sf(data = obama12_wi_transformed, color = "dodgerblue4", alpha = 0.75, pch=3, size=3, stroke=1) +
+  ggtitle("Obama 2012 Field Offices\nand Win Margin in Wisconsin") +
+  theme_void() + 
+  scale_fill_gradient2(high = "dodgerblue4", mid = "white", low = "firebrick1",
+                       name = "Dem\nMargin") + 
+  theme(plot.title = element_text(size=16, face="bold")) + theme(legend.position = "right")
+
+
+
+clinton_wis <- 
+  ggplot() + 
+  geom_sf(data = us_geo_16 |> filter(STUSPS == "WI"), aes(fill = D_win_margin)) + 
+  geom_sf(data = clinton16_wi_transformed, color = "dodgerblue4", alpha = 0.75, pch=3, size=3, stroke=1) +
+  ggtitle("Clinton 2016 Field Offices\nand Win Margin in Wisconsin") +
+  theme_void() + 
+  scale_fill_gradient2(high = "dodgerblue4", mid = "white", low = "firebrick1",
+                       name = "Dem\nMargin") + 
+  theme(plot.title = element_text(size=16, face="bold")) + theme(legend.position = "right")
+
+
+
+ggarrange(obama_wis, clinton_wis)
+
+```
+
+## Does the ground game truly influence voters?
+
+Though the analysis above is interesting, it fails to conclusively display any relationship between the ground game and voting behavior. Since campaigns are measured by their ability to both persuade and mobilize voters, these relationship between the ground game and these two effects will be explored below. 
+
+**The existing political science literature asserts that the ability of the ground game to persuade voters is negligible.** Indeed, in an aggregate study of 49 field experiments, scholars Kalla and Brockman found that persuasion efforts of ground campaigns are almost entirely ineffective [(Kalla and Brockman, 2018)](). The mobilization effect, however, is found to be incredibly significant. Indeed, in an experiment which compared battleground states (where there is a ground game) and non-swing states (without one) in areas where there is a spillover media market, ensuring that the air war remains constant, **Enos and Fowler found that the ground game led to an increase in turnout around 6%** [(Enos and Fowler, 2016)](). 
+
+**The regressions below first outline where campaigns choose to build field offices as well as the efficacy of said offices on turnout and vote share.** According to the first model, field office placement is most related to whether or not the state is a battle ground state, the size of the state's population, and the presence of the other campaign's field offices. All three variables are statistically significant at the 0.001 level. According to the second and third models, 
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Where should campaigns build field offices? 
+fo_2012 <- read_csv("data/fieldoffice_2012_bycounty.csv")
+
+lm_obama <- lm(obama12fo ~ romney12fo + 
+                 swing + 
+                 core_rep + 
+                 swing:romney12fo + 
+                 core_rep:romney12fo + 
+                 battle + 
+                 medage08 + 
+                 pop2008 + 
+                 pop2008^2 + 
+                 medinc08 + 
+                 black + 
+                 hispanic + 
+                 pc_less_hs00 + 
+                 pc_degree00 + 
+                 as.factor(state), 
+               fo_2012)
+
+lm_romney <- lm(romney12fo ~ 
+                  obama12fo + 
+                  swing + 
+                  core_dem + 
+                  swing:obama12fo + 
+                  core_dem:obama12fo + 
+                  battle + 
+                  medage08 + 
+                  pop2008 + 
+                  pop2008^2 + 
+                  medinc08 + 
+                  black + 
+                  hispanic + 
+                  pc_less_hs00 + 
+                  pc_degree00 + 
+                  as.factor(state),
+                  fo_2012)
+
+stargazer(lm_obama, lm_romney, header=FALSE, type='latex', no.space = TRUE,
+          column.sep.width = "3pt", font.size = "scriptsize", single.row = TRUE,
+          keep = c(1:7, 62:66), omit.table.layout = "sn",
+          title = "Placement of Field Offices (2012)")
+
+# Effects of field offices on turnout and vote share. 
+fo_dem <- read_csv("data/fieldoffice_2004-2012_dems.csv")
+
+ef_t <- lm(turnout_change ~ dummy_fo_change + battle + dummy_fo_change:battle + as.factor(state) + as.factor(year), fo_dem)
+
+ef_d <- lm(dempct_change ~ dummy_fo_change + battle + dummy_fo_change:battle + as.factor(state) + as.factor(year), fo_dem)
+
+stargazer(ef_t, ef_d, header=FALSE, type='latex', no.space = TRUE,
+          column.sep.width = "3pt", font.size = "scriptsize", single.row = TRUE,
+          keep = c(1:3, 53:54), keep.stat = c("n", "adj.rsq", "res.dev"),
+          title = "Effect of DEM Field Offices on Turnout and DEM Vote Share (2004-2012)")
+```
+
+
+
+
+

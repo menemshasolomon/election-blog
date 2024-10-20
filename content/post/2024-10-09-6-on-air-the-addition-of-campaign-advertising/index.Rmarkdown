@@ -487,7 +487,6 @@ mod_lm_dem <- lm(D_pv2p ~ D_pv2p_lag1 + D_pv2p_lag2 + latest_pollav_DEM + GDP_gr
                         log(contribution_receipt_amount) + incumbent,
                       data = d_train)   
 
-
 d_test_Arizona <- d_unique_states_test |>
   filter(state == "Arizona") |>
   select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, incumbent)
