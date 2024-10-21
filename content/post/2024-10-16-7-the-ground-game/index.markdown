@@ -6,6 +6,14 @@ slug: []
 categories: []
 tags: []
 ---
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
 
 ## What role does the campaign play in determining election outcomes?
 
@@ -30,6 +38,8 @@ tags: []
   |=                                                                     |   1%
   |                                                                            
   |=                                                                     |   2%
+  |                                                                            
+  |==                                                                    |   2%
   |                                                                            
   |==                                                                    |   3%
   |                                                                            
@@ -91,6 +101,8 @@ tags: []
   |                                                                            
   |================                                                      |  23%
   |                                                                            
+  |================                                                      |  24%
+  |                                                                            
   |=================                                                     |  24%
   |                                                                            
   |=================                                                     |  25%
@@ -98,6 +110,8 @@ tags: []
   |==================                                                    |  25%
   |                                                                            
   |==================                                                    |  26%
+  |                                                                            
+  |===================                                                   |  26%
   |                                                                            
   |===================                                                   |  27%
   |                                                                            
@@ -129,8 +143,6 @@ tags: []
   |                                                                            
   |=========================                                             |  36%
   |                                                                            
-  |==========================                                            |  36%
-  |                                                                            
   |==========================                                            |  37%
   |                                                                            
   |==========================                                            |  38%
@@ -138,6 +150,8 @@ tags: []
   |===========================                                           |  38%
   |                                                                            
   |===========================                                           |  39%
+  |                                                                            
+  |============================                                          |  39%
   |                                                                            
   |============================                                          |  40%
   |                                                                            
@@ -167,7 +181,11 @@ tags: []
   |                                                                            
   |==================================                                    |  49%
   |                                                                            
+  |===================================                                   |  49%
+  |                                                                            
   |===================================                                   |  50%
+  |                                                                            
+  |===================================                                   |  51%
   |                                                                            
   |====================================                                  |  51%
   |                                                                            
@@ -176,8 +194,6 @@ tags: []
   |=====================================                                 |  52%
   |                                                                            
   |=====================================                                 |  53%
-  |                                                                            
-  |=====================================                                 |  54%
   |                                                                            
   |======================================                                |  54%
   |                                                                            
@@ -194,6 +210,8 @@ tags: []
   |=========================================                             |  58%
   |                                                                            
   |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  59%
   |                                                                            
   |==========================================                            |  60%
   |                                                                            
@@ -215,11 +233,17 @@ tags: []
   |                                                                            
   |==============================================                        |  66%
   |                                                                            
+  |===============================================                       |  66%
+  |                                                                            
   |===============================================                       |  67%
+  |                                                                            
+  |===============================================                       |  68%
   |                                                                            
   |================================================                      |  68%
   |                                                                            
   |================================================                      |  69%
+  |                                                                            
+  |=================================================                     |  69%
   |                                                                            
   |=================================================                     |  70%
   |                                                                            
@@ -228,6 +252,10 @@ tags: []
   |==================================================                    |  71%
   |                                                                            
   |==================================================                    |  72%
+  |                                                                            
+  |===================================================                   |  72%
+  |                                                                            
+  |===================================================                   |  73%
   |                                                                            
   |====================================================                  |  74%
   |                                                                            
@@ -245,6 +273,8 @@ tags: []
   |                                                                            
   |=======================================================               |  79%
   |                                                                            
+  |========================================================              |  79%
+  |                                                                            
   |========================================================              |  80%
   |                                                                            
   |=========================================================             |  81%
@@ -255,19 +285,11 @@ tags: []
   |                                                                            
   |==========================================================            |  83%
   |                                                                            
+  |==========================================================            |  84%
+  |                                                                            
   |===========================================================           |  84%
   |                                                                            
   |===========================================================           |  85%
-  |                                                                            
-  |============================================================          |  85%
-  |                                                                            
-  |============================================================          |  86%
-  |                                                                            
-  |=============================================================         |  87%
-  |                                                                            
-  |=============================================================         |  88%
-  |                                                                            
-  |==============================================================        |  88%
   |                                                                            
   |==============================================================        |  89%
   |                                                                            
@@ -281,14 +303,32 @@ tags: []
   |                                                                            
   |================================================================      |  92%
   |                                                                            
+  |=================================================================     |  92%
+  |                                                                            
   |=================================================================     |  93%
   |                                                                            
   |==================================================================    |  94%
   |                                                                            
+  |==================================================================    |  95%
+  |                                                                            
+  |===================================================================   |  95%
+  |                                                                            
+  |===================================================================   |  96%
+  |                                                                            
+  |====================================================================  |  97%
+  |                                                                            
+  |====================================================================  |  98%
+  |                                                                            
+  |===================================================================== |  98%
+  |                                                                            
+  |===================================================================== |  99%
+  |                                                                            
+  |======================================================================|  99%
+  |                                                                            
   |======================================================================| 100%
 ```
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-2.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-3.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-4.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-5.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" />
 
 **The second graphic displays the difference in field offices between Clinton in 2016 and Obama in 2012 as well as Trump in 2016 and Romney in 2012.** As expressed in the graph, Clinton utilized significantly less field offices than Obama, only adding in Pennsylvania — 54 to 57 offices — and New Hampshire — 22 to 26 offices. The more drastic shift, however, is seen from Romney to Trump, wherein the number of field offices decreases across all states.
 
@@ -303,74 +343,1491 @@ tags: []
 
 Though the analysis above is interesting, it fails to conclusively display any relationship between the ground game and voting behavior. Since campaigns are measured by their ability to both persuade and mobilize voters, these relationship between the ground game and these two effects will be explored below. 
 
-**The existing political science literature asserts that the ability of the ground game to persuade voters is negligible.** Indeed, in an aggregate study of 49 field experiments, scholars Kalla and Brockman found that persuasion efforts of ground campaigns are almost entirely ineffective [(Kalla and Brockman, 2018)](). The mobilization effect, however, is found to be incredibly significant. Indeed, in an experiment which compared battleground states (where there is a ground game) and non-swing states (without one) in areas where there is a spillover media market, ensuring that the air war remains constant, **Enos and Fowler found that the ground game led to an increase in turnout around 6%** [(Enos and Fowler, 2016)](). 
+**The existing political science literature asserts that the ability of the ground game to persuade voters is negligible.** Indeed, in an aggregate study of 49 field experiments, scholars Kalla and Brockman found that persuasion efforts of ground campaigns are almost entirely ineffective [(Kalla and Brockman, 2018)](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_journals_1990829523). The mobilization effect, however, is found to be incredibly significant. Indeed, in an experiment which compared battleground states (where there is a ground game) and non-swing states (without one) in areas where there is a spillover media market, ensuring that the air war remains constant, **Enos and Fowler found that the ground game led to an increase in turnout around 6%** [(Enos and Fowler, 2016)](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_journals_2117059848). 
 
-**The regressions below first outline where campaigns choose to build field offices as well as the efficacy of said offices on turnout and vote share.** According to the first model, field office placement is most related to whether or not the state is a battle ground state, the size of the state's population, and the presence of the other campaign's field offices. All three variables are statistically significant at the 0.001 level. According to the second and third models, 
+**The regressions below first outlines where campaigns choose to build field offices as well as the efficacy of said offices on turnout and vote share.** According to the first model, field office placement is most related to whether or not the state is a battle ground state, the size of the state's population, and the presence of the other campaign's field offices. All three variables are statistically significant at the 0.001 level. 
 
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-5"></span>Table 1: Placement of Field Offices (2012)</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable </th>
+   <th style="text-align:right;"> Obama 2012 Estimate </th>
+   <th style="text-align:right;"> Obama 2012 Std. Error </th>
+   <th style="text-align:right;"> Romney 2012 Estimate </th>
+   <th style="text-align:right;"> Romney 2012 Std. Error </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> -0.340 </td>
+   <td style="text-align:right;"> 0.196 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.079 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> romney12fo </td>
+   <td style="text-align:right;"> 2.546 </td>
+   <td style="text-align:right;"> 0.114 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> swingTRUE </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.055 </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> 0.011 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> core_repTRUE </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> 0.061 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> battleTRUE </td>
+   <td style="text-align:right;"> 0.541 </td>
+   <td style="text-align:right;"> 0.096 </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> 0.042 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> medage08 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> pop2008 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> medinc08 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> black </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> hispanic </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> pc_less_hs00 </td>
+   <td style="text-align:right;"> 0.506 </td>
+   <td style="text-align:right;"> 0.259 </td>
+   <td style="text-align:right;"> -0.130 </td>
+   <td style="text-align:right;"> 0.112 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> pc_degree00 </td>
+   <td style="text-align:right;"> 0.951 </td>
+   <td style="text-align:right;"> 0.223 </td>
+   <td style="text-align:right;"> 0.305 </td>
+   <td style="text-align:right;"> 0.097 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Arizona </td>
+   <td style="text-align:right;"> -0.028 </td>
+   <td style="text-align:right;"> 0.156 </td>
+   <td style="text-align:right;"> -0.050 </td>
+   <td style="text-align:right;"> 0.067 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Arkansas </td>
+   <td style="text-align:right;"> 0.076 </td>
+   <td style="text-align:right;"> 0.090 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.039 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)California </td>
+   <td style="text-align:right;"> -0.076 </td>
+   <td style="text-align:right;"> 0.104 </td>
+   <td style="text-align:right;"> -0.099 </td>
+   <td style="text-align:right;"> 0.045 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Colorado </td>
+   <td style="text-align:right;"> 0.163 </td>
+   <td style="text-align:right;"> 0.094 </td>
+   <td style="text-align:right;"> -0.173 </td>
+   <td style="text-align:right;"> 0.041 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Connecticut </td>
+   <td style="text-align:right;"> 0.036 </td>
+   <td style="text-align:right;"> 0.200 </td>
+   <td style="text-align:right;"> -0.145 </td>
+   <td style="text-align:right;"> 0.086 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Delaware </td>
+   <td style="text-align:right;"> 0.207 </td>
+   <td style="text-align:right;"> 0.309 </td>
+   <td style="text-align:right;"> -0.135 </td>
+   <td style="text-align:right;"> 0.134 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Florida </td>
+   <td style="text-align:right;"> -0.290 </td>
+   <td style="text-align:right;"> 0.091 </td>
+   <td style="text-align:right;"> 0.244 </td>
+   <td style="text-align:right;"> 0.039 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Georgia </td>
+   <td style="text-align:right;"> 0.029 </td>
+   <td style="text-align:right;"> 0.077 </td>
+   <td style="text-align:right;"> -0.018 </td>
+   <td style="text-align:right;"> 0.033 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Hawaii </td>
+   <td style="text-align:right;"> 0.179 </td>
+   <td style="text-align:right;"> 0.272 </td>
+   <td style="text-align:right;"> -0.126 </td>
+   <td style="text-align:right;"> 0.117 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Idaho </td>
+   <td style="text-align:right;"> 0.154 </td>
+   <td style="text-align:right;"> 0.109 </td>
+   <td style="text-align:right;"> -0.054 </td>
+   <td style="text-align:right;"> 0.047 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Illinois </td>
+   <td style="text-align:right;"> 0.117 </td>
+   <td style="text-align:right;"> 0.088 </td>
+   <td style="text-align:right;"> -0.033 </td>
+   <td style="text-align:right;"> 0.038 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Indiana </td>
+   <td style="text-align:right;"> 0.140 </td>
+   <td style="text-align:right;"> 0.090 </td>
+   <td style="text-align:right;"> -0.032 </td>
+   <td style="text-align:right;"> 0.039 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Iowa </td>
+   <td style="text-align:right;"> 0.081 </td>
+   <td style="text-align:right;"> 0.081 </td>
+   <td style="text-align:right;"> -0.115 </td>
+   <td style="text-align:right;"> 0.035 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Kansas </td>
+   <td style="text-align:right;"> 0.147 </td>
+   <td style="text-align:right;"> 0.091 </td>
+   <td style="text-align:right;"> -0.046 </td>
+   <td style="text-align:right;"> 0.039 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Kentucky </td>
+   <td style="text-align:right;"> 0.105 </td>
+   <td style="text-align:right;"> 0.084 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> 0.036 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Louisiana </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> 0.092 </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.040 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Maine </td>
+   <td style="text-align:right;"> 0.274 </td>
+   <td style="text-align:right;"> 0.150 </td>
+   <td style="text-align:right;"> -0.088 </td>
+   <td style="text-align:right;"> 0.065 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Maryland </td>
+   <td style="text-align:right;"> -0.047 </td>
+   <td style="text-align:right;"> 0.128 </td>
+   <td style="text-align:right;"> -0.074 </td>
+   <td style="text-align:right;"> 0.055 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Massachusetts </td>
+   <td style="text-align:right;"> -0.118 </td>
+   <td style="text-align:right;"> 0.163 </td>
+   <td style="text-align:right;"> -0.110 </td>
+   <td style="text-align:right;"> 0.070 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Michigan </td>
+   <td style="text-align:right;"> -0.083 </td>
+   <td style="text-align:right;"> 0.093 </td>
+   <td style="text-align:right;"> 0.175 </td>
+   <td style="text-align:right;"> 0.040 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Minnesota </td>
+   <td style="text-align:right;"> 0.271 </td>
+   <td style="text-align:right;"> 0.092 </td>
+   <td style="text-align:right;"> -0.073 </td>
+   <td style="text-align:right;"> 0.040 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Mississippi </td>
+   <td style="text-align:right;"> -0.034 </td>
+   <td style="text-align:right;"> 0.087 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.038 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Missouri </td>
+   <td style="text-align:right;"> 0.040 </td>
+   <td style="text-align:right;"> 0.085 </td>
+   <td style="text-align:right;"> 0.059 </td>
+   <td style="text-align:right;"> 0.037 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Montana </td>
+   <td style="text-align:right;"> 0.167 </td>
+   <td style="text-align:right;"> 0.103 </td>
+   <td style="text-align:right;"> -0.050 </td>
+   <td style="text-align:right;"> 0.045 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Nebraska </td>
+   <td style="text-align:right;"> 0.167 </td>
+   <td style="text-align:right;"> 0.095 </td>
+   <td style="text-align:right;"> -0.031 </td>
+   <td style="text-align:right;"> 0.041 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Nevada </td>
+   <td style="text-align:right;"> -0.054 </td>
+   <td style="text-align:right;"> 0.143 </td>
+   <td style="text-align:right;"> 0.208 </td>
+   <td style="text-align:right;"> 0.062 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New Hampshire </td>
+   <td style="text-align:right;"> 0.091 </td>
+   <td style="text-align:right;"> 0.178 </td>
+   <td style="text-align:right;"> 0.178 </td>
+   <td style="text-align:right;"> 0.077 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New Jersey </td>
+   <td style="text-align:right;"> -0.166 </td>
+   <td style="text-align:right;"> 0.137 </td>
+   <td style="text-align:right;"> -0.087 </td>
+   <td style="text-align:right;"> 0.059 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New Mexico </td>
+   <td style="text-align:right;"> 0.093 </td>
+   <td style="text-align:right;"> 0.128 </td>
+   <td style="text-align:right;"> 0.080 </td>
+   <td style="text-align:right;"> 0.055 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New York </td>
+   <td style="text-align:right;"> -0.019 </td>
+   <td style="text-align:right;"> 0.097 </td>
+   <td style="text-align:right;"> -0.056 </td>
+   <td style="text-align:right;"> 0.042 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)North Carolina </td>
+   <td style="text-align:right;"> 0.230 </td>
+   <td style="text-align:right;"> 0.084 </td>
+   <td style="text-align:right;"> 0.054 </td>
+   <td style="text-align:right;"> 0.036 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)North Dakota </td>
+   <td style="text-align:right;"> 0.163 </td>
+   <td style="text-align:right;"> 0.102 </td>
+   <td style="text-align:right;"> -0.032 </td>
+   <td style="text-align:right;"> 0.044 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Ohio </td>
+   <td style="text-align:right;"> 0.305 </td>
+   <td style="text-align:right;"> 0.084 </td>
+   <td style="text-align:right;"> -0.031 </td>
+   <td style="text-align:right;"> 0.036 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Oklahoma </td>
+   <td style="text-align:right;"> 0.113 </td>
+   <td style="text-align:right;"> 0.092 </td>
+   <td style="text-align:right;"> -0.022 </td>
+   <td style="text-align:right;"> 0.040 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Oregon </td>
+   <td style="text-align:right;"> 0.270 </td>
+   <td style="text-align:right;"> 0.115 </td>
+   <td style="text-align:right;"> -0.093 </td>
+   <td style="text-align:right;"> 0.050 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Pennsylvania </td>
+   <td style="text-align:right;"> -0.351 </td>
+   <td style="text-align:right;"> 0.089 </td>
+   <td style="text-align:right;"> 0.111 </td>
+   <td style="text-align:right;"> 0.039 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Rhode Island </td>
+   <td style="text-align:right;"> 0.117 </td>
+   <td style="text-align:right;"> 0.246 </td>
+   <td style="text-align:right;"> -0.123 </td>
+   <td style="text-align:right;"> 0.106 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)South Carolina </td>
+   <td style="text-align:right;"> -0.003 </td>
+   <td style="text-align:right;"> 0.101 </td>
+   <td style="text-align:right;"> -0.027 </td>
+   <td style="text-align:right;"> 0.044 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)South Dakota </td>
+   <td style="text-align:right;"> 0.156 </td>
+   <td style="text-align:right;"> 0.097 </td>
+   <td style="text-align:right;"> -0.033 </td>
+   <td style="text-align:right;"> 0.042 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Tennessee </td>
+   <td style="text-align:right;"> 0.081 </td>
+   <td style="text-align:right;"> 0.087 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.038 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Texas </td>
+   <td style="text-align:right;"> 0.044 </td>
+   <td style="text-align:right;"> 0.082 </td>
+   <td style="text-align:right;"> -0.037 </td>
+   <td style="text-align:right;"> 0.035 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Utah </td>
+   <td style="text-align:right;"> 0.036 </td>
+   <td style="text-align:right;"> 0.124 </td>
+   <td style="text-align:right;"> 0.060 </td>
+   <td style="text-align:right;"> 0.054 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Vermont </td>
+   <td style="text-align:right;"> 0.146 </td>
+   <td style="text-align:right;"> 0.158 </td>
+   <td style="text-align:right;"> -0.080 </td>
+   <td style="text-align:right;"> 0.068 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Virginia </td>
+   <td style="text-align:right;"> -0.396 </td>
+   <td style="text-align:right;"> 0.083 </td>
+   <td style="text-align:right;"> 0.027 </td>
+   <td style="text-align:right;"> 0.036 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Washington </td>
+   <td style="text-align:right;"> 0.280 </td>
+   <td style="text-align:right;"> 0.112 </td>
+   <td style="text-align:right;"> -0.122 </td>
+   <td style="text-align:right;"> 0.048 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)West Virginia </td>
+   <td style="text-align:right;"> 0.142 </td>
+   <td style="text-align:right;"> 0.099 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.043 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Wisconsin </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Wyoming </td>
+   <td style="text-align:right;"> 0.160 </td>
+   <td style="text-align:right;"> 0.135 </td>
+   <td style="text-align:right;"> -0.064 </td>
+   <td style="text-align:right;"> 0.058 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> romney12fo:swingTRUE </td>
+   <td style="text-align:right;"> -0.765 </td>
+   <td style="text-align:right;"> 0.116 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> romney12fo:core_repTRUE </td>
+   <td style="text-align:right;"> -1.875 </td>
+   <td style="text-align:right;"> 0.131 </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+</tbody>
+</table>
+
+**The second regression table models the relationship between field office presence and turnout as well as vote share on a national level.** According to this model, while field office location does appear to have a statistically significant effect on both vote share and turnout, especially in swing states, this effect is minimal (shown by the small coefficients). These results do not reflect the literature as they are simple regression models and not built out experiments like the ones conducted above. Later, I will include ground game, on a state level, in my prediction to see if this minor impact is able to swing a very tight election. 
+
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-6"></span>Table 2: Effect of DEM Field Offices on Turnout and DEM Vote Share (2004-2012)</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable </th>
+   <th style="text-align:right;"> Turnout Change Estimate </th>
+   <th style="text-align:right;"> Turnout Change Std. Error </th>
+   <th style="text-align:right;"> DEM Vote Share Estimate </th>
+   <th style="text-align:right;"> DEM Vote Share Std. Error </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> 0.029 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.022 </td>
+   <td style="text-align:right;"> 0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> dummy_fo_change </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.009 </td>
+   <td style="text-align:right;"> 0.002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> battleTRUE </td>
+   <td style="text-align:right;"> 0.024 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.043 </td>
+   <td style="text-align:right;"> 0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Arizona </td>
+   <td style="text-align:right;"> -0.012 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0.007 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Arkansas </td>
+   <td style="text-align:right;"> -0.026 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.055 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)California </td>
+   <td style="text-align:right;"> -0.021 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.020 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Colorado </td>
+   <td style="text-align:right;"> -0.024 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.035 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Connecticut </td>
+   <td style="text-align:right;"> -0.022 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> 0.010 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Delaware </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> 0.033 </td>
+   <td style="text-align:right;"> 0.015 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)District of Columbia </td>
+   <td style="text-align:right;"> 0.035 </td>
+   <td style="text-align:right;"> 0.017 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> 0.026 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Florida </td>
+   <td style="text-align:right;"> -0.035 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.048 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Georgia </td>
+   <td style="text-align:right;"> -0.001 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Hawaii </td>
+   <td style="text-align:right;"> -0.021 </td>
+   <td style="text-align:right;"> 0.009 </td>
+   <td style="text-align:right;"> 0.069 </td>
+   <td style="text-align:right;"> 0.013 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Idaho </td>
+   <td style="text-align:right;"> -0.023 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Illinois </td>
+   <td style="text-align:right;"> -0.029 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.004 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Indiana </td>
+   <td style="text-align:right;"> -0.030 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.010 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Iowa </td>
+   <td style="text-align:right;"> -0.038 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.039 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Kansas </td>
+   <td style="text-align:right;"> -0.035 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Kentucky </td>
+   <td style="text-align:right;"> -0.029 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.029 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Louisiana </td>
+   <td style="text-align:right;"> -0.006 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Maine </td>
+   <td style="text-align:right;"> -0.030 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> 0.007 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Maryland </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.020 </td>
+   <td style="text-align:right;"> 0.006 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Massachusetts </td>
+   <td style="text-align:right;"> -0.005 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> -0.007 </td>
+   <td style="text-align:right;"> 0.007 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Michigan </td>
+   <td style="text-align:right;"> -0.035 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.019 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Minnesota </td>
+   <td style="text-align:right;"> -0.021 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Mississippi </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.017 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Missouri </td>
+   <td style="text-align:right;"> -0.037 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.045 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Montana </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.019 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Nebraska </td>
+   <td style="text-align:right;"> -0.020 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Nevada </td>
+   <td style="text-align:right;"> -0.039 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> -0.039 </td>
+   <td style="text-align:right;"> 0.007 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New Hampshire </td>
+   <td style="text-align:right;"> -0.038 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> -0.032 </td>
+   <td style="text-align:right;"> 0.009 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New Jersey </td>
+   <td style="text-align:right;"> -0.018 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.023 </td>
+   <td style="text-align:right;"> 0.006 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New Mexico </td>
+   <td style="text-align:right;"> -0.032 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.008 </td>
+   <td style="text-align:right;"> 0.006 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New York </td>
+   <td style="text-align:right;"> -0.035 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.019 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)North Carolina </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)North Dakota </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Ohio </td>
+   <td style="text-align:right;"> -0.049 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.041 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Oklahoma </td>
+   <td style="text-align:right;"> -0.046 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.026 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Oregon </td>
+   <td style="text-align:right;"> -0.033 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.006 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Pennsylvania </td>
+   <td style="text-align:right;"> -0.050 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.047 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Rhode Island </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> 0.008 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> 0.012 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)South Carolina </td>
+   <td style="text-align:right;"> 0.014 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.013 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)South Dakota </td>
+   <td style="text-align:right;"> -0.044 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Tennessee </td>
+   <td style="text-align:right;"> -0.033 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.048 </td>
+   <td style="text-align:right;"> 0.004 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Texas </td>
+   <td style="text-align:right;"> -0.025 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> 0.003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Utah </td>
+   <td style="text-align:right;"> -0.018 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.015 </td>
+   <td style="text-align:right;"> 0.006 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Vermont </td>
+   <td style="text-align:right;"> -0.025 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0.035 </td>
+   <td style="text-align:right;"> 0.007 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Virginia </td>
+   <td style="text-align:right;"> -0.014 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.033 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Washington </td>
+   <td style="text-align:right;"> -0.009 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> 0.009 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)West Virginia </td>
+   <td style="text-align:right;"> -0.043 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.044 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Wisconsin </td>
+   <td style="text-align:right;"> -0.046 </td>
+   <td style="text-align:right;"> 0.003 </td>
+   <td style="text-align:right;"> -0.037 </td>
+   <td style="text-align:right;"> 0.005 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Wyoming </td>
+   <td style="text-align:right;"> -0.021 </td>
+   <td style="text-align:right;"> 0.004 </td>
+   <td style="text-align:right;"> -0.011 </td>
+   <td style="text-align:right;"> 0.006 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(year)2012 </td>
+   <td style="text-align:right;"> -0.021 </td>
+   <td style="text-align:right;"> 0.001 </td>
+   <td style="text-align:right;"> -0.045 </td>
+   <td style="text-align:right;"> 0.001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> dummy_fo_change:battleTRUE </td>
+   <td style="text-align:right;"> -0.002 </td>
+   <td style="text-align:right;"> 0.002 </td>
+   <td style="text-align:right;"> 0.007 </td>
+   <td style="text-align:right;"> 0.003 </td>
+  </tr>
+</tbody>
+</table>
+
+
+
+## Do campaign events have the same effect as field offices?
+
+**Due to a lack of data surrounding field offices in the 2024 election, I will be using campaign events to measure the effect of the ground game.** Campaign events, wherein presidential candidates, their VPs, and their supporters hold rallies, give speeches, or answer questions from the press are one of the most important aspects of the ground game in the days leading up to the election. Indeed, the first figure shows the number of events per day that a campaign will put on in the days leading up to the election. **As the first few graphs depict, the number of campaign events per day increases significantly in the immediate lead-up to election day.**
+
+**Furthermore, the second group of maps displays the location of these campaign events, indicating that they are often positioned in battle ground states, as the literature discussed above would predict.** 
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="1152" />
 
 ```
 ## 
-## \begin{table}[!htbp] \centering 
-##   \caption{Placement of Field Offices (2012)} 
-##   \label{} 
-## \scriptsize 
-## \begin{tabular}{@{\extracolsep{3pt}}lcc} 
-## \\[-1.8ex]\hline 
-## \hline \\[-1.8ex] 
-##  & \multicolumn{2}{c}{\textit{Dependent variable:}} \\ 
-## \cline{2-3} 
-## \\[-1.8ex] & obama12fo & romney12fo \\ 
-## \\[-1.8ex] & (1) & (2)\\ 
-## \hline \\[-1.8ex] 
-##  romney12fo & 2.546$^{***}$ (0.114) &  \\ 
-##   obama12fo &  & 0.374$^{***}$ (0.020) \\ 
-##   swing & 0.001 (0.055) & $-$0.012 (0.011) \\ 
-##   core\_rep & 0.007 (0.061) &  \\ 
-##   core\_dem &  & 0.004 (0.027) \\ 
-##   battle & 0.541$^{***}$ (0.096) & 0.014 (0.042) \\ 
-##   medage08 &  &  \\ 
-##   romney12fo:swing & $-$0.765$^{***}$ (0.116) &  \\ 
-##   romney12fo:core\_rep & $-$1.875$^{***}$ (0.131) &  \\ 
-##   obama12fo:swing &  & $-$0.081$^{***}$ (0.020) \\ 
-##   obama12fo:core\_dem &  & $-$0.164$^{***}$ (0.023) \\ 
-##   Constant & $-$0.340$^{*}$ (0.196) & 0.001 (0.079) \\ 
-##  \hline \\[-1.8ex] 
-## \hline 
-## \hline \\[-1.8ex] 
-## \end{tabular} 
-## \end{table}
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |=                                                                     |   1%
+  |                                                                            
+  |=                                                                     |   2%
+  |                                                                            
+  |==                                                                    |   3%
+  |                                                                            
+  |===                                                                   |   4%
+  |                                                                            
+  |===                                                                   |   5%
+  |                                                                            
+  |====                                                                  |   5%
+  |                                                                            
+  |====                                                                  |   6%
+  |                                                                            
+  |=====                                                                 |   6%
+  |                                                                            
+  |=====                                                                 |   7%
+  |                                                                            
+  |=====                                                                 |   8%
+  |                                                                            
+  |======                                                                |   9%
+  |                                                                            
+  |=======                                                               |   9%
+  |                                                                            
+  |=======                                                               |  10%
+  |                                                                            
+  |========                                                              |  11%
+  |                                                                            
+  |========                                                              |  12%
+  |                                                                            
+  |=========                                                             |  12%
+  |                                                                            
+  |=========                                                             |  13%
+  |                                                                            
+  |==========                                                            |  14%
+  |                                                                            
+  |==========                                                            |  15%
+  |                                                                            
+  |===========                                                           |  16%
+  |                                                                            
+  |============                                                          |  17%
+  |                                                                            
+  |============                                                          |  18%
+  |                                                                            
+  |=============                                                         |  18%
+  |                                                                            
+  |=============                                                         |  19%
+  |                                                                            
+  |==============                                                        |  20%
+  |                                                                            
+  |==============                                                        |  21%
+  |                                                                            
+  |===============                                                       |  21%
+  |                                                                            
+  |===============                                                       |  22%
+  |                                                                            
+  |================                                                      |  23%
+  |                                                                            
+  |================                                                      |  24%
+  |                                                                            
+  |=================                                                     |  25%
+  |                                                                            
+  |==================                                                    |  25%
+  |                                                                            
+  |==================                                                    |  26%
+  |                                                                            
+  |===================                                                   |  27%
+  |                                                                            
+  |====================                                                  |  28%
+  |                                                                            
+  |====================                                                  |  29%
+  |                                                                            
+  |=====================                                                 |  30%
+  |                                                                            
+  |======================                                                |  31%
+  |                                                                            
+  |======================                                                |  32%
+  |                                                                            
+  |=======================                                               |  33%
+  |                                                                            
+  |========================                                              |  34%
+  |                                                                            
+  |========================                                              |  35%
+  |                                                                            
+  |=========================                                             |  36%
+  |                                                                            
+  |==========================                                            |  37%
+  |                                                                            
+  |===========================                                           |  38%
+  |                                                                            
+  |===========================                                           |  39%
+  |                                                                            
+  |============================                                          |  40%
+  |                                                                            
+  |=============================                                         |  41%
+  |                                                                            
+  |==============================                                        |  42%
+  |                                                                            
+  |==============================                                        |  43%
+  |                                                                            
+  |===============================                                       |  44%
+  |                                                                            
+  |===============================                                       |  45%
+  |                                                                            
+  |================================                                      |  45%
+  |                                                                            
+  |================================                                      |  46%
+  |                                                                            
+  |=================================                                     |  47%
+  |                                                                            
+  |=================================                                     |  48%
+  |                                                                            
+  |==================================                                    |  49%
+  |                                                                            
+  |===================================                                   |  50%
+  |                                                                            
+  |===================================                                   |  51%
+  |                                                                            
+  |====================================                                  |  51%
+  |                                                                            
+  |====================================                                  |  52%
+  |                                                                            
+  |=====================================                                 |  53%
+  |                                                                            
+  |======================================                                |  54%
+  |                                                                            
+  |======================================                                |  55%
+  |                                                                            
+  |=======================================                               |  56%
+  |                                                                            
+  |========================================                              |  56%
+  |                                                                            
+  |========================================                              |  57%
+  |                                                                            
+  |=========================================                             |  58%
+  |                                                                            
+  |=========================================                             |  59%
+  |                                                                            
+  |==========================================                            |  59%
+  |                                                                            
+  |===========================================                           |  61%
+  |                                                                            
+  |===========================================                           |  62%
+  |                                                                            
+  |============================================                          |  62%
+  |                                                                            
+  |============================================                          |  63%
+  |                                                                            
+  |=============================================                         |  64%
+  |                                                                            
+  |==============================================                        |  65%
+  |                                                                            
+  |==============================================                        |  66%
+  |                                                                            
+  |===============================================                       |  67%
+  |                                                                            
+  |===============================================                       |  68%
+  |                                                                            
+  |================================================                      |  68%
+  |                                                                            
+  |================================================                      |  69%
+  |                                                                            
+  |=================================================                     |  70%
+  |                                                                            
+  |==================================================                    |  71%
+  |                                                                            
+  |==================================================                    |  72%
+  |                                                                            
+  |===================================================                   |  72%
+  |                                                                            
+  |====================================================                  |  74%
+  |                                                                            
+  |====================================================                  |  75%
+  |                                                                            
+  |=====================================================                 |  76%
+  |                                                                            
+  |======================================================                |  77%
+  |                                                                            
+  |=======================================================               |  78%
+  |                                                                            
+  |=======================================================               |  79%
+  |                                                                            
+  |========================================================              |  80%
+  |                                                                            
+  |========================================================              |  81%
+  |                                                                            
+  |=========================================================             |  81%
+  |                                                                            
+  |=========================================================             |  82%
+  |                                                                            
+  |==========================================================            |  83%
+  |                                                                            
+  |==========================================================            |  84%
+  |                                                                            
+  |===========================================================           |  85%
+  |                                                                            
+  |============================================================          |  85%
+  |                                                                            
+  |============================================================          |  86%
+  |                                                                            
+  |=============================================================         |  86%
+  |                                                                            
+  |=============================================================         |  87%
+  |                                                                            
+  |==============================================================        |  88%
+  |                                                                            
+  |===============================================================       |  89%
+  |                                                                            
+  |===============================================================       |  90%
+  |                                                                            
+  |================================================================      |  91%
+  |                                                                            
+  |================================================================      |  92%
+  |                                                                            
+  |=================================================================     |  93%
+  |                                                                            
+  |==================================================================    |  94%
+  |                                                                            
+  |==================================================================    |  95%
+  |                                                                            
+  |===================================================================   |  96%
+  |                                                                            
+  |====================================================================  |  97%
+  |                                                                            
+  |===================================================================== |  98%
+  |                                                                            
+  |======================================================================|  99%
+  |                                                                            
+  |======================================================================| 100%
 ```
 
-```
-## 
-## \begin{table}[!htbp] \centering 
-##   \caption{Effect of DEM Field Offices on Turnout and DEM Vote Share (2004-2012)} 
-##   \label{} 
-## \scriptsize 
-## \begin{tabular}{@{\extracolsep{3pt}}lcc} 
-## \\[-1.8ex]\hline 
-## \hline \\[-1.8ex] 
-##  & \multicolumn{2}{c}{\textit{Dependent variable:}} \\ 
-## \cline{2-3} 
-## \\[-1.8ex] & turnout\_change & dempct\_change \\ 
-## \\[-1.8ex] & (1) & (2)\\ 
-## \hline \\[-1.8ex] 
-##  dummy\_fo\_change & 0.004$^{***}$ (0.001) & 0.009$^{***}$ (0.002) \\ 
-##   battle & 0.024$^{***}$ (0.002) & 0.043$^{***}$ (0.003) \\ 
-##   as.factor(state)Arizona &  &  \\ 
-##   dummy\_fo\_change:battle & $-$0.002 (0.002) & 0.007$^{**}$ (0.003) \\ 
-##   Constant & 0.029$^{***}$ (0.002) & 0.022$^{***}$ (0.003) \\ 
-##  \hline \\[-1.8ex] 
-## Observations & 6,224 & 6,224 \\ 
-## Adjusted R$^{2}$ & 0.419 & 0.469 \\ 
-## \hline 
-## \hline \\[-1.8ex] 
-## \textit{Note:}  & \multicolumn{2}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-## \end{tabular} 
-## \end{table}
-```
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-2.png" width="1152" />
 
 
+**Can the number of campaign events predict state level vote share?** The regression below depicts the relationship between the number of Democrat events as well as the difference between the number of events hosted by each party on Democratic two-party vote share. As the regression depicts, these results do not appear to be statistically significant. However, it is also important to run this calculation on a state-by-state basis for the battle ground states so as to understand if this effect can be felt locally.
 
+<table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-8"></span>Table 3: Association Between Campaign Events and Democratic Two-Party Voteshare</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;font-weight: bold;"> Term </th>
+   <th style="text-align:right;font-weight: bold;"> Estimate </th>
+   <th style="text-align:right;font-weight: bold;"> Std. Error </th>
+   <th style="text-align:right;font-weight: bold;"> t value </th>
+   <th style="text-align:right;font-weight: bold;"> P-value </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> 35.5135681 </td>
+   <td style="text-align:right;"> 1.4807400 </td>
+   <td style="text-align:right;"> 23.983663 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> n_ev_D </td>
+   <td style="text-align:right;"> -0.0052570 </td>
+   <td style="text-align:right;"> 0.0555123 </td>
+   <td style="text-align:right;"> -0.094700 </td>
+   <td style="text-align:right;"> 0.9258066 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ev_diff_D_R </td>
+   <td style="text-align:right;"> 0.1175453 </td>
+   <td style="text-align:right;"> 0.0778413 </td>
+   <td style="text-align:right;"> 1.510064 </td>
+   <td style="text-align:right;"> 0.1518031 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Arizona </td>
+   <td style="text-align:right;"> 14.2259620 </td>
+   <td style="text-align:right;"> 1.8678033 </td>
+   <td style="text-align:right;"> 7.616413 </td>
+   <td style="text-align:right;"> 0.0000016 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)California </td>
+   <td style="text-align:right;"> 30.0689821 </td>
+   <td style="text-align:right;"> 2.1569598 </td>
+   <td style="text-align:right;"> 13.940446 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Colorado </td>
+   <td style="text-align:right;"> 18.6013367 </td>
+   <td style="text-align:right;"> 2.3150191 </td>
+   <td style="text-align:right;"> 8.035068 </td>
+   <td style="text-align:right;"> 0.0000008 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Connecticut </td>
+   <td style="text-align:right;"> 21.6332364 </td>
+   <td style="text-align:right;"> 2.0904700 </td>
+   <td style="text-align:right;"> 10.348504 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Florida </td>
+   <td style="text-align:right;"> 13.4233176 </td>
+   <td style="text-align:right;"> 2.3812276 </td>
+   <td style="text-align:right;"> 5.637142 </td>
+   <td style="text-align:right;"> 0.0000473 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Georgia </td>
+   <td style="text-align:right;"> 13.3435697 </td>
+   <td style="text-align:right;"> 1.8158822 </td>
+   <td style="text-align:right;"> 7.348257 </td>
+   <td style="text-align:right;"> 0.0000024 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Idaho </td>
+   <td style="text-align:right;"> -3.7061995 </td>
+   <td style="text-align:right;"> 2.0962391 </td>
+   <td style="text-align:right;"> -1.768023 </td>
+   <td style="text-align:right;"> 0.0973853 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Illinois </td>
+   <td style="text-align:right;"> 23.5169973 </td>
+   <td style="text-align:right;"> 2.0908608 </td>
+   <td style="text-align:right;"> 11.247519 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Indiana </td>
+   <td style="text-align:right;"> 5.4504269 </td>
+   <td style="text-align:right;"> 1.8164412 </td>
+   <td style="text-align:right;"> 3.000607 </td>
+   <td style="text-align:right;"> 0.0089616 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Iowa </td>
+   <td style="text-align:right;"> 10.5893261 </td>
+   <td style="text-align:right;"> 1.8887167 </td>
+   <td style="text-align:right;"> 5.606625 </td>
+   <td style="text-align:right;"> 0.0000500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Louisiana </td>
+   <td style="text-align:right;"> 4.2024664 </td>
+   <td style="text-align:right;"> 2.0890202 </td>
+   <td style="text-align:right;"> 2.011693 </td>
+   <td style="text-align:right;"> 0.0625740 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Maine </td>
+   <td style="text-align:right;"> 17.8577488 </td>
+   <td style="text-align:right;"> 1.8249599 </td>
+   <td style="text-align:right;"> 9.785283 </td>
+   <td style="text-align:right;"> 0.0000001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Maryland </td>
+   <td style="text-align:right;"> 28.4997089 </td>
+   <td style="text-align:right;"> 2.0904700 </td>
+   <td style="text-align:right;"> 13.633159 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Michigan </td>
+   <td style="text-align:right;"> 15.6545002 </td>
+   <td style="text-align:right;"> 1.8935746 </td>
+   <td style="text-align:right;"> 8.267168 </td>
+   <td style="text-align:right;"> 0.0000006 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Minnesota </td>
+   <td style="text-align:right;"> 16.9676401 </td>
+   <td style="text-align:right;"> 1.8238085 </td>
+   <td style="text-align:right;"> 9.303411 </td>
+   <td style="text-align:right;"> 0.0000001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Mississippi </td>
+   <td style="text-align:right;"> 5.5141298 </td>
+   <td style="text-align:right;"> 2.0962391 </td>
+   <td style="text-align:right;"> 2.630487 </td>
+   <td style="text-align:right;"> 0.0189141 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Missouri </td>
+   <td style="text-align:right;"> 4.7959302 </td>
+   <td style="text-align:right;"> 2.0948579 </td>
+   <td style="text-align:right;"> 2.289382 </td>
+   <td style="text-align:right;"> 0.0369749 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Montana </td>
+   <td style="text-align:right;"> 6.2067970 </td>
+   <td style="text-align:right;"> 2.0962391 </td>
+   <td style="text-align:right;"> 2.960920 </td>
+   <td style="text-align:right;"> 0.0097153 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Nebraska </td>
+   <td style="text-align:right;"> 2.9381140 </td>
+   <td style="text-align:right;"> 1.8174755 </td>
+   <td style="text-align:right;"> 1.616591 </td>
+   <td style="text-align:right;"> 0.1267987 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Nevada </td>
+   <td style="text-align:right;"> 15.8991896 </td>
+   <td style="text-align:right;"> 1.8414159 </td>
+   <td style="text-align:right;"> 8.634220 </td>
+   <td style="text-align:right;"> 0.0000003 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New Hampshire </td>
+   <td style="text-align:right;"> 17.1827912 </td>
+   <td style="text-align:right;"> 1.8878139 </td>
+   <td style="text-align:right;"> 9.101952 </td>
+   <td style="text-align:right;"> 0.0000002 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New Jersey </td>
+   <td style="text-align:right;"> 21.7758790 </td>
+   <td style="text-align:right;"> 2.0904700 </td>
+   <td style="text-align:right;"> 10.416738 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New Mexico </td>
+   <td style="text-align:right;"> 19.4898626 </td>
+   <td style="text-align:right;"> 2.1141959 </td>
+   <td style="text-align:right;"> 9.218570 </td>
+   <td style="text-align:right;"> 0.0000001 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)New York </td>
+   <td style="text-align:right;"> 27.5978727 </td>
+   <td style="text-align:right;"> 2.1596073 </td>
+   <td style="text-align:right;"> 12.779116 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)North Carolina </td>
+   <td style="text-align:right;"> 14.0458813 </td>
+   <td style="text-align:right;"> 2.0564686 </td>
+   <td style="text-align:right;"> 6.830098 </td>
+   <td style="text-align:right;"> 0.0000057 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Ohio </td>
+   <td style="text-align:right;"> 11.3203157 </td>
+   <td style="text-align:right;"> 2.0053826 </td>
+   <td style="text-align:right;"> 5.644966 </td>
+   <td style="text-align:right;"> 0.0000466 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Oklahoma </td>
+   <td style="text-align:right;"> -4.8130484 </td>
+   <td style="text-align:right;"> 2.0904700 </td>
+   <td style="text-align:right;"> -2.302376 </td>
+   <td style="text-align:right;"> 0.0360583 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Pennsylvania </td>
+   <td style="text-align:right;"> 14.9036384 </td>
+   <td style="text-align:right;"> 2.2521038 </td>
+   <td style="text-align:right;"> 6.617652 </td>
+   <td style="text-align:right;"> 0.0000082 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Texas </td>
+   <td style="text-align:right;"> 10.6153127 </td>
+   <td style="text-align:right;"> 1.8144597 </td>
+   <td style="text-align:right;"> 5.850399 </td>
+   <td style="text-align:right;"> 0.0000319 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Utah </td>
+   <td style="text-align:right;"> 2.3386241 </td>
+   <td style="text-align:right;"> 2.1037971 </td>
+   <td style="text-align:right;"> 1.111621 </td>
+   <td style="text-align:right;"> 0.2838015 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Virginia </td>
+   <td style="text-align:right;"> 19.3795812 </td>
+   <td style="text-align:right;"> 1.9239584 </td>
+   <td style="text-align:right;"> 10.072765 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Washington </td>
+   <td style="text-align:right;"> 23.2786201 </td>
+   <td style="text-align:right;"> 2.0904700 </td>
+   <td style="text-align:right;"> 11.135592 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> as.factor(state)Wisconsin </td>
+   <td style="text-align:right;"> 15.0050933 </td>
+   <td style="text-align:right;"> 1.8723613 </td>
+   <td style="text-align:right;"> 8.013995 </td>
+   <td style="text-align:right;"> 0.0000008 </td>
+  </tr>
+</tbody>
+</table>
+
+
+## Including campaign events into the 2024 election prediction
+
+As I have done in the previous three weeks, I will be predicting for the seven states which [expert predictors like Cook and Sabato](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. This prediction model includes the significant variables identified throughout previous analyses including: [state vote history as a proxy for demographic and turnout](https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/), [GDP growth in Q2 before the election](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/), [incumbency status](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/), [campaign spending](https://menemshasolomon.github.io/election-blog/post/2024-10-09-6-on-air-the-addition-of-campaign-advertising/), and [the latest poll averages](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/). Based off of this week's analysis, this model will also incorporate campaign events.
+
+<table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-9"></span>Table 4: Association Between Both Campaign and Fundamental Variables and Democratic Two-Party Voteshare</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;font-weight: bold;"> Term </th>
+   <th style="text-align:right;font-weight: bold;"> Estimate </th>
+   <th style="text-align:right;font-weight: bold;"> Std. Error </th>
+   <th style="text-align:right;font-weight: bold;"> t value </th>
+   <th style="text-align:right;font-weight: bold;"> P-value </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> -8.8682324 </td>
+   <td style="text-align:right;"> 5.8568614 </td>
+   <td style="text-align:right;"> -1.5141612 </td>
+   <td style="text-align:right;"> 0.1420479 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> D_pv2p_lag1 </td>
+   <td style="text-align:right;"> 0.6003832 </td>
+   <td style="text-align:right;"> 0.2076646 </td>
+   <td style="text-align:right;"> 2.8911193 </td>
+   <td style="text-align:right;"> 0.0076533 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> D_pv2p_lag2 </td>
+   <td style="text-align:right;"> -0.1479466 </td>
+   <td style="text-align:right;"> 0.1619575 </td>
+   <td style="text-align:right;"> -0.9134899 </td>
+   <td style="text-align:right;"> 0.3693786 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> latest_pollav_DEM </td>
+   <td style="text-align:right;"> 0.5958758 </td>
+   <td style="text-align:right;"> 0.1401244 </td>
+   <td style="text-align:right;"> 4.2524771 </td>
+   <td style="text-align:right;"> 0.0002414 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> GDP_growth_quarterly </td>
+   <td style="text-align:right;"> 0.0768032 </td>
+   <td style="text-align:right;"> 0.0391805 </td>
+   <td style="text-align:right;"> 1.9602380 </td>
+   <td style="text-align:right;"> 0.0607666 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> log(contribution_receipt_amount) </td>
+   <td style="text-align:right;"> 0.6242280 </td>
+   <td style="text-align:right;"> 0.4160967 </td>
+   <td style="text-align:right;"> 1.5001995 </td>
+   <td style="text-align:right;"> 0.1456093 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> deminc </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+   <td style="text-align:right;"> NA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> n_ev_D </td>
+   <td style="text-align:right;"> -0.0807247 </td>
+   <td style="text-align:right;"> 0.0339092 </td>
+   <td style="text-align:right;"> -2.3806136 </td>
+   <td style="text-align:right;"> 0.0248990 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> ev_diff_D_R </td>
+   <td style="text-align:right;"> 0.0897526 </td>
+   <td style="text-align:right;"> 0.0679365 </td>
+   <td style="text-align:right;"> 1.3211252 </td>
+   <td style="text-align:right;"> 0.1979692 </td>
+  </tr>
+</tbody>
+</table>
+**The table above displays the regression model that has been used to predict the general election outcomes in each battle ground state.** According to the regression model, the only statistically significant indicators at the 0.001 level are the latest democratic poll average and the results of the previous election. As has been found repeatedly, Q2 GDP growth is also statistically significant; however, that is only at the 0.1 level. What is interesting is that within this model, the number of Democrat campaign events appears to have a small negative effect on two-party Democratic vote share that is statistically significant at the 0.1 level. This result is most likely biased by limited data within the data set. 
+
+**Using this model to predict the results in each Battleground state:**
+
+
+|   |state          | prediction| lower_CI| upper_CI|Winner |
+|:--|:--------------|----------:|--------:|--------:|:------|
+|1  |Arizona        |   52.86408| 48.93663| 56.79152|Harris |
+|11 |Nevada         |   53.69298| 49.86749| 57.51847|Harris |
+|12 |North Carolina |   52.36521| 48.43643| 56.29398|Harris |
+|13 |Michigan       |   54.01648| 49.98197| 58.05100|Harris |
+|14 |Wisconsin      |   53.46463| 49.49467| 57.43458|Harris |
+|15 |Georgia        |   53.36864| 49.33574| 57.40154|Harris |
+|16 |Pennsylvania   |   53.57591| 49.42734| 57.72448|Harris |
+
+As This table displays the results of the model in the seven key battleground states. According to this prediction, **Harris will win the election with 319 electoral votes while Trump will have 219 electoral votes.**
+
+
+## Notes
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-10-16-7-the-ground-game/index.Rmarkdown).
+
+**Sources**
+     
+AdImpact. The Play for the White House. October 7, 2024. Accessed October 21, 2024. 
+     https://www.wispolitics.com/wp-content/uploads/2024/10/241010AdImpact.pdf. 
+     
+Enos, Ryan D., and Anthony Fowler. "Aggregate Effects of Large-Scale Campaigns on Voter Turnout." 
+     Political Science Research and Methods 6, no. 4 (2016): 733-51. https://doi.org/10.1017/ 
+     psrm.2016.21. 
+
+Kalla, Joshua L., and David E. Broockman. "The Minimal Persuasive Effects of Campaign Contact in 
+     General Elections: Evidence from 49 Field Experiments." American Political Science Review 112, 
+     no. 1 (2017): 148-66. https://doi.org/10.1017/s0003055417000363. 
+
+**Data Sources**
+
+US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight and Gallup, also provided by the course. U.S. election spending data from [AdImpact](https://www.wispolitics.com/wp-content/uploads/2024/10/241010AdImpact.pdf) as of October 7th.
 
 

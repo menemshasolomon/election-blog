@@ -43,8 +43,6 @@ library(tmap)
 library(tmaptools)
 library(viridis)
 
-## set working directory here
-# setwd("~")
 
 ####----------------------------------------------------------#
 #### Read, merge, and process data.
@@ -109,29 +107,29 @@ trump16transformed <- st_as_sf(trump16, coords = c("longitude", "latitude"), crs
   st_transform(crs = st_crs(us_geo)) |>
   shift_geometry()
 
-(ob12 <- ggplot() +
+ob12 <- ggplot() +
   geom_sf(data = us_geo) + 
   geom_sf(data = obama12transformed, color = "dodgerblue4", alpha = 0.75, pch = 3) +
   ggtitle("Obama 2012 Field Offices") +
-  theme_void())
+  theme_void()
 
-(ro12 <- ggplot() +
+ro12 <- ggplot() +
   geom_sf(data = us_geo) + 
   geom_sf(data = romney12transformed, color = "firebrick", alpha = 0.75, pch = 3) +
   ggtitle("Romney 2012 Field Offices") +
-  theme_void())
+  theme_void()
 
-(cl16 <- ggplot() + 
+cl16 <- ggplot() + 
   geom_sf(data = us_geo) + 
   geom_sf(data = clinton16transformed, color = "dodgerblue4", alpha = 0.75, pch = 3) +
   ggtitle("Clinton 2016 Field Offices") +
-  theme_void())
+  theme_void()
 
-(tr16 <- ggplot() +
+tr16 <- ggplot() +
   geom_sf(data = us_geo) + 
   geom_sf(data = trump16transformed, color = "firebrick", alpha = 0.75, pch = 3) +
   ggtitle("Trump 2016 Field Offices") +
-  theme_void())
+  theme_void()
 
 ggarrange(ob12, ro12, cl16, tr16, nrow = 2, ncol = 2)
 
@@ -256,9 +254,10 @@ ggarrange(obama_wis, clinton_wis)
 
 Though the analysis above is interesting, it fails to conclusively display any relationship between the ground game and voting behavior. Since campaigns are measured by their ability to both persuade and mobilize voters, these relationship between the ground game and these two effects will be explored below. 
 
-**The existing political science literature asserts that the ability of the ground game to persuade voters is negligible.** Indeed, in an aggregate study of 49 field experiments, scholars Kalla and Brockman found that persuasion efforts of ground campaigns are almost entirely ineffective [(Kalla and Brockman, 2018)](). The mobilization effect, however, is found to be incredibly significant. Indeed, in an experiment which compared battleground states (where there is a ground game) and non-swing states (without one) in areas where there is a spillover media market, ensuring that the air war remains constant, **Enos and Fowler found that the ground game led to an increase in turnout around 6%** [(Enos and Fowler, 2016)](). 
+**The existing political science literature asserts that the ability of the ground game to persuade voters is negligible.** Indeed, in an aggregate study of 49 field experiments, scholars Kalla and Brockman found that persuasion efforts of ground campaigns are almost entirely ineffective [(Kalla and Brockman, 2018)](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_journals_1990829523). The mobilization effect, however, is found to be incredibly significant. Indeed, in an experiment which compared battleground states (where there is a ground game) and non-swing states (without one) in areas where there is a spillover media market, ensuring that the air war remains constant, **Enos and Fowler found that the ground game led to an increase in turnout around 6%** [(Enos and Fowler, 2016)](https://hollis.harvard.edu/permalink/f/1mdq5o5/TN_cdi_proquest_journals_2117059848). 
 
-**The regressions below first outline where campaigns choose to build field offices as well as the efficacy of said offices on turnout and vote share.** According to the first model, field office placement is most related to whether or not the state is a battle ground state, the size of the state's population, and the presence of the other campaign's field offices. All three variables are statistically significant at the 0.001 level. According to the second and third models, 
+**The regressions below first outlines where campaigns choose to build field offices as well as the efficacy of said offices on turnout and vote share.** According to the first model, field office placement is most related to whether or not the state is a battle ground state, the size of the state's population, and the presence of the other campaign's field offices. All three variables are statistically significant at the 0.001 level. 
+
 
 ```{r echo = FALSE, message=FALSE, warning=FALSE}
 # Where should campaigns build field offices? 
@@ -299,11 +298,34 @@ lm_romney <- lm(romney12fo ~
                   as.factor(state),
                   fo_2012)
 
-stargazer(lm_obama, lm_romney, header=FALSE, type='latex', no.space = TRUE,
-          column.sep.width = "3pt", font.size = "scriptsize", single.row = TRUE,
-          keep = c(1:7, 62:66), omit.table.layout = "sn",
-          title = "Placement of Field Offices (2012)")
+# Load necessary libraries
+library(broom)
+library(knitr)
+library(dplyr)
 
+# Tidy the regression results
+obama_results <- tidy(lm_obama)
+romney_results <- tidy(lm_romney)
+
+regression_table <- obama_results %>%
+  select(term, estimate, std.error) %>%
+  rename(obama_estimate = estimate, obama_se = std.error) %>%
+  left_join(romney_results %>%
+              select(term, estimate, std.error) %>%
+              rename(romney_estimate = estimate, romney_se = std.error),
+            by = "term")
+
+kable(regression_table, col.names = c("Variable", "Obama 2012 Estimate", "Obama 2012 Std. Error", 
+                                      "Romney 2012 Estimate", "Romney 2012 Std. Error"),
+      caption = "Placement of Field Offices (2012)", format = "html", digits = 3) %>%
+  kable_styling(full_width = FALSE, position = "center")
+
+
+```
+
+**The second regression table models the relationship between field office presence and turnout as well as vote share on a national level.** According to this model, while field office location does appear to have a statistically significant effect on both vote share and turnout, especially in swing states, this effect is minimal (shown by the small coefficients). These results do not reflect the literature as they are simple regression models and not built out experiments like the ones conducted above. Later, I will include ground game, on a state level, in my prediction to see if this minor impact is able to swing a very tight election. 
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
 # Effects of field offices on turnout and vote share. 
 fo_dem <- read_csv("data/fieldoffice_2004-2012_dems.csv")
 
@@ -311,13 +333,362 @@ ef_t <- lm(turnout_change ~ dummy_fo_change + battle + dummy_fo_change:battle + 
 
 ef_d <- lm(dempct_change ~ dummy_fo_change + battle + dummy_fo_change:battle + as.factor(state) + as.factor(year), fo_dem)
 
-stargazer(ef_t, ef_d, header=FALSE, type='latex', no.space = TRUE,
-          column.sep.width = "3pt", font.size = "scriptsize", single.row = TRUE,
-          keep = c(1:3, 53:54), keep.stat = c("n", "adj.rsq", "res.dev"),
-          title = "Effect of DEM Field Offices on Turnout and DEM Vote Share (2004-2012)")
+
+turnout_results <- tidy(ef_t)
+dem_share_results <- tidy(ef_d)
+
+regression_table_2 <- turnout_results %>%
+  select(term, estimate, std.error) %>%
+  rename(turnout_estimate = estimate, turnout_se = std.error) %>%
+  left_join(dem_share_results %>%
+              select(term, estimate, std.error) %>%
+              rename(dem_share_estimate = estimate, dem_share_se = std.error),
+            by = "term")
+kable(regression_table_2, col.names = c("Variable", "Turnout Change Estimate", "Turnout Change Std. Error", 
+                                        "DEM Vote Share Estimate", "DEM Vote Share Std. Error"),
+      caption = "Effect of DEM Field Offices on Turnout and DEM Vote Share (2004-2012)", format = "html", digits = 3) %>%
+  kable_styling(full_width = FALSE, position = "center")
+
 ```
 
 
 
+## Do campaign events have the same effect as field offices?
+
+**Due to a lack of data surrounding field offices in the 2024 election, I will be using campaign events to measure the effect of the ground game.** Campaign events, wherein presidential candidates, their VPs, and their supporters hold rallies, give speeches, or answer questions from the press are one of the most important aspects of the ground game in the days leading up to the election. Indeed, the first figure shows the number of events per day that a campaign will put on in the days leading up to the election. **As the first few graphs depict, the number of campaign events per day increases significantly in the immediate lead-up to election day.**
+
+**Furthermore, the second group of maps displays the location of these campaign events, indicating that they are often positioned in battle ground states, as the literature discussed above would predict.** 
+
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width = 12, fig.height = 7}
+# Visualizing campaign events. 
+d_campaign_events$party[d_campaign_events$candidate %in% c("Trump / Pence", "Trump", "Pence", "Trump/Pence", "Vance")] <- "REP"
+d_campaign_events$party[d_campaign_events$candidate %in% c("Biden / Harris", "Biden", "Harris", "Biden/Harris", "Walz", "Kaine", "Clinton", "Clinton / Kaine")] <- "DEM"
+
+party_colors <- c("REP" = "firebrick1", "DEM" = "dodgerblue4")
+
+p.ev.1 <- d_campaign_events |>
+  group_by(date, party) |>
+  summarize(n_events = n(), year) |>
+  filter(year == 2016) |>
+  ggplot(aes(x = date, y = n_events, color = party)) +
+  geom_point(size = 0.5) +  
+  geom_smooth(se = FALSE) +  
+  scale_color_manual(values = party_colors) +  
+  ggtitle("2016") +
+  ylab("Number of Events")+
+  theme_bw()
+
+p.ev.2 <- d_campaign_events |>
+  group_by(date, party) |>
+  summarize(n_events = n(), year) |>
+  filter(year == 2020) |>
+  ggplot(aes(x = date, y = n_events, color = party)) +
+  geom_point(size = 0.5) +  
+  geom_smooth(se = FALSE) +
+  scale_color_manual(values = party_colors) + 
+  ggtitle("2020") +
+  ylab("Number of Events")+
+  theme_bw()
+
+p.ev.3 <- d_campaign_events |>
+  group_by(date, party) |>
+  summarize(n_events = n(), year) |>
+  filter(year == 2024) |>
+  ggplot(aes(x = date, y = n_events, color = party)) +
+  geom_point(size = 0.5) +  
+  geom_smooth(se = FALSE) +
+  scale_color_manual(values = party_colors) +  
+  ggtitle("2024") +
+  ylab("Number of Events")+
+  theme_bw()
+
+ggarrange(p.ev.1, p.ev.2, p.ev.3, nrow = 1)
+
+# Mapping campaign events. 
+#d_campaign_events <- d_campaign_events |> 
+ # geocode(city = city, state = state, method = 'osm', lat = latitude , long = longitude)
+
+d_campaign_events <- read_csv("data/campaign_events_geocoded.csv")
+d_campaign_events$party[d_campaign_events$candidate %in% c("Trump / Pence", "Trump", "Pence", "Trump/Pence", "Vance")] <- "REP"
+d_campaign_events$party[d_campaign_events$candidate %in% c("Biden / Harris", "Biden", "Harris", "Biden/Harris", "Walz", "Kaine", "Clinton", "Clinton / Kaine")] <- "DEM"
+
+us_geo <- states(cb = TRUE) |> 
+  shift_geometry() |> 
+  filter(STUSPS %in% unique(fo_add$state))
+
+d_ev_transformed <- st_as_sf(d_campaign_events |> drop_na(), coords = c("longitude", "latitude"), crs = 4326) |>
+  st_transform(crs = st_crs(us_geo)) |>
+  shift_geometry() |> 
+  st_make_valid()
+
+##remove outliers
+d_ev_transformed <- d_ev_transformed |>
+  filter(!(date %in% c('2020-11-01', '2016-09-13')))
+
+
+
+ev16 <- ggplot() +
+   geom_sf(data = us_geo) + 
+   geom_sf(data = d_ev_transformed |> filter(year == 2016), aes(color = party), size = 3, alpha = 0.75, pch = 3) +
+   ggtitle("2016 Campaign Events") +
+   theme_void()
+
+ev20 <- ggplot() +
+   geom_sf(data = us_geo) + 
+   geom_sf(data = d_ev_transformed |> filter(year == 2020), aes(color = party), size = 3, alpha = 0.75, pch = 3) +
+   ggtitle("2020 Campaign Events") +
+   theme_void()
+
+ev24 <- ggplot() +
+   geom_sf(data = us_geo) + 
+   geom_sf(data = d_ev_transformed |> filter(year == 2024), aes(color = party), size = 3, alpha = 0.75, pch = 3) +
+   ggtitle("2024 Campaign Events") +
+   theme_void()
+
+ggarrange(ev16, ev20, ev24, ncol = 1)
+
+
+```
+
+
+**Can the number of campaign events predict state level vote share?** The regression below depicts the relationship between the number of Democrat events as well as the difference between the number of events hosted by each party on Democratic two-party vote share. As the regression depicts, these results do not appear to be statistically significant. However, it is also important to run this calculation on a state-by-state basis for the battle ground states so as to understand if this effect can be felt locally.
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+# Can the number of campaign events predict state-level vote share? 
+d_ev_state <- d_campaign_events |> 
+  group_by(year, state, party) |> 
+  summarize(n_events = n()) |> 
+  pivot_wider(names_from = party, values_from = n_events) |> 
+  rename(n_ev_D = DEM, n_ev_R = REP) |>
+  rename(abbreviation = state)
+d_ev_state$n_ev_D[which(is.na(d_ev_state$n_ev_D))] <- 0
+d_ev_state$n_ev_R[which(is.na(d_ev_state$n_ev_R))] <- 0
+d_ev_state$ev_diff_D_R <- d_ev_state$n_ev_D - d_ev_state$n_ev_R
+d_ev_state$ev_diff_R_D <- d_ev_state$n_ev_R - d_ev_state$n_ev_D
+
+
+state_info <- data.frame(
+  state = state.name,  
+  abbreviation = state.abb  
+)
+
+d_ev_state <- d_ev_state |> 
+  left_join(state_info, by =  "abbreviation")
+
+d_state_polls <- read_csv("data/state_polls_1968-2024.csv")
+
+d_pollav_state <- d_state_polls |> 
+  group_by(year, state, party) |>
+  mutate(mean_pollav = mean(poll_support, na.rm = TRUE)) |>
+  top_n(1, poll_date) |> 
+  rename(latest_pollav = poll_support) |>
+  select(-c(weeks_left, days_left, poll_date, candidate, before_convention)) |>
+  pivot_wider(names_from = party, values_from = c(latest_pollav, mean_pollav))
+
+d_econ <- read_csv("~/Desktop/election-blog2/content/post/2024-09-27-4-the-incumbency-advantage/data/fred_econ.csv") |> 
+  filter(quarter == 2) |>
+  select(year, GDP_growth_quarterly) |>
+  filter(year >= 1980)
+
+d_popvote <- read_csv("data/popvote_1948_2020.csv")
+
+campaign_spending <- read_csv("~/Desktop/election-blog2/content/post/2024-10-09-6-on-air-the-addition-of-campaign-advertising/data/FEC_contributions_by_state_2008_2024.csv") 
+
+d_campaign_spending <- d_state_popvote |> 
+  mutate(state_abb = state.abb[match(d_state_popvote$state, state.name)]) |> 
+  left_join(campaign_spending |> filter(party == "Democrat"), by = c("year" = "election_year", "state_abb" = "contribution_state")) |> 
+  filter(year >= 2008)
+
+d_campaign_spending_predict <- d_campaign_spending|>
+  select(year, state, contribution_receipt_amount)
+
+d_2024 <- data.frame(
+  year = rep(2024, 7),
+  state = c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada"),
+  contribution_receipt_amount = c(159100000, 125600000, 61800000, 74600000, 73300000, 55300000, 43800000)
+)
+
+d_campaign_spending_predict <- rbind(d_campaign_spending_predict, d_2024)
+
+d <- d_pollav_state |> 
+  left_join(d_state_popvote, by = c("year", "state")) |>  
+  left_join(d_popvote |> filter(party == "democrat"), by = "year") |> 
+  left_join(d_campaign_spending_predict, by = c("year", "state")) |>
+  left_join(d_econ, by = "year") |>
+  filter(year >= 1980) |> 
+  ungroup()
+
+d <- d |> 
+  left_join(d_ev_state, by = c("year", "state"))
+
+lm_ev_D <- lm(D_pv2p ~ n_ev_D + ev_diff_D_R + as.factor(state), data = d)
+lm_ev_D_tidy <- tidy(lm_ev_D)
+
+kable(lm_ev_D_tidy, format = "html", booktabs = TRUE, escape = FALSE, 
+      col.names = c("Term", "Estimate", "Std. Error", "t value", "P-value"),
+      caption = "Association Between Campaign Events and Democratic Two-Party Voteshare") |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) |>
+  row_spec(0, bold = TRUE)
+```
+
+
+## Including campaign events into the 2024 election prediction
+
+As I have done in the previous three weeks, I will be predicting for the seven states which [expert predictors like Cook and Sabato](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. This prediction model includes the significant variables identified throughout previous analyses including: [state vote history as a proxy for demographic and turnout](https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/), [GDP growth in Q2 before the election](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/), [incumbency status](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/), [campaign spending](https://menemshasolomon.github.io/election-blog/post/2024-10-09-6-on-air-the-addition-of-campaign-advertising/), and [the latest poll averages](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/). Based off of this week's analysis, this model will also incorporate campaign events.
+
+```{r   echo = FALSE, message=FALSE, warning=FALSE}
+
+t <- d |> 
+  filter(year >= 2016) |> 
+  arrange(year) |> 
+  group_by(state) |> 
+  mutate(
+    D_pv2p_lag1 = lag(D_pv2p, 1),
+    R_pv2p_lag1 = lag(R_pv2p, 1), 
+    D_pv2p_lag2 = lag(D_pv2p, 2),
+    R_pv2p_lag2 = lag(R_pv2p, 2)) |> 
+  filter(year == 2024) |> 
+  select(state, year, D_pv2p, R_pv2p, D_pv2p_lag1, R_pv2p_lag1, D_pv2p_lag2, R_pv2p_lag2) 
+
+# Sequester states for which we have polling data for 2024. 
+states.2024 <- unique(d$state[d$year == 2024])
+states.2024 <- states.2024[-which(states.2024 == "Nebraska Cd 2")]
+
+# Subset and split data.
+d <- d |> 
+  filter(state %in% states.2024)
+
+d_train <- d |> 
+  filter(year < 2024)
+d_test <- d |> 
+  filter(year == 2024) |>
+  left_join(t, by = "state")
+
+
+
+mod_lm_dem <- lm(D_pv2p ~ D_pv2p_lag1 + D_pv2p_lag2 + latest_pollav_DEM + GDP_growth_quarterly +
+                        log(contribution_receipt_amount) + deminc + n_ev_D + ev_diff_D_R,
+                      data = d_train)   
+
+mod_lm_dem_tidy <- tidy(mod_lm_dem)
+
+kable(mod_lm_dem_tidy, format = "html", booktabs = TRUE, escape = FALSE, 
+      col.names = c("Term", "Estimate", "Std. Error", "t value", "P-value"),
+      caption = "Association Between Both Campaign and Fundamental Variables and Democratic Two-Party Voteshare") |>
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) |>
+  row_spec(0, bold = TRUE)
+
+```
+**The table above displays the regression model that has been used to predict the general election outcomes in each battle ground state.** According to the regression model, the only statistically significant indicators at the 0.001 level are the latest democratic poll average and the results of the previous election. As has been found repeatedly, Q2 GDP growth is also statistically significant; however, that is only at the 0.1 level. What is interesting is that within this model, the number of Democrat campaign events appears to have a small negative effect on two-party Democratic vote share that is statistically significant at the 0.1 level. This result is most likely biased by limited data within the data set. 
+
+**Using this model to predict the results in each Battleground state:**
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+d_test <- d_test |>
+  rename(D_pv2p_lag1 = D_pv2p_lag1.y,
+         D_pv2p_lag2 = D_pv2p_lag2.y)
+
+d_test_Arizona <- d_test |>
+  filter(state == "Arizona") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, n_ev_D, ev_diff_D_R, deminc)
+         
+pred2024_Arizona <- predict(mod_lm_dem, newdata = d_test_Arizona, interval = "prediction", level = 0.95)
+
+
+
+d_test_Nevada <- d_test  |>
+  filter(state == "Nevada") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, n_ev_D, ev_diff_D_R, deminc)
+         
+pred2024_Nevada <- predict(mod_lm_dem, newdata = d_test_Nevada, interval = "prediction", level = 0.95)
+
+
+d_test_NC <- d_test  |>
+  filter(state == "North Carolina") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, n_ev_D, ev_diff_D_R, deminc)
+         
+pred2024_NC <- predict(mod_lm_dem, newdata = d_test_NC, interval = "prediction", level = 0.95)
+
+
+d_test_Michigan <- d_test  |>
+  filter(state == "Michigan") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, n_ev_D, ev_diff_D_R, deminc)
+         
+pred2024_Michigan <- predict(mod_lm_dem, newdata = d_test_Michigan, interval = "prediction", level = 0.95)
+
+
+d_test_Wisconsin <- d_test  |>
+  filter(state == "Wisconsin") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, n_ev_D, ev_diff_D_R, deminc)
+         
+pred2024_Wisconsin <- predict(mod_lm_dem, newdata = d_test_Wisconsin, interval = "prediction", level = 0.95)
+
+
+d_test_Georgia <- d_test  |>
+  filter(state == "Georgia") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, n_ev_D, ev_diff_D_R, deminc)
+         
+pred2024_Georgia <- predict(mod_lm_dem, newdata = d_test_Georgia, interval = "prediction", level = 0.95)
+
+d_test_Pennsylvania <- d_test |>
+  filter(state == "Pennsylvania") |>
+  select(D_pv2p_lag1, D_pv2p_lag2, latest_pollav_DEM, GDP_growth_quarterly, contribution_receipt_amount, n_ev_D, ev_diff_D_R, deminc)
+         
+pred2024_Pennsylvania  <- predict(mod_lm_dem, newdata = d_test_Pennsylvania , interval = "prediction", level = 0.95)
+
+
+
+pred2024_Arizona <- data.frame(state = "Arizona", pred2024_Arizona)
+pred2024_Nevada <- data.frame(state = "Nevada", pred2024_Nevada)
+pred2024_NC <- data.frame(state = "North Carolina", pred2024_NC)
+pred2024_Michigan <- data.frame(state = "Michigan", pred2024_Michigan)
+pred2024_Wisconsin <- data.frame(state = "Wisconsin", pred2024_Wisconsin)
+pred2024_Georgia <- data.frame(state = "Georgia", pred2024_Georgia)
+pred2024_Pennsylvania <- data.frame(state = "Pennsylvania", pred2024_Pennsylvania)
+
+
+colnames(pred2024_Arizona) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Nevada) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_NC) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Michigan) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Wisconsin) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Georgia) <- c("state", "prediction", "lower_CI", "upper_CI")
+colnames(pred2024_Pennsylvania) <- c("state", "prediction", "lower_CI", "upper_CI")
+
+
+pred2024_combined <- rbind(pred2024_Arizona, pred2024_Nevada, pred2024_NC, 
+                           pred2024_Michigan, pred2024_Wisconsin, 
+                           pred2024_Georgia, pred2024_Pennsylvania)
+
+pred2024_combined <- pred2024_combined |>
+  mutate(Winner = if_else(prediction >= 50, "Harris", "Trump"))
+
+
+knitr::kable(pred2024_combined)
+```
+
+As This table displays the results of the model in the seven key battleground states. According to this prediction, **Harris will win the election with 319 electoral votes while Trump will have 219 electoral votes.**
+
+
+## Notes
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-10-16-7-the-ground-game/index.Rmarkdown).
+
+**Sources**
+     
+AdImpact. The Play for the White House. October 7, 2024. Accessed October 21, 2024. 
+     https://www.wispolitics.com/wp-content/uploads/2024/10/241010AdImpact.pdf. 
+     
+Enos, Ryan D., and Anthony Fowler. "Aggregate Effects of Large-Scale Campaigns on Voter Turnout." 
+     Political Science Research and Methods 6, no. 4 (2016): 733-51. https://doi.org/10.1017/ 
+     psrm.2016.21. 
+
+Kalla, Joshua L., and David E. Broockman. "The Minimal Persuasive Effects of Campaign Contact in 
+     General Elections: Evidence from 49 Field Experiments." American Political Science Review 112, 
+     no. 1 (2017): 148-66. https://doi.org/10.1017/s0003055417000363. 
+
+**Data Sources**
+
+US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight and Gallup, also provided by the course. U.S. election spending data from [AdImpact](https://www.wispolitics.com/wp-content/uploads/2024/10/241010AdImpact.pdf) as of October 7th.
 
 
