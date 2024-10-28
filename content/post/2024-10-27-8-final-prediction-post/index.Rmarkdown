@@ -253,23 +253,16 @@ X_train <- model.matrix(`Democratic Two-Party Vote Share` ~ `Latest Democratic P
 
 Y_train <- dtrain$`Democratic Two-Party Vote Share`
 
-# Perform cross-validation for Ridge regression
-cv_ridge <- cv.glmnet(X_train, Y_train, alpha = 0)  # alpha = 0 for Ridge
-
-# Perform cross-validation for Lasso regression
-cv_lasso <- cv.glmnet(X_train, Y_train, alpha = 1)  # alpha = 1 for Lasso
 
 # Perform cross-validation for Elastic-Net regression
 cv_EN <- cv.glmnet(X_train, Y_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
 
 # Best lambda values from cross-validation
-best_lambda_ridge <- cv_ridge$lambda.min
-best_lambda_lasso <- cv_lasso$lambda.min
+
 best_lambda_EN <- cv_EN$lambda.min
 
 # Fit final models using the best lambda
-ridge_final <- glmnet(X_train, Y_train, alpha = 0, lambda = best_lambda_ridge)
-lasso_final <- glmnet(X_train, Y_train, alpha = 1, lambda = best_lambda_lasso)
+
 EN_final <- glmnet(X_train, Y_train, alpha = 0.5, lambda = best_lambda_EN)
 
 # Create testing data
@@ -279,8 +272,7 @@ X_test <- model.matrix(~ `Latest Democratic Poll Averages` +
                          `Democratic Two-Party Vote Share Lagged Two Cycles`, data = d2024)
 
 # Predict using Ridge and Lasso
-pred_ridge <- predict(ridge_final, newx = X_test)
-pred_lasso <- predict(lasso_final, newx = X_test)
+
 pred_EN <- predict(EN_final, newx = X_test)
 
 EN_results <- data.frame(state = d2024$State, pred_EN = pred_EN) |>
@@ -288,15 +280,64 @@ EN_results <- data.frame(state = d2024$State, pred_EN = pred_EN) |>
   rename(`Democratic Two-Party Vote Share` = s0) |>
   mutate(Winner = if_else(`Democratic Two-Party Vote Share` >= 50, "Harris", "Trump"))
 
-ridge_results <- data.frame(state = d2024$State, pred_ridge = pred_ridge) |>
-  filter(state %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada")) |>
-  rename(`Democratic Two-Party Vote Share` = s0) |>
-  mutate(Winner = if_else(`Democratic Two-Party Vote Share` >= 50, "Harris", "Trump"))
+knitr::kable(EN_results)
+```
 
-lasso_results <- data.frame(state = d2024$State, pred_lasso = pred_lasso) |>
-  filter(state %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada")) |>
-  rename(`Democratic Two-Party Vote Share` = s0) |>
-  mutate(Winner = if_else(`Democratic Two-Party Vote Share` >= 50, "Harris", "Trump"))
+```{r}
+library(dplyr)
+library(glmnet)
+
+# Filter and select relevant columns in d_rename_test
+d_rename_test <- d_rename_test |>
+  select(State, Year, `Latest Democratic Poll Averages`, `Q2 GDP Growth`, `Incumbency`, 
+         `Democratic Two-Party Vote Share Lagged One Cycle`, `Democratic Two-Party Vote Share Lagged Two Cycles`,
+         `Democratic Two-Party Vote Share`) |>
+  filter(!is.na(`Democratic Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+# Out-of-sample error calculation
+set.seed(0)  # For reproducibility
+out_samp_errors <- replicate(1000, {
+  # Sample 7 random years for out-of-sample testing
+  years_out_samp <- sample(d_rename_test$Year, 7)
+  
+  # Split data into training and testing sets
+  train_data <- d_rename_test |> filter(!Year %in% years_out_samp)
+  test_data <- d_rename_test |> filter(Year %in% years_out_samp)
+  
+  # Create model matrices
+  X_train <- model.matrix(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` + 
+                           `Q2 GDP Growth` + `Incumbency` + 
+                           `Democratic Two-Party Vote Share Lagged One Cycle` + 
+                           `Democratic Two-Party Vote Share Lagged Two Cycles`, data = train_data)
+  
+  Y_train <- train_data$`Democratic Two-Party Vote Share`
+  
+  X_test <- model.matrix(~ `Latest Democratic Poll Averages` + 
+                          `Q2 GDP Growth` + `Incumbency` + 
+                          `Democratic Two-Party Vote Share Lagged One Cycle` + 
+                          `Democratic Two-Party Vote Share Lagged Two Cycles`, data = test_data)
+
+  # Fit the Elastic Net model using training data
+  cv_EN <- cv.glmnet(X_train, Y_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+  best_lambda_EN <- cv_EN$lambda.min
+  
+  EN_final <- glmnet(X_train, Y_train, alpha = 0.5, lambda = best_lambda_EN)
+  
+  # Make predictions on the test data
+  out_samp_pred <- predict(EN_final, newx = X_test)
+  out_samp_truth <- test_data$`Democratic Two-Party Vote Share`
+  
+  # Calculate errors
+  out_samp_pred - out_samp_truth
+})
+
+# Summarize the out-of-sample errors
+mean_error <- mean(unlist(out_samp_errors))
+sd_error <- sd(unlist(out_samp_errors))
+
+mean_error
+sd_error
 
 ```
 
@@ -398,6 +439,142 @@ stargazer(r_regress, type = "text",
                                "Republican Two-Party Vote Share Lagged Two Cycles"),
           dep.var.labels = "Republican Two-Party Vote Share",
           single.row = TRUE)
+
+```
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+rtrain <- r_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Republican Two-Party Vote Share`)) 
+
+# Lasso regularization
+library(glmnet)
+
+RX_train <- model.matrix(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + `Q2 GDP Growth` + `Incumbency` + `Republican Two-Party Vote Share Lagged One Cycle` + `Republican Two-Party Vote Share Lagged Two Cycles`, data = rtrain)
+
+RY_train <- rtrain$`Republican Two-Party Vote Share`
+
+
+# Perform cross-validation for Elastic-Net regression
+rcv_EN <- cv.glmnet(RX_train, RY_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+
+# Best lambda values from cross-validation
+
+rbest_lambda_EN <- rcv_EN$lambda.min
+
+# Fit final models using the best lambda
+
+REN_final <- glmnet(RX_train, RY_train, alpha = 0.5, lambda = rbest_lambda_EN)
+
+# Create testing data
+RX_test <- model.matrix(~ `Latest Republican Poll Averages` + 
+                         `Q2 GDP Growth` + `Incumbency` + 
+                         `Republican Two-Party Vote Share Lagged One Cycle` + 
+                         `Republican Two-Party Vote Share Lagged Two Cycles`, data = r2024)
+
+# Predict using Ridge and Lasso
+
+rpred_EN <- predict(REN_final, newx = RX_test)
+
+REN_results <- data.frame(state = r2024$State, rpred_EN = rpred_EN) |>
+  filter(state %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada")) |>
+  rename(`Republican Two-Party Vote Share` = s0) |>
+  mutate(Winner = if_else(`Republican Two-Party Vote Share` <= 50, "Harris", "Trump"))
+
+knitr::kable(REN_results)
+```
+
+
+
+```{r}
+library(dplyr)
+library(glmnet)
+
+# Filter and select relevant columns in d_rename_test
+r_rename_test <- r_rename_test |>
+  select(State, Year, `Latest Republican Poll Averages`, `Q2 GDP Growth`, `Incumbency`, 
+         `Republican Two-Party Vote Share Lagged One Cycle`, `Republican Two-Party Vote Share Lagged Two Cycles`,
+         `Republican Two-Party Vote Share`) |>
+  filter(!is.na(`Republican Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+# Out-of-sample error calculation
+set.seed(0)  # For reproducibility
+rout_samp_errors <- replicate(1000, {
+  # Sample 7 random years for out-of-sample testing
+  ryears_out_samp <- sample(r_rename_test$Year, 7)
+  
+  # Split data into training and testing sets
+  rtrain_data <- r_rename_test |> filter(!Year %in% ryears_out_samp)
+  rtest_data <- r_rename_test |> filter(Year %in% ryears_out_samp)
+  
+  # Create model matrices
+  RX_train <- model.matrix(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + 
+                           `Q2 GDP Growth` + `Incumbency` + 
+                           `Republican Two-Party Vote Share Lagged One Cycle` + 
+                           `Republican Two-Party Vote Share Lagged Two Cycles`, data = rtrain_data)
+  
+  RY_train <- rtrain_data$`Republican Two-Party Vote Share`
+  
+  RX_test <- model.matrix(~ `Latest Republican Poll Averages` + 
+                          `Q2 GDP Growth` + `Incumbency` + 
+                          `Republican Two-Party Vote Share Lagged One Cycle` + 
+                          `Republican Two-Party Vote Share Lagged Two Cycles`, data = rtest_data)
+
+  # Fit the Elastic Net model using training data
+  rcv_EN <- cv.glmnet(RX_train, RY_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+  rbest_lambda_EN <- rcv_EN$lambda.min
+  
+  REN_final <- glmnet(RX_train, RY_train, alpha = 0.5, lambda = best_lambda_EN)
+  
+  # Make predictions on the test data
+  rout_samp_pred <- predict(REN_final, newx = RX_test)
+  rout_samp_truth <- rtest_data$`Republican Two-Party Vote Share`
+  
+  # Calculate errors
+  rout_samp_pred - rout_samp_truth
+})
+
+# Summarize the out-of-sample errors
+rmean_error <- mean(unlist(rout_samp_errors))
+rsd_error <- sd(unlist(rout_samp_errors))
+
+rmean_error
+rsd_error
+
+```
+
+
+```{r}
+
+dem_preds <- EN_results |>
+  rename(State = state, Dem_prediction = `Democratic Two-Party Vote Share`)  
+rep_preds <- REN_results |>
+  rename(State = state, Rep_prediction = `Republican Two-Party Vote Share`)
+
+
+combined_preds <- dem_preds |>
+  inner_join(rep_preds, by = "State")
+
+# Normalize so that Dem_prediction + Rep_prediction = 100
+combined_preds <- combined_preds |>
+  mutate(
+    Dem_prediction_normalized = Dem_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Rep_prediction_normalized = Rep_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Winner = if_else(Dem_prediction_normalized >= 50, "Harris", "Trump")
+  )
+
+
+final_preds <- combined_preds |>
+  select(State, Dem_prediction_normalized, Rep_prediction_normalized, Winner) |>
+  rename(
+    `Democratic Prediction` = Dem_prediction_normalized,
+    `Republican Prediction` = Rep_prediction_normalized
+  )
+
+
+knitr::kable(final_preds)
 
 ```
 
