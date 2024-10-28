@@ -1,0 +1,403 @@
+---
+title: 8. Final Prediction Post
+author: Mena Solomon
+date: '2024-10-27'
+slug: []
+categories: []
+tags: []
+---
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Load libraries.
+# Install via install.packages("name")
+library(geofacet)
+library(ggpubr)
+library(ggthemes)
+library(haven)
+library(kableExtra)
+library(maps)
+library(mgcv)
+library(mgcViz)
+library(RColorBrewer)
+library(scales)
+library(sf)
+library(spData)
+library(stargazer)
+library(tidygeocoder)
+library(tidyverse)
+library(tigris)
+library(tmap)
+library(tmaptools)
+library(viridis)
+
+# Read popular vote datasets.
+d_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/popvote_1948_2020.csv")
+d_state_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_popvote_1948_2020.csv")
+d_state_popvote[d_state_popvote$state == "District of Columbia",]$state <- "District Of Columbia"
+
+# Read elector distribution dataset.
+d_ec <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/corrected_ec_1948_2024.csv")
+
+# Read polling data.
+d_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/national_polls_1968-2024.csv")
+d_state_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_polls_1968-2024.csv")
+
+# Read turnout data.
+d_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_turnout_1980_2022.csv")
+
+# Read county turnout.
+d_county_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/county_turnout.csv")
+
+# Read state-level demographics.
+d_state_demog <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/demographics.csv")
+
+# Read county demographics.
+d_county_demog <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/county_demographics.csv")
+
+# Read campaign events datasets.
+d_campaign_events <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/campaigns_2016_2024.csv")[,-1]
+
+# Read economy data.
+d_econ <- read_csv("~/Desktop/election-blog2/content/post/2024-09-27-4-the-incumbency-advantage/data/fred_econ.csv")
+
+
+```
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Using state popvote.
+d_state_popvote <- d_state_popvote |>
+  select(year, state, D_pv2p, D_pv2p_lag1, D_pv2p_lag2) |>
+  filter(year >= 1972)
+
+# Coding incumbency variable.
+d_popvote <- d_popvote |>
+  filter(party == "democrat") |>
+  select(year, deminc) |>
+  filter(year >= 1972)
+
+# Using poll data.
+d_pollav_state <- d_state_polls |>
+  filter(weeks_left <= 15) |>
+  group_by(year, state, party) |>
+  mutate(mean_pollav = mean(poll_support, na.rm = TRUE)) |>
+  top_n(1, poll_date) |>
+  rename(latest_pollav = poll_support) |>
+  select(-c(weeks_left, days_left, poll_date, candidate, before_convention)) |>
+  pivot_wider(names_from = party, values_from = c(latest_pollav, mean_pollav)) |>
+  select(year, state, latest_pollav_DEM, mean_pollav_DEM)
+
+# Using econ data.
+d_econ <- d_econ |>
+  filter(quarter == 2) |>
+  select(year, GDP_growth_quarterly) |>
+  filter(year >= 1972)
+
+# Combining econ and incumbency.
+econ_deminc <- d_econ |>
+  left_join(d_popvote, by = "year") |>
+  drop_na()
+
+# Campaign events.
+d_campaign_events$party[d_campaign_events$candidate %in% c("Trump / Pence", "Trump", "Pence", "Trump/Pence", "Vance")] <- "REP"
+d_campaign_events$party[d_campaign_events$candidate %in% c("Biden / Harris", "Biden", "Harris", "Biden/Harris", "Walz", "Kaine", "Clinton", "Clinton / Kaine")] <- "DEM"
+
+d_campaign_events <- d_campaign_events |>
+  group_by(year, state, party) |>
+  summarize(n_events = n()) |>
+  pivot_wider(names_from = party, values_from = n_events) |>
+  rename(n_ev_D = DEM, n_ev_R = REP)
+
+d_campaign_events$n_ev_D[is.na(d_campaign_events$n_ev_D)] <- 0
+d_campaign_events$n_ev_R[is.na(d_campaign_events$n_ev_R)] <- 0
+d_campaign_events$ev_diff_D_R <- d_campaign_events$n_ev_D - d_campaign_events$n_ev_R
+d_campaign_events$ev_diff_R_D <- d_campaign_events$n_ev_R - d_campaign_events$n_ev_D
+
+d_campaign_events <- d_campaign_events |>
+  select(year, state, n_ev_D, ev_diff_D_R) |>
+  rename(abbreviation = state)
+
+state_info <- data.frame(
+  state = state.name,
+  abbreviation = state.abb
+)
+
+d_campaign_events <- d_campaign_events |>
+  left_join(state_info, by = "abbreviation") |>
+  filter(!is.na(state)) |>
+  select(year, state, n_ev_D, ev_diff_D_R)
+
+# Join data.
+d <- d_pollav_state |>
+  left_join(econ_deminc, by = "year") |>
+  left_join(d_state_popvote, by = c("year", "state"))
+
+t <- d |>
+  filter(year >= 2016) |>
+  arrange(year) |>
+  group_by(state) |>
+  mutate(
+    D_pv2p_lag1 = lag(D_pv2p, 1),
+    D_pv2p_lag2 = lag(D_pv2p, 2)
+  )
+
+t2024 <- t |>
+  filter(year == 2024) |>
+  select(year, state, D_pv2p_lag1, D_pv2p_lag2) |>
+  rename(State = state)
+
+d_rename <- d |>
+  rename(
+    `Latest Democratic Poll Averages` = latest_pollav_DEM,
+    `Mean Democratic Poll Averages (Week 15 - Present)` = mean_pollav_DEM,
+    `Q2 GDP Growth` = GDP_growth_quarterly,
+    Incumbency = deminc,
+    `Democratic Two-Party Vote Share` = D_pv2p,
+    `Democratic Two-Party Vote Share Lagged One Cycle` = D_pv2p_lag1,
+    `Democratic Two-Party Vote Share Lagged Two Cycles` = D_pv2p_lag2,
+    Year = year,
+    State = state
+  )
+
+d_rename_test <- d_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Democratic Two-Party Vote Share`))
+
+d2024 <- d_rename |>
+  filter(Year == 2024) |>
+  select(State, `Latest Democratic Poll Averages`, `Mean Democratic Poll Averages (Week 15 - Present)`, `Q2 GDP Growth`, Incumbency) |>
+  left_join(t2024, by = "State") |>
+  rename(
+    `Democratic Two-Party Vote Share Lagged One Cycle` = D_pv2p_lag1,
+    `Democratic Two-Party Vote Share Lagged Two Cycles` = D_pv2p_lag2
+  )
+
+d2024 <- d2024 |>
+  select(State, `Latest Democratic Poll Averages`, `Q2 GDP Growth`, Incumbency, `Democratic Two-Party Vote Share Lagged One Cycle`, `Democratic Two-Party Vote Share Lagged Two Cycles`) |>
+  filter(!is.na(`Democratic Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+d_regress <- lm(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` +
+                `Q2 GDP Growth` + Incumbency +
+                `Democratic Two-Party Vote Share Lagged One Cycle` +
+                `Democratic Two-Party Vote Share Lagged Two Cycles`, data = d_rename_test)
+
+library(stargazer)
+
+stargazer(d_regress, type = "text",
+          covariate.labels = c("Latest Democratic Poll Averages",
+                               "Q2 GDP Growth",
+                               "Incumbency",
+                               "Democratic Two-Party Vote Share Lagged One Cycle",
+                               "Democratic Two-Party Vote Share Lagged Two Cycles"),
+          dep.var.labels = "Democratic Two-Party Vote Share",
+          single.row = TRUE)
+
+```
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+
+# Filter and select relevant columns in d_rename_test
+d_rename_test <- d_rename_test %>%
+  select(State, Year, `Latest Democratic Poll Averages`, `Q2 GDP Growth`, `Incumbency`, 
+         `Democratic Two-Party Vote Share Lagged One Cycle`, `Democratic Two-Party Vote Share Lagged Two Cycles`,
+         `Democratic Two-Party Vote Share`) %>%
+  filter(!is.na(`Democratic Two-Party Vote Share Lagged One Cycle`)) %>%
+  ungroup()
+
+# Out-of-sample error calculation
+set.seed(0)  # For reproducibility
+out_samp_errors <- replicate(1000, {
+  # Sample 9 random years for out-of-sample testing
+  years_out_samp <- sample(d_rename_test$Year, 7)
+  
+  # Split data into training and testing sets
+  train_data <- d_rename_test %>% filter(!Year %in% years_out_samp)
+  test_data <- d_rename_test %>% filter(Year %in% years_out_samp)
+  
+  # Fit the model using training data
+  model <- lm(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` + 
+                 `Q2 GDP Growth` + `Incumbency` + 
+                 `Democratic Two-Party Vote Share Lagged One Cycle` + 
+                 `Democratic Two-Party Vote Share Lagged Two Cycles`, data = train_data)
+  
+  # Make predictions on the test data
+  out_samp_pred <- predict(model, newdata = test_data)
+  out_samp_truth <- test_data$`Democratic Two-Party Vote Share`
+  
+  # Calculate errors
+  out_samp_pred - out_samp_truth
+})
+
+# Summarize the out-of-sample errors
+mean_error <- mean(unlist(out_samp_errors))
+sd_error <- sd(unlist(out_samp_errors))
+
+mean_error
+sd_error
+
+```
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+dtrain <- d_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Democratic Two-Party Vote Share`)) 
+
+# Lasso regularization
+library(glmnet)
+
+X_train <- model.matrix(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` + `Q2 GDP Growth` + `Incumbency` + `Democratic Two-Party Vote Share Lagged One Cycle` + `Democratic Two-Party Vote Share Lagged Two Cycles`, data = dtrain)
+
+Y_train <- dtrain$`Democratic Two-Party Vote Share`
+
+# Perform cross-validation for Ridge regression
+cv_ridge <- cv.glmnet(X_train, Y_train, alpha = 0)  # alpha = 0 for Ridge
+
+# Perform cross-validation for Lasso regression
+cv_lasso <- cv.glmnet(X_train, Y_train, alpha = 1)  # alpha = 1 for Lasso
+
+# Perform cross-validation for Elastic-Net regression
+cv_EN <- cv.glmnet(X_train, Y_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+
+# Best lambda values from cross-validation
+best_lambda_ridge <- cv_ridge$lambda.min
+best_lambda_lasso <- cv_lasso$lambda.min
+best_lambda_EN <- cv_EN$lambda.min
+
+# Fit final models using the best lambda
+ridge_final <- glmnet(X_train, Y_train, alpha = 0, lambda = best_lambda_ridge)
+lasso_final <- glmnet(X_train, Y_train, alpha = 1, lambda = best_lambda_lasso)
+EN_final <- glmnet(X_train, Y_train, alpha = 0.5, lambda = best_lambda_EN)
+
+# Create testing data
+X_test <- model.matrix(~ `Latest Democratic Poll Averages` + 
+                         `Q2 GDP Growth` + `Incumbency` + 
+                         `Democratic Two-Party Vote Share Lagged One Cycle` + 
+                         `Democratic Two-Party Vote Share Lagged Two Cycles`, data = d2024)
+
+# Predict using Ridge and Lasso
+pred_ridge <- predict(ridge_final, newx = X_test)
+pred_lasso <- predict(lasso_final, newx = X_test)
+pred_EN <- predict(EN_final, newx = X_test)
+
+EN_results <- data.frame(state = d2024$State, pred_EN = pred_EN) |>
+  filter(state %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada")) |>
+  rename(`Democratic Two-Party Vote Share` = s0) |>
+  mutate(Winner = if_else(`Democratic Two-Party Vote Share` >= 50, "Harris", "Trump"))
+
+ridge_results <- data.frame(state = d2024$State, pred_ridge = pred_ridge) |>
+  filter(state %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada")) |>
+  rename(`Democratic Two-Party Vote Share` = s0) |>
+  mutate(Winner = if_else(`Democratic Two-Party Vote Share` >= 50, "Harris", "Trump"))
+
+lasso_results <- data.frame(state = d2024$State, pred_lasso = pred_lasso) |>
+  filter(state %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada")) |>
+  rename(`Democratic Two-Party Vote Share` = s0) |>
+  mutate(Winner = if_else(`Democratic Two-Party Vote Share` >= 50, "Harris", "Trump"))
+
+```
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Using state popvote
+r_state_popvote <- d_state_popvote |>
+  select(year, state, R_pv2p, R_pv2p_lag1, R_pv2p_lag2) |>
+  filter(year >= 1972)
+
+# Coding incumbency variable
+r_popvote <- d_popvote |>
+  filter(party == "republican") |>
+  mutate(repinc = if_else(deminc == 1, 0, 1)) |>
+  select(year, repinc) |>
+  filter(year >= 1972)
+
+# Using poll data
+r_pollav_state <- d_state_polls |> 
+  filter(weeks_left <= 15) |>
+  group_by(year, state, party) |>
+  mutate(mean_pollav = mean(poll_support, na.rm = TRUE)) |>
+  top_n(1, poll_date) |> 
+  rename(latest_pollav = poll_support) |>
+  select(-c(weeks_left, days_left, poll_date, candidate, before_convention)) |>
+  pivot_wider(names_from = party, values_from = c(latest_pollav, mean_pollav)) |>
+  select(year, state, latest_pollav_REP, mean_pollav_REP)
+
+# Using econ data
+r_econ <- d_econ |>
+  filter(quarter == 2) |>
+  select(year, GDP_growth_quarterly) |>
+  filter(year >= 1972)
+
+# Combining econ and incumbency (bc similar)
+r_econ_deminc <- r_econ |>
+  left_join(r_popvote, by = "year") |>
+  drop_na()
+
+# Join data
+r <- r_pollav_state |>
+  left_join(r_econ_deminc, by = "year") |>
+  left_join(r_state_popvote, by = c("year", "state")) 
+
+tr <- r |>
+  filter(year >= 2016) |> 
+  arrange(year) |> 
+  group_by(state) |> 
+  mutate(
+    R_pv2p_lag1 = lag(R_pv2p, 1),
+    R_pv2p_lag2 = lag(R_pv2p, 2)
+  )
+
+tr2024 <- tr |>
+  filter(year == 2024) |>
+  select(year, state, R_pv2p_lag1, R_pv2p_lag2) |>
+  rename(State = state)
+
+r_rename <- r |>
+  rename(`Latest Republican Poll Averages` = latest_pollav_REP,
+         `Mean Republican Poll Averages (Week 15 - Present)` = mean_pollav_REP,
+         `Q2 GDP Growth` = GDP_growth_quarterly,
+         `Incumbency` = repinc,
+         `Republican Two-Party Vote Share` = R_pv2p,
+         `Republican Two-Party Vote Share Lagged One Cycle` = R_pv2p_lag1,
+         `Republican Two-Party Vote Share Lagged Two Cycles` = R_pv2p_lag2,
+         Year = year,
+         State = state) 
+
+r_rename_test <- r_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Republican Two-Party Vote Share`))
+
+r2024 <- r_rename |>
+  filter(Year == 2024) |>
+  select(State, `Latest Republican Poll Averages`, `Mean Republican Poll Averages (Week 15 - Present)`, `Q2 GDP Growth`, `Incumbency`) |>
+  left_join(tr2024, by = "State") |>
+  rename(`Republican Two-Party Vote Share Lagged One Cycle` = R_pv2p_lag1,
+         `Republican Two-Party Vote Share Lagged Two Cycles` = R_pv2p_lag2) 
+
+r2024 <- r2024 |>
+  select(State, `Latest Republican Poll Averages`, `Q2 GDP Growth`, `Incumbency`, `Republican Two-Party Vote Share Lagged One Cycle`, `Republican Two-Party Vote Share Lagged Two Cycles`) |>
+  filter(!is.na(`Republican Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+r_regress <- 
+  lm(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + 
+       `Q2 GDP Growth` + `Incumbency` + 
+       `Republican Two-Party Vote Share Lagged One Cycle` + 
+       `Republican Two-Party Vote Share Lagged Two Cycles`, data = r_rename_test)
+
+library(stargazer)
+
+stargazer(r_regress, type = "text",
+          covariate.labels = c("Latest Republican Poll Averages",
+                               "Q2 GDP Growth",
+                               "Incumbency",
+                               "Republican Two-Party Vote Share Lagged One Cycle",
+                               "Republican Two-Party Vote Share Lagged Two Cycles"),
+          dep.var.labels = "Republican Two-Party Vote Share",
+          single.row = TRUE)
+
+```
+

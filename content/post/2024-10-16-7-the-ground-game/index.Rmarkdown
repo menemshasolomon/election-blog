@@ -300,6 +300,8 @@ lm_romney <- lm(romney12fo ~
                   as.factor(state),
                   fo_2012)
 
+summary(lm_romney )
+
 # Load necessary libraries
 library(broom)
 library(knitr)
@@ -361,7 +363,7 @@ kable(regression_table_2, col.names = c("Variable", "Turnout Change Estimate", "
 
 **Furthermore, the second group of maps displays the location of these campaign events, indicating that they are often positioned in battle ground states, as the literature discussed above would predict.** 
 
-```{r echo = FALSE, message=FALSE, warning=FALSE,}
+```{r echo = FALSE, message=FALSE, warning=FALSE}
 
 options(dplyr.summarise.inform = FALSE)
 # Visualizing campaign events. 
@@ -673,6 +675,7 @@ pred2024_combined <- pred2024_combined |>
 
 knitr::kable(pred2024_combined)
 ```
+
 
 As This table displays the results of the model in the seven key battleground states. According to this prediction, **Harris will win the election with 319 electoral votes while Trump will have 219 electoral votes.**
 
