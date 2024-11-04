@@ -153,6 +153,8 @@ The mean error for Democrats is around -0.25, indicating the model tends to slig
 
 As I have done in the previous three weeks, I will be predicting for the seven states which [expert predictors like Cook and Sabato](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. Using the elastic-net regularized regression model generated above, which includes four predictive variables, my models calculated both Democratic and Republican two-party vote share.
 
+When interpreting the results below, bear in mind that the predicted two-party vote shares sum to above 100 as a result of the data used in this model. The data will be normalized below; however, this model is included for the sake of evaluating the confidence intervals for each state.
+
 *Model of Elastic-Net Regularized Regression Predicted Two-Party Democratic Vote Share with 90% Confidence Intervals for Swing States*
 
 
@@ -167,7 +169,6 @@ Table: <span id="tab:unnamed-chunk-10"></span>Table 4: Predicted Two-Party Democ
 |North Carolina |             51.75088|    46.53768|    56.96409|Harris |
 |Pennsylvania   |             52.51599|    47.30279|    57.72919|Harris |
 |Wisconsin      |             52.56607|    47.35287|    57.77927|Harris |
-
 
 *Model of Elastic-Net Regularized Regression Predicted Two-Party Republican Vote Share with 90% Confidence Intervals for Swing States*
 
@@ -184,8 +185,9 @@ Table: <span id="tab:unnamed-chunk-11"></span>Table 5: Predicted Two-Party Repub
 |Pennsylvania   |             52.28012|    47.12051|    57.43972|Trump  |
 |Wisconsin      |             52.39460|    47.23500|    57.55421|Trump  |
 
+The 90% confidence interval of these predictions includes both election outcomes, indicating the extreme variability of the model. Since election prediction models are extremely specific and based on limited data, confidence intervals which include both outcomes are typical; however, it is important to bear this in mind when interpreting the results below. 
 
-*Normalizing the Two-Party Vote Share in my Models*
+*Normalizing the Two-Party Vote Share in my Models to Generate a Final Prediction*
 
 
 |State          | Democratic Prediction| Republican Prediction|Winner |
@@ -197,4 +199,45 @@ Table: <span id="tab:unnamed-chunk-11"></span>Table 5: Predicted Two-Party Repub
 |North Carolina |              49.18456|              50.81544|Trump  |
 |Pennsylvania   |              50.11254|              49.88746|Harris |
 |Wisconsin      |              50.08168|              49.91832|Harris |
+
+**In normalizing both predictions, Harris appears to win Michigan, Nevada, Pennsylvania, and Wisconsin on a slim margin, while Trump wins Arizona, Georgia, and North Carolina on similarly slim margin. This leads to a result where Harris wins with 276 electors while Trump has 262 electors.** 
+
+
+
+```r
+library(ggplot2)
+library(maps)
+
+us_states <- map_data("state")
+
+final_preds$State <- tolower(final_preds$State)
+
+map_data <- us_states %>%
+  left_join(final_preds, by = c("region" = "State"))
+
+
+ggplot(map_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = Winner), color = "white") + 
+  scale_fill_manual(values = c("Harris" = "blue", "Trump" = "red")) +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),   
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.ticks = element_blank(),     
+    axis.text = element_blank()        
+  ) + 
+  labs(title = "Predicted Election Results by State, Swing States Only",
+       fill = "Winner") 
+```
+
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+
+## Notes
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-11-01-9-final-prediction-assignment/index.Rmarkdown).
+
+
+**Data Sources**
+
+US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight.
 

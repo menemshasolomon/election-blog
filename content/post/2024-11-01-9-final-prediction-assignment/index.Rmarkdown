@@ -586,6 +586,8 @@ The mean error for Democrats is around -0.25, indicating the model tends to slig
 
 As I have done in the previous three weeks, I will be predicting for the seven states which [expert predictors like Cook and Sabato](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. Using the elastic-net regularized regression model generated above, which includes four predictive variables, my models calculated both Democratic and Republican two-party vote share.
 
+When interpreting the results below, bear in mind that the predicted two-party vote shares sum to above 100 as a result of the data used in this model. The data will be normalized below; however, this model is included for the sake of evaluating the confidence intervals for each state.
+
 *Model of Elastic-Net Regularized Regression Predicted Two-Party Democratic Vote Share with 90% Confidence Intervals for Swing States*
 
 ```{r echo = FALSE, message=FALSE, warning=FALSE}
@@ -623,7 +625,6 @@ knitr::kable(EN_results,
              caption = "Predicted Two-Party Democratic Vote Share with Confidence Intervals for Swing States")
 
 ```
-
 
 *Model of Elastic-Net Regularized Regression Predicted Two-Party Republican Vote Share with 90% Confidence Intervals for Swing States*
 
@@ -666,8 +667,9 @@ knitr::kable(rEN_results,
 
 ```
 
+The 90% confidence interval of these predictions includes both election outcomes, indicating the extreme variability of the model. Since election prediction models are extremely specific and based on limited data, confidence intervals which include both outcomes are typical; however, it is important to bear this in mind when interpreting the results below. 
 
-*Normalizing the Two-Party Vote Share in my Models*
+*Normalizing the Two-Party Vote Share in my Models to Generate a Final Prediction*
 
 ```{r echo = FALSE, message=FALSE, warning=FALSE}
 
@@ -700,4 +702,44 @@ final_preds <- combined_preds |>
 knitr::kable(final_preds)
 
 ```
+
+**In normalizing both predictions, Harris appears to win Michigan, Nevada, Pennsylvania, and Wisconsin on a slim margin, while Trump wins Arizona, Georgia, and North Carolina on similarly slim margin. This leads to a result where Harris wins with 276 electors while Trump has 262 electors.** 
+
+
+```{r cho = FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(maps)
+
+us_states <- map_data("state")
+
+final_preds$State <- tolower(final_preds$State)
+
+map_data <- us_states %>%
+  left_join(final_preds, by = c("region" = "State"))
+
+
+ggplot(map_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = Winner), color = "white") + 
+  scale_fill_manual(values = c("Harris" = "blue", "Trump" = "red")) +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),   
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.ticks = element_blank(),     
+    axis.text = element_blank()        
+  ) + 
+  labs(title = "Predicted Election Results by State, Swing States Only",
+       fill = "Winner") 
+
+
+```
+
+## Notes
+All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-11-01-9-final-prediction-assignment/index.Rmarkdown).
+
+
+**Data Sources**
+
+US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight.
 

@@ -197,6 +197,7 @@ When utilizing a regression model, there are two main concerns: overfitting and 
 <p>The mean error for Democrats is around -0.25, indicating the model tends to slightly underestimate Democrat performance. The mean error for Republicans is around 0.5, indicating the model tends to slightly overestimate Republican performance. That said, the values are close to zero, suggesting the models do not have a significant directional bias in their predictions. A standard deviation of around 6 for both, however, is relatively high, especially in the context of vote share predictions. A high standard deviation (relative to the mean error) suggests that individual predictions vary considerably from the true values.</p>
 <p><strong>Predicting Vote Share</strong></p>
 <p>As I have done in the previous three weeks, I will be predicting for the seven states which <a href="https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/">expert predictors like Cook and Sabato</a> determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. Using the elastic-net regularized regression model generated above, which includes four predictive variables, my models calculated both Democratic and Republican two-party vote share.</p>
+<p>When interpreting the results below, bear in mind that the predicted two-party vote shares sum to above 100 as a result of the data used in this model. The data will be normalized below; however, this model is included for the sake of evaluating the confidence intervals for each state.</p>
 <p><em>Model of Elastic-Net Regularized Regression Predicted Two-Party Democratic Vote Share with 90% Confidence Intervals for Swing States</em></p>
 <p>Table: <span id="tab:unnamed-chunk-10"></span>Table 4: Predicted Two-Party Democratic Vote Share with Confidence Intervals for Swing States</p>
 <table>
@@ -325,7 +326,8 @@ When utilizing a regression model, there are two main concerns: overfitting and 
       </tr>
   </tbody>
 </table>
-<p><em>Normalizing the Two-Party Vote Share in my Models</em></p>
+<p>The 90% confidence interval of these predictions includes both election outcomes, indicating the extreme variability of the model. Since election prediction models are extremely specific and based on limited data, confidence intervals which include both outcomes are typical; however, it is important to bear this in mind when interpreting the results below.</p>
+<p><em>Normalizing the Two-Party Vote Share in my Models to Generate a Final Prediction</em></p>
 <table>
   <thead>
       <tr>
@@ -380,6 +382,37 @@ When utilizing a regression model, there are two main concerns: overfitting and 
       </tr>
   </tbody>
 </table>
+<p><strong>In normalizing both predictions, Harris appears to win Michigan, Nevada, Pennsylvania, and Wisconsin on a slim margin, while Trump wins Arizona, Georgia, and North Carolina on similarly slim margin. This leads to a result where Harris wins with 276 electors while Trump has 262 electors.</strong></p>
+<pre><code class="language-r">library(ggplot2)
+library(maps)
+
+us_states &lt;- map_data(&quot;state&quot;)
+
+final_preds$State &lt;- tolower(final_preds$State)
+
+map_data &lt;- us_states %&gt;%
+  left_join(final_preds, by = c(&quot;region&quot; = &quot;State&quot;))
+
+
+ggplot(map_data, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = Winner), color = &quot;white&quot;) + 
+  scale_fill_manual(values = c(&quot;Harris&quot; = &quot;blue&quot;, &quot;Trump&quot; = &quot;red&quot;)) +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),   
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.ticks = element_blank(),     
+    axis.text = element_blank()        
+  ) + 
+  labs(title = &quot;Predicted Election Results by State, Swing States Only&quot;,
+       fill = &quot;Winner&quot;) 
+</code></pre>
+<img src="https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/index_files/figure-html/unnamed-chunk-13-1.png" width="672" />
+<h2 id="notes">Notes</h2>
+<p>All code above is accessible via <a href="https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-11-01-9-final-prediction-assignment/index.Rmarkdown">Github</a>.</p>
+<p><strong>Data Sources</strong></p>
+<p>US Presidential Election Popular Vote Data from 1948-2020 provided by the course. Economic data from the U.S. Bureau of Economic Analysis, also provided by the course. Polling data sourced from FiveThirtyEight.</p>
 
 </main>
 
