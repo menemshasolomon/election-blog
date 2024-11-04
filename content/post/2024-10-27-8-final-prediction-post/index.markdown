@@ -116,25 +116,25 @@ As I have done in the previous three weeks, I will be predicting for the seven s
 
 |   |state          | Democratic Two-Party Vote Share|Winner |
 |:--|:--------------|-------------------------------:|:------|
-|1  |Arizona        |                        50.77350|Harris |
-|4  |Georgia        |                        51.23031|Harris |
-|6  |Michigan       |                        51.79278|Harris |
-|11 |Nevada         |                        51.36677|Harris |
-|15 |North Carolina |                        50.70765|Harris |
-|17 |Pennsylvania   |                        51.63566|Harris |
-|20 |Wisconsin      |                        51.45839|Harris |
+|1  |Arizona        |                        51.86191|Harris |
+|4  |Georgia        |                        52.10763|Harris |
+|7  |Michigan       |                        52.79416|Harris |
+|12 |Nevada         |                        52.38088|Harris |
+|16 |North Carolina |                        51.74808|Harris |
+|18 |Pennsylvania   |                        52.51349|Harris |
+|22 |Wisconsin      |                        52.56357|Harris |
 
 
 
 |   |state          | Republican Two-Party Vote Share|Winner |
 |:--|:--------------|-------------------------------:|:------|
-|1  |Arizona        |                        54.70818|Trump  |
-|4  |Georgia        |                        54.73862|Trump  |
-|6  |Michigan       |                        53.22518|Trump  |
-|11 |Nevada         |                        53.29655|Trump  |
-|15 |North Carolina |                        55.05921|Trump  |
-|17 |Pennsylvania   |                        53.85692|Trump  |
-|20 |Wisconsin      |                        54.01358|Trump  |
+|1  |Arizona        |                        53.26769|Trump  |
+|4  |Georgia        |                        53.37372|Trump  |
+|6  |Michigan       |                        51.74763|Trump  |
+|11 |Nevada         |                        51.63499|Trump  |
+|15 |North Carolina |                        53.46686|Trump  |
+|17 |Pennsylvania   |                        52.28012|Trump  |
+|20 |Wisconsin      |                        52.39460|Trump  |
 
 
 **As displayed by both models, an apparent error exists wherein each model is biased to predict a two-party vote share which sums to around 105%, instead of 100%.** This bias does not appear to shift when any single variable is removed, thus indicating that it is the fault of an anomaly in the data. To account for this error, my final result normalizes the results above.
@@ -145,13 +145,13 @@ As I have done in the previous three weeks, I will be predicting for the seven s
 
 |State          | Democratic Prediction| Republican Prediction|Winner |
 |:--------------|---------------------:|---------------------:|:------|
-|Arizona        |              48.13490|              51.86510|Trump  |
-|Georgia        |              48.34465|              51.65535|Trump  |
-|Michigan       |              49.31803|              50.68197|Trump  |
-|Nevada         |              49.07810|              50.92190|Trump  |
-|North Carolina |              47.94285|              52.05715|Trump  |
-|Pennsylvania   |              48.94720|              51.05280|Trump  |
-|Wisconsin      |              48.78869|              51.21131|Trump  |
+|Arizona        |              49.33141|              50.66859|Trump  |
+|Georgia        |              49.39985|              50.60015|Trump  |
+|Michigan       |              50.50053|              49.49947|Harris |
+|Nevada         |              50.35854|              49.64146|Harris |
+|North Carolina |              49.18320|              50.81680|Trump  |
+|Pennsylvania   |              50.11135|              49.88865|Harris |
+|Wisconsin      |              50.08049|              49.91951|Harris |
 
 
 **After normalizing the results, the model appears to predict a landslide victory for Trump in every swing state. Indeed, this model predicts 312 electoral votes for Trump and 226 for Harris.** While this result appears to be incredibly unlikely, it is not impossible. Furthermore, the confidence intervals (not shown above) include both outcomes, re-emphasizing that this year's election will be decided within an incredibly slim margin.

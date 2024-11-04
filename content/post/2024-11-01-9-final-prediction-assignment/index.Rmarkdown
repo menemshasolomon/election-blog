@@ -1,0 +1,703 @@
+---
+title: 9. Final Prediction Assignment
+author: Mena Solomon
+date: '2024-11-01'
+slug: []
+categories: []
+tags: []
+---
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Load libraries.
+# Install via install.packages("name")
+library(geofacet)
+library(ggpubr)
+library(ggthemes)
+library(haven)
+library(kableExtra)
+library(maps)
+library(mgcv)
+library(mgcViz)
+library(RColorBrewer)
+library(scales)
+library(sf)
+library(spData)
+library(stargazer)
+library(tidygeocoder)
+library(tidyverse)
+library(tigris)
+library(tmap)
+library(tmaptools)
+library(viridis)
+library(knitr)
+library(kableExtra)
+
+# Read popular vote datasets.
+d_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/popvote_1948_2020.csv")
+d_state_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_popvote_1948_2020.csv")
+d_state_popvote[d_state_popvote$state == "District of Columbia",]$state <- "District Of Columbia"
+
+# Read elector distribution dataset.
+d_ec <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/corrected_ec_1948_2024.csv")
+
+# Read polling data.
+d_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/national_polls_1968-2024.csv")
+d_state_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-27-8-final-prediction-post/state_polls_1968-2024.csv")
+
+# Read turnout data.
+d_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_turnout_1980_2022.csv")
+
+# Read county turnout.
+d_county_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/county_turnout.csv")
+
+# Read economy data.
+d_econ <- read_csv("~/Desktop/election-blog2/content/post/2024-09-27-4-the-incumbency-advantage/data/fred_econ.csv")
+
+
+```
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Using state popvote.
+d_state_popvote <- d_state_popvote |>
+  select(year, state, D_pv2p, D_pv2p_lag1, D_pv2p_lag2) |>
+  filter(year >= 1972)
+
+# Coding incumbency variable.
+d_popvote <- d_popvote |>
+  filter(party == "democrat") |>
+  select(year, deminc) |>
+  filter(year >= 1972)
+
+# Using poll data.
+d_pollav_state <- d_state_polls |>
+  filter(weeks_left <= 15) |>
+  group_by(year, state, party) |>
+  mutate(mean_pollav = mean(poll_support, na.rm = TRUE)) |>
+  top_n(1, poll_date) |>
+  rename(latest_pollav = poll_support) |>
+  select(-c(weeks_left, days_left, poll_date, candidate, before_convention)) |>
+  pivot_wider(names_from = party, values_from = c(latest_pollav, mean_pollav)) |>
+  select(year, state, latest_pollav_DEM, mean_pollav_DEM)
+
+# Using econ data.
+d_econ <- d_econ |>
+  filter(quarter == 2) |>
+  select(year, GDP_growth_quarterly) |>
+  filter(year >= 1972)
+
+# Combining econ and incumbency.
+econ_deminc <- d_econ |>
+  left_join(d_popvote, by = "year") |>
+  drop_na()
+
+# Join data.
+d <- d_pollav_state |>
+  left_join(econ_deminc, by = "year") |>
+  left_join(d_state_popvote, by = c("year", "state"))
+
+t <- d |>
+  filter(year >= 2016) |>
+  arrange(year) |>
+  group_by(state) |>
+  mutate(
+    D_pv2p_lag1 = lag(D_pv2p, 1),
+    D_pv2p_lag2 = lag(D_pv2p, 2)
+  )
+
+t2024 <- t |>
+  filter(year == 2024) |>
+  select(year, state, D_pv2p_lag1, D_pv2p_lag2) |>
+  rename(State = state)
+
+d_rename <- d |>
+  rename(
+    `Latest Democratic Poll Averages` = latest_pollav_DEM,
+    `Mean Democratic Poll Averages (Week 15 - Present)` = mean_pollav_DEM,
+    `Q2 GDP Growth` = GDP_growth_quarterly,
+    Incumbency = deminc,
+    `Democratic Two-Party Vote Share` = D_pv2p,
+    `Democratic Two-Party Vote Share Lagged One Cycle` = D_pv2p_lag1,
+    `Democratic Two-Party Vote Share Lagged Two Cycles` = D_pv2p_lag2,
+    Year = year,
+    State = state
+  )
+
+d_rename_test <- d_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Democratic Two-Party Vote Share`)) |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+d2024 <- d_rename |>
+  filter(Year == 2024) |>
+  select(State, `Latest Democratic Poll Averages`, `Mean Democratic Poll Averages (Week 15 - Present)`, `Q2 GDP Growth`, Incumbency) |>
+  left_join(t2024, by = "State") |>
+  rename(
+    `Democratic Two-Party Vote Share Lagged One Cycle` = D_pv2p_lag1,
+    `Democratic Two-Party Vote Share Lagged Two Cycles` = D_pv2p_lag2
+  )
+
+d2024 <- d2024 |>
+  select(State, `Latest Democratic Poll Averages`, `Q2 GDP Growth`, Incumbency, `Democratic Two-Party Vote Share Lagged One Cycle`, `Democratic Two-Party Vote Share Lagged Two Cycles`) |>
+  filter(!is.na(`Democratic Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+d2024 <-  d2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+d_regress <- lm(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` +
+                `Incumbency and GDP Interaction Effect` +
+                `Democratic Two-Party Vote Share Lagged One Cycle` +
+                `Democratic Two-Party Vote Share Lagged Two Cycles`, data = d_rename_test)
+
+```
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Read popular vote datasets.
+r_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/popvote_1948_2020.csv")
+r_state_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_popvote_1948_2020.csv")
+r_state_popvote[r_state_popvote$state == "District of Columbia",]$state <- "District Of Columbia"
+
+# Read elector distribution dataset.
+r_ec <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/corrected_ec_1948_2024.csv")
+
+# Read polling data.
+r_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/national_polls_1968-2024.csv")
+r_state_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_polls_1968-2024.csv")
+
+# Read turnout data.
+r_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_turnout_1980_2022.csv")
+
+# Read county turnout.
+r_county_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/county_turnout.csv")
+
+# Read state-level demographics.
+r_state_demog <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/demographics.csv")
+
+# Read county demographics.
+r_county_demog <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/county_demographics.csv")
+
+# Read campaign events datasets.
+r_campaign_events <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/campaigns_2016_2024.csv")[,-1]
+
+# Read economy data.
+r_econ <- read_csv("~/Desktop/election-blog2/content/post/2024-09-27-4-the-incumbency-advantage/data/fred_econ.csv")
+
+# Using state popvote
+r_state_popvote <- r_state_popvote |>
+  select(year, state, R_pv2p, R_pv2p_lag1, R_pv2p_lag2) |>
+  filter(year >= 1972)
+
+# Coding incumbency variable
+r_popvote <- r_popvote |>
+  filter(party == "republican") |>
+  mutate(repinc = if_else(deminc == 1, 0, 1)) |>
+  select(year, repinc) |>
+  filter(year >= 1972)
+
+# Using poll data
+r_pollav_state <- r_state_polls |> 
+  filter(weeks_left <= 15) |>
+  group_by(year, state, party) |>
+  mutate(mean_pollav = mean(poll_support, na.rm = TRUE)) |>
+  top_n(1, poll_date) |> 
+  rename(latest_pollav = poll_support) |>
+  select(-c(weeks_left, days_left, poll_date, candidate, before_convention)) |>
+  pivot_wider(names_from = party, values_from = c(latest_pollav, mean_pollav)) |>
+  select(year, state, latest_pollav_REP, mean_pollav_REP)
+
+# Using econ data
+r_econ <- r_econ |>
+  filter(quarter == 2) |>
+  select(year, GDP_growth_quarterly) |>
+  filter(year >= 1972)
+
+# Combining econ and incumbency (bc similar)
+r_econ_deminc <- r_econ |>
+  left_join(r_popvote, by = "year") |>
+  drop_na()
+
+# Join data
+r <- r_pollav_state |>
+  left_join(r_econ_deminc, by = "year") |>
+  left_join(r_state_popvote, by = c("year", "state")) 
+
+tr <- r |>
+  filter(year >= 2016) |> 
+  arrange(year) |> 
+  group_by(state) |> 
+  mutate(
+    R_pv2p_lag1 = lag(R_pv2p, 1),
+    R_pv2p_lag2 = lag(R_pv2p, 2)
+  )
+
+tr2024 <- tr |>
+  filter(year == 2024) |>
+  select(year, state, R_pv2p_lag1, R_pv2p_lag2) |>
+  rename(State = state)
+
+r_rename <- r |>
+  rename(`Latest Republican Poll Averages` = latest_pollav_REP,
+         `Mean Republican Poll Averages (Week 15 - Present)` = mean_pollav_REP,
+         `Q2 GDP Growth` = GDP_growth_quarterly,
+         `Incumbency` = repinc,
+         `Republican Two-Party Vote Share` = R_pv2p,
+         `Republican Two-Party Vote Share Lagged One Cycle` = R_pv2p_lag1,
+         `Republican Two-Party Vote Share Lagged Two Cycles` = R_pv2p_lag2,
+         Year = year,
+         State = state) 
+
+r_rename_test <- r_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Republican Two-Party Vote Share`)) |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+r2024 <- r_rename |>
+  filter(Year == 2024) |>
+  select(State, `Latest Republican Poll Averages`, `Mean Republican Poll Averages (Week 15 - Present)`, `Q2 GDP Growth`, `Incumbency`) |>
+  left_join(tr2024, by = "State") |>
+  rename(`Republican Two-Party Vote Share Lagged One Cycle` = R_pv2p_lag1,
+         `Republican Two-Party Vote Share Lagged Two Cycles` = R_pv2p_lag2) 
+
+r2024 <- r2024 |>
+  select(State, `Latest Republican Poll Averages`, `Q2 GDP Growth`, `Incumbency`, `Republican Two-Party Vote Share Lagged One Cycle`, `Republican Two-Party Vote Share Lagged Two Cycles`) |>
+  filter(!is.na(`Republican Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+r2024 <- r2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+r_regress <- 
+  lm(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + 
+       `Incumbency and GDP Interaction Effect` + 
+       `Republican Two-Party Vote Share Lagged One Cycle` + 
+       `Republican Two-Party Vote Share Lagged Two Cycles`, data = r_rename_test)
+
+```
+
+
+## Who will win the 2024 Presidential Election?
+
+With only a few days to go until voting closes across the United States, the time has come to generate my finalized prediction for the 2024 Presidential election. Building off of eight weeks of learning, modeling, and discussing, my final model has been built based on existing scholarship, the successes (and failures) of models over the past week, data availability, and an increased understanding of the unique nature of this election.
+
+**Model Formula**
+
+My model includes four predictive variables:
+
+- **Latest Poll Averages**: Polling was covered in [week three](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/). The regularized regression model from that post discovered that the weeks with the greatest predictive power were those closest to the election. In this way, the model only includes recent polling data 
+- **The Interaction Between Q2 GDP Growth and Incumbency**: In [week two]((https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/)) we began our discussion of fundamentals, covering the effect of the economy on incumbent vote share. Week two's model discovered the significant relationship between Q2 GDP growth and vote share, above all other economic variables. This relationship, however, often comes across in the relationship between Q2 GDP Growth and incumbent advantage. If GDP growth is high, individuals may be more likely to re-elect an incumbent president; however, if growth is low, the opposite may take place. Indeed, the incumbency advantage was discussed in [week four](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) wherein we weighed the effects of name recognition, pork-barrel spending, and candidate fatigue. Incumbent status proves to be a major predictor of election outcomes; however, this effect is complicated by the candidate switch from Biden to Harris. To account for this, incumbency will only be included in the model as it related to Q2 GDP growth, accounting for the reality that while many voters see Harris as different than Biden, they attribute the low economic growth over the Biden presidency to her. 
+- **Democratic Two-Party Vote Share Lagged One Cycle**: In [week five](https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/), we covered the effects of out final fundamental variable: demographics. As the electorate becomes further calcified, demographics are increasingly predictive of both turnout and election outcomes. It is difficult, however, to predict demographic shifts on existing data. Indeed, lagged vote share serves as a proxy for this variable (and others) by displaying how the state has voted in past elections.
+- **Democratic Two-Party Vote Share Lagged Two Cycles**: By including lagged vote share from both the previous cycle and the one before that, the model is able to account for shifts within the state — i.e. demographic, turnout, or campaign strategy changes. 
+
+**Model Strategy**
+
+**Regression Modeling**
+I decided to use a standard regression to build out my predictive my model. I have three primary reasons for utilizing a  regression model as opposed to an ensemble method or a form of machine learning.
+
+1. **Transparency**: In using a regression model throughout the past few weeks, I have attempted to ensure that I am transparent in my assumptions as well as their impact on the models and my overall predictions. My reasoning behind the prioritization of transparency lies in the importance of election forecasting in instilling confidence in U.S. elections. Without forecasting, the American people would have no baseline upon which to gauge election results. In a time where election integrity has been called into question and a team of officials are lined up to discount the results, predictions are a means of giving the public a sense of what to expect on election night, thus simple transparency is key to ensuring the result of my model directly reflects its inputs.  
+2. **Interpretability**: Building upon the previous point, election forecasts are not just designed to be read by expert data scientists. Rather, large audiences of American citizens rely on forecasts to understand the temperature of the nation going into election night. In this way, it is important that my model be interpretable by audiences beyond a data science sphere. Using a regularized regression model allows me to easily interpret which variables are significant predictors and how, in aggregate, they deliver a prediction.
+3. **Generalizability**: Data science, especially as it pertains to election forecasting, is a relatively new field, thus generating a lack of robust data for every variable in my model. Regression models work best at generating generalizable results from limited data without creating extreme model biases.
+
+*The first regression model measures the relationship between Democratic two-party vote share and my four predictive variables: the latest poll averages, the interaction effect between Q2 GDP and incumbency, Democratic two-party vote share lagged one cycle, and Democratic two-party vote share lagged two cycles.*
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+library(stargazer)
+
+stargazer(d_regress, type = "text",
+          covariate.labels = c("Latest Democratic Poll Averages",
+                               "Incumbency and GDP Interaction Effect",
+                               "Democratic Two-Party Vote Share Lagged One Cycle",
+                               "Democratic Two-Party Vote Share Lagged Two Cycles"),
+          dep.var.labels = "Democratic Two-Party Vote Share",
+          single.row = TRUE)
+```
+
+Since my predictive model is regularized with elastic-net and normalized by combining models of both Democratic and Republican two-party vote share (in-depth explanations will follow below), the coefficients and r-squared value of this model are inaccurate representations of my final model. I include them here, however, as a sense-check for the assumptions made above. First, the adjusted r-squared of 0.8 displays that the simple regression model can explain 80% of the variance in Democratic two-party vote share. To me, this emphasizes that the variables included here do a reasonably good job of explaining the attitude of the American electorate when selecting a presidential candidate. Furthermore, for every variable except the Interaction between Incumbency and GDP, the size of each coefficient, as well as their statistical significance, indicate their relative importance in understanding Democratic vote share. 
+
+*The second regression model measures the relationship between Republican two-party vote share and my four predictive variables: the latest poll averages, the interaction effect between Q2 GDP and incumbency, Republican two-party vote share lagged one cycle, and Republican two-party vote share lagged two cycles.* 
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+library(stargazer)
+
+stargazer(r_regress, type = "text",
+          covariate.labels = c("Latest Republican Poll Averages",
+                               "Incumbency and GDP Interaction Effect",
+                               "Republican Two-Party Vote Share Lagged One Cycle",
+                               "Republican Two-Party Vote Share Lagged Two Cycles"),
+          dep.var.labels = "Republican Two-Party Vote Share",
+          single.row = TRUE)
+```
+
+These results are incredibly similar to those seen in the Democratic two-party vote share model, indicating both models operate similarly and are very successful in predicting two-party vote share. These sense-checks leave me confident in the variables I have chosen to include within my model going forward.
+
+**Regularized Regression**
+When utilizing a regression model, there are two main concerns: overfitting and multicollinearity. To address these concerns, I decided to use an Elastic-Net regularized regression model, which combines both Lasso and Ridge regularization tools to penalize large coefficients and and average the coefficients of correlated predictors. My penalization term, known as alpha, was calculated using cross validation to pick a term wich best fit my model. In doing so, I effectively improved the stability of my model as well as its predictive power.
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+dtrain <- d_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Democratic Two-Party Vote Share`)) |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+d2024 <-  d2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+# Lasso regularization
+library(glmnet)
+
+X_train <- model.matrix(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` + `Incumbency and GDP Interaction Effect` + `Democratic Two-Party Vote Share Lagged One Cycle` + `Democratic Two-Party Vote Share Lagged Two Cycles`, data = dtrain)
+
+Y_train <- dtrain$`Democratic Two-Party Vote Share`
+
+
+# Perform cross-validation for Elastic-Net regression
+cv_EN <- cv.glmnet(X_train, Y_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+
+# Best lambda values from cross-validation
+
+best_lambda_EN <- cv_EN$lambda.min
+
+# Fit final models using the best lambda
+
+EN_final <- glmnet(X_train, Y_train, alpha = 0.5, lambda = best_lambda_EN)
+
+# Create testing data
+X_test <- model.matrix(~ `Latest Democratic Poll Averages` + 
+                         `Incumbency and GDP Interaction Effect` + 
+                         `Democratic Two-Party Vote Share Lagged One Cycle` + 
+                         `Democratic Two-Party Vote Share Lagged Two Cycles`, data = d2024)
+
+
+pred_EN <- predict(EN_final, newx = X_test)
+
+
+
+
+rtrain <- r_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Republican Two-Party Vote Share`)) 
+
+# Lasso regularization
+library(glmnet)
+
+rtrain <-  rtrain |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+r2024 <- r2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+RX_train <- model.matrix(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + `Incumbency and GDP Interaction Effect` + `Republican Two-Party Vote Share Lagged One Cycle` + `Republican Two-Party Vote Share Lagged Two Cycles`, data = rtrain)
+
+RY_train <- rtrain$`Republican Two-Party Vote Share`
+
+
+# Perform cross-validation for Elastic-Net regression
+rcv_EN <- cv.glmnet(RX_train, RY_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+
+# Best lambda values from cross-validation
+
+rbest_lambda_EN <- rcv_EN$lambda.min
+
+# Fit final models using the best lambda
+
+REN_final <- glmnet(RX_train, RY_train, alpha = 0.5, lambda = rbest_lambda_EN)
+
+# Create testing data
+RX_test <- model.matrix(~ `Latest Republican Poll Averages` + 
+                         `Incumbency and GDP Interaction Effect` + 
+                         `Republican Two-Party Vote Share Lagged One Cycle` + 
+                         `Republican Two-Party Vote Share Lagged Two Cycles`, data = r2024)
+
+# Predict using Ridge and Lasso
+
+rpred_EN <- predict(REN_final, newx = RX_test)
+
+
+```
+
+
+*The first elastic-net regression regularizes the Democratic two-party vote share regression analyzed above*
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+coef_EN <- coef(EN_final)
+
+coef_df <- as.data.frame(as.matrix(coef_EN))
+coef_df <- tibble::rownames_to_column(coef_df, var = "Variable")
+
+coef_df$Variable <- gsub("^X\\.|\\.", " ", coef_df$Variable)  # Remove 'X.' prefix and replace '.' with spaces
+coef_df$Variable <- trimws(coef_df$Variable)  # Trim whitespace
+kable(coef_df, col.names = c("Variable", "Coefficient"), caption = "Democratic Two-Party Vote Share Elastic Net Coefficients")
+
+```
+
+In comparing the coefficients of this model with the model above, it appears that none of the coefficients underwent significant changes with the use of elastic-net. Indeed, the ideal lambda discovered through cross-validation was 0.03 meaning that my model requires only a small amount of regularization to optimize predictive performance. This means that my model has a low risk of both multicollinearity and overfitting, further emphasizing the strong predictive power of my selected variables. 
+
+Furthermore, the most interesting finding here is that the variable which codes for the latest Democratic poll averages has the largest coefficient, indicating it is the most predictive of the actual Democratic two-party vote share. Indeed, every percentage point increase in the latest Democratic poll averages correlated with a 0.7% increase in Democratic two-party vote share. The only other coefficient that comes close to this magnitude is Democratic Two Party Vote Share Lagged One Cycle, wherein a 1% increase is associated with a 0.3% increase in two-party vote share. 
+
+*The second elastic-net regression regularizes the Republican two-party vote share regression also analyzed above*
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+coef_REN <- coef(REN_final)
+
+rcoef_df <- as.data.frame(as.matrix(coef_REN))
+rcoef_df <- tibble::rownames_to_column(rcoef_df, var = "Variable")
+
+rcoef_df$Variable <- gsub("^X\\.|\\.", " ", rcoef_df$Variable)  # Remove 'X.' prefix and replace '.' with spaces
+rcoef_df$Variable <- trimws(rcoef_df$Variable)  # Trim whitespace
+kable(rcoef_df, col.names = c("Variable", "Coefficient"), caption = "Republican Two-Party Vote Share Elastic Net Coefficients")
+
+```
+
+While the lambda found through cross-validation here is slightly higher, sitting around 0.056, the coefficients remain relatively unchanged compared to those found in the aimple regression model above. Once again, this indicates my model has a low risk of both multicollinearity and overfitting, further emphasizing the strong predictive power of my selected variables. 
+
+As mentioned above, the coefficient on the latest Republican poll averages variable is also the largest here, indicating a 1% increase in poll averages leads to a 0.6% increase in Republican two-party vote share. Furthermore, the coefficients on both lagged Republican vote shares are of significant magnitude, displaying that a 1% increase in vote share lagged two cycles increases Republican vote share by 0.19% while a 1% increase in vote share lagged one cycle increases Republican vote share by 0.26%.
+
+**Model Validation**
+
+To verify the accuracy of my model in predicting my chosen outcome variables — Democratic and Republican two-party vote share — I decided to perform an out-of-sample performance validation. While I would have liked to display my in-sample error as well, the use of an aggregate elastic-net model predicted onto state-based variables makes it incredibly difficult, thus I will instead focus on out-of-sampel error.
+
+*Using Bootstrapped Out-of-Sample Error Estimation to Test Predictive Power:*
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+library(dplyr)
+library(glmnet)
+
+# Filter and select relevant columns in d_rename_test
+d_rename_test <- d_rename_test |>
+  select(State, Year, `Latest Democratic Poll Averages`, `Incumbency and GDP Interaction Effect`, 
+         `Democratic Two-Party Vote Share Lagged One Cycle`, `Democratic Two-Party Vote Share Lagged Two Cycles`,
+         `Democratic Two-Party Vote Share`) |>
+  filter(!is.na(`Democratic Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+# Out-of-sample error calculation
+set.seed(0)  # For reproducibility
+out_samp_errors <- replicate(1000, {
+  # Sample 7 random years for out-of-sample testing
+  years_out_samp <- sample(d_rename_test$Year, 7)
+  
+  # Split data into training and testing sets
+  train_data <- d_rename_test |> filter(!Year %in% years_out_samp)
+  test_data <- d_rename_test |> filter(Year %in% years_out_samp)
+  
+  # Create model matrices
+  X_train <- model.matrix(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` + 
+                           `Incumbency and GDP Interaction Effect` + 
+                           `Democratic Two-Party Vote Share Lagged One Cycle` + 
+                           `Democratic Two-Party Vote Share Lagged Two Cycles`, data = train_data)
+  
+  Y_train <- train_data$`Democratic Two-Party Vote Share`
+  
+  X_test <- model.matrix(~ `Latest Democratic Poll Averages` + 
+                          `Incumbency and GDP Interaction Effect` + 
+                          `Democratic Two-Party Vote Share Lagged One Cycle` + 
+                          `Democratic Two-Party Vote Share Lagged Two Cycles`, data = test_data)
+
+  # Fit the Elastic Net model using training data
+  cv_EN <- cv.glmnet(X_train, Y_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+  best_lambda_EN <- cv_EN$lambda.min
+  
+  EN_final <- glmnet(X_train, Y_train, alpha = 0.5, lambda = best_lambda_EN)
+  
+  # Make predictions on the test data
+  out_samp_pred <- predict(EN_final, newx = X_test)
+  out_samp_truth <- test_data$`Democratic Two-Party Vote Share`
+  
+  # Calculate errors
+  out_samp_pred - out_samp_truth
+})
+
+# Summarize the out-of-sample errors
+mean_error <- mean(unlist(out_samp_errors))
+sd_error <- sd(unlist(out_samp_errors))
+
+
+
+library(dplyr)
+library(glmnet)
+
+# Filter and select relevant columns in d_rename_test
+r_rename_test <- r_rename_test |>
+  select(State, Year, `Latest Republican Poll Averages`, `Incumbency and GDP Interaction Effect`, 
+         `Republican Two-Party Vote Share Lagged One Cycle`, `Republican Two-Party Vote Share Lagged Two Cycles`,
+         `Republican Two-Party Vote Share`) |>
+  filter(!is.na(`Republican Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+# Out-of-sample error calculation
+set.seed(0)  # For reproducibility
+rout_samp_errors <- replicate(1000, {
+  # Sample 7 random years for out-of-sample testing
+  ryears_out_samp <- sample(r_rename_test$Year, 7)
+  
+  # Split data into training and testing sets
+  rtrain_data <- r_rename_test |> filter(!Year %in% ryears_out_samp)
+  rtest_data <- r_rename_test |> filter(Year %in% ryears_out_samp)
+  
+  # Create model matrices
+  RX_train <- model.matrix(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + 
+                           `Incumbency and GDP Interaction Effect` + 
+                           `Republican Two-Party Vote Share Lagged One Cycle` + 
+                           `Republican Two-Party Vote Share Lagged Two Cycles`, data = rtrain_data)
+  
+  RY_train <- rtrain_data$`Republican Two-Party Vote Share`
+  
+  RX_test <- model.matrix(~ `Latest Republican Poll Averages` + 
+                          `Incumbency and GDP Interaction Effect` + 
+                          `Republican Two-Party Vote Share Lagged One Cycle` + 
+                          `Republican Two-Party Vote Share Lagged Two Cycles`, data = rtest_data)
+
+  # Fit the Elastic Net model using training data
+  rcv_EN <- cv.glmnet(RX_train, RY_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+  rbest_lambda_EN <- rcv_EN$lambda.min
+  
+  REN_final <- glmnet(RX_train, RY_train, alpha = 0.5, lambda = rbest_lambda_EN)
+  
+  # Make predictions on the test data
+  rout_samp_pred <- predict(REN_final, newx = RX_test)
+  rout_samp_truth <- rtest_data$`Republican Two-Party Vote Share`
+  
+  # Calculate errors
+  rout_samp_pred - rout_samp_truth
+})
+
+# Summarize the out-of-sample errors
+rmean_error <- mean(unlist(rout_samp_errors))
+rsd_error <- sd(unlist(rout_samp_errors))
+
+error_summary <- data.frame(
+  Party = c("Democratic", "Republican"),
+  Mean_Error = c(mean_error, rmean_error),
+  SD_Error = c(sd_error, rsd_error)
+)
+
+knitr::kable(error_summary, 
+             col.names = c("Party", "Mean Error", "Standard Deviation"),
+             caption = "Out-of-Sample Error Summary for Democratic and Republican Predictions")
+
+
+```
+
+The mean error for Democrats is around -0.25, indicating the model tends to slightly underestimate Democrat performance. The mean error for Republicans is around 0.5, indicating the model tends to slightly overestimate Republican performance. That said, the values are close to zero, suggesting the models do not have a significant directional bias in their predictions. A standard deviation of around 6 for both, however, is relatively high, especially in the context of vote share predictions. A high standard deviation (relative to the mean error) suggests that individual predictions vary considerably from the true values.
+
+**Predicting Vote Share**
+
+As I have done in the previous three weeks, I will be predicting for the seven states which [expert predictors like Cook and Sabato](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. Using the elastic-net regularized regression model generated above, which includes four predictive variables, my models calculated both Democratic and Republican two-party vote share.
+
+*Model of Elastic-Net Regularized Regression Predicted Two-Party Democratic Vote Share with 90% Confidence Intervals for Swing States*
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+predictions_state <- predict(EN_final, newx = X_test)
+
+predictions_state <- as.vector(predictions_state)
+
+pred_train_broad <- predict(EN_final, newx = X_train)
+residuals_broad <- Y_train - pred_train_broad
+
+sigma_squared <- var(residuals_broad)
+
+n <- length(Y_train)  
+p <- length(coef(EN_final))  
+t_value <- qt(0.9, df = n - p)  
+
+
+margin <- t_value * sqrt(sigma_squared)
+
+results_state <- data.frame(
+  State = d2024$State,  # Add the state names from d2024
+  Predicted = as.vector(predictions_state),
+  Lower_Bound = as.vector(predictions_state - margin),
+  Upper_Bound = as.vector(predictions_state + margin)
+)
+
+results_state <- results_state |>
+  filter(State %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada"))
+
+EN_results <- results_state |>
+  mutate(Winner = if_else(Predicted >= 50, "Harris", "Trump"))
+
+knitr::kable(EN_results, 
+             col.names = c("State", "Predicted Vote Share", "Lower Bound", "Upper Bound", "Winner"),
+             caption = "Predicted Two-Party Democratic Vote Share with Confidence Intervals for Swing States")
+
+```
+
+
+*Model of Elastic-Net Regularized Regression Predicted Two-Party Republican Vote Share with 90% Confidence Intervals for Swing States*
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+rpredictions_state <- predict(REN_final, newx = RX_test)
+
+rpredictions_state <- as.vector(rpredictions_state)
+
+rpred_train_broad <- predict(REN_final, newx = RX_train)
+rresiduals_broad <- RY_train - rpred_train_broad
+
+rsigma_squared <- var(rresiduals_broad)
+
+rn <- length(RY_train)  
+rp <- length(coef(REN_final))  
+rt_value <- qt(0.9, df = rn - rp)  
+
+rmargin <- rt_value * sqrt(rsigma_squared)
+
+
+rresults_state <- data.frame(
+  State = r2024$State,  # Add the state names from r2024
+  Predicted = rpredictions_state,
+  Lower_Bound = rpredictions_state - rmargin,
+  Upper_Bound = rpredictions_state + rmargin
+)
+
+
+rresults_state <- rresults_state |>
+  filter(State %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada"))
+
+
+rEN_results <- rresults_state |>
+  mutate(Winner = if_else(Predicted >= 50, "Trump", "Harris"))  
+
+
+knitr::kable(rEN_results, 
+             col.names = c("State", "Predicted Vote Share", "Lower Bound", "Upper Bound", "Winner"),
+             caption = "Predicted Two-Party Republican Vote Share with Confidence Intervals for Swing States")
+
+```
+
+
+*Normalizing the Two-Party Vote Share in my Models*
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+dem_preds <- EN_results |>
+  rename(State = State, Dem_prediction = Predicted)  
+rep_preds <- rEN_results |>
+  rename(State = State, Rep_prediction = Predicted)
+
+
+combined_preds <- dem_preds |>
+  inner_join(rep_preds, by = "State")
+
+# Normalize so that Dem_prediction + Rep_prediction = 100
+combined_preds <- combined_preds |>
+  mutate(
+    Dem_prediction_normalized = Dem_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Rep_prediction_normalized = Rep_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Winner = if_else(Dem_prediction_normalized >= 50, "Harris", "Trump")
+  )
+
+
+final_preds <- combined_preds |>
+  select(State, Dem_prediction_normalized, Rep_prediction_normalized, Winner) |>
+  rename(
+    `Democratic Prediction` = Dem_prediction_normalized,
+    `Republican Prediction` = Rep_prediction_normalized
+  )
+
+
+knitr::kable(final_preds)
+
+```
+

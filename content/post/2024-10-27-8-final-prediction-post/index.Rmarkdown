@@ -40,7 +40,7 @@ d_ec <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-
 
 # Read polling data.
 d_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/national_polls_1968-2024.csv")
-d_state_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_polls_1968-2024.csv")
+d_state_polls <- read_csv("state_polls_1968-2024.csv")
 
 # Read turnout data.
 d_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_turnout_1980_2022.csv")
@@ -338,6 +338,7 @@ r_regress <-
        `Republican Two-Party Vote Share Lagged One Cycle` + 
        `Republican Two-Party Vote Share Lagged Two Cycles`, data = r_rename_test)
 
+
 library(stargazer)
 
 stargazer(r_regress, type = "text",
@@ -495,12 +496,16 @@ As I have done in the previous three weeks, I will be predicting for the seven s
 ```{r echo = FALSE, message=FALSE, warning=FALSE}
 dtrain <- d_rename |>
   filter(Year < 2024) |>
-  filter(!is.na(`Democratic Two-Party Vote Share`)) 
+  filter(!is.na(`Democratic Two-Party Vote Share`)) |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+d2024 <-  d2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
 
 # Lasso regularization
 library(glmnet)
 
-X_train <- model.matrix(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` + `Q2 GDP Growth` + `Incumbency` + `Democratic Two-Party Vote Share Lagged One Cycle` + `Democratic Two-Party Vote Share Lagged Two Cycles`, data = dtrain)
+X_train <- model.matrix(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` + `Incumbency and GDP Interaction Effect` + `Democratic Two-Party Vote Share Lagged One Cycle` + `Democratic Two-Party Vote Share Lagged Two Cycles`, data = dtrain)
 
 Y_train <- dtrain$`Democratic Two-Party Vote Share`
 
@@ -518,13 +523,15 @@ EN_final <- glmnet(X_train, Y_train, alpha = 0.5, lambda = best_lambda_EN)
 
 # Create testing data
 X_test <- model.matrix(~ `Latest Democratic Poll Averages` + 
-                         `Q2 GDP Growth` + `Incumbency` + 
+                         `Incumbency and GDP Interaction Effect` + 
                          `Democratic Two-Party Vote Share Lagged One Cycle` + 
                          `Democratic Two-Party Vote Share Lagged Two Cycles`, data = d2024)
 
-# Predict using Ridge and Lasso
 
 pred_EN <- predict(EN_final, newx = X_test)
+
+coef_EN <- coef(EN_final)
+
 
 EN_results <- data.frame(state = d2024$State, pred_EN = pred_EN) |>
   filter(state %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada")) |>
@@ -539,7 +546,13 @@ rtrain <- r_rename |>
 # Lasso regularization
 library(glmnet)
 
-RX_train <- model.matrix(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + `Q2 GDP Growth` + `Incumbency` + `Republican Two-Party Vote Share Lagged One Cycle` + `Republican Two-Party Vote Share Lagged Two Cycles`, data = rtrain)
+rtrain <-  rtrain |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+r2024 <- r2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+RX_train <- model.matrix(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + `Incumbency and GDP Interaction Effect` + `Republican Two-Party Vote Share Lagged One Cycle` + `Republican Two-Party Vote Share Lagged Two Cycles`, data = rtrain)
 
 RY_train <- rtrain$`Republican Two-Party Vote Share`
 
@@ -557,7 +570,7 @@ REN_final <- glmnet(RX_train, RY_train, alpha = 0.5, lambda = rbest_lambda_EN)
 
 # Create testing data
 RX_test <- model.matrix(~ `Latest Republican Poll Averages` + 
-                         `Q2 GDP Growth` + `Incumbency` + 
+                         `Incumbency and GDP Interaction Effect` + 
                          `Republican Two-Party Vote Share Lagged One Cycle` + 
                          `Republican Two-Party Vote Share Lagged Two Cycles`, data = r2024)
 
