@@ -6,6 +6,18 @@ slug: []
 categories: []
 tags: []
 ---
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
+<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
+<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
 
 
 
@@ -17,16 +29,16 @@ tags: []
 
 ## Who will win the 2024 Presidential Election?
 
-With only a few days to go until voting closes across the United States, the time has come to generate my finalized prediction for the 2024 Presidential election. Building off of eight weeks of learning, modeling, and discussing, my final model has been built based on existing scholarship, the successes (and failures) of models over the past week, data availability, and an increased understanding of the unique nature of this election.
+With only one day to go until voting closes across the United States, the time has come to generate my finalized prediction for the 2024 Presidential election. Building off of eight weeks of learning, modeling, and discussing, my final model has been built based on existing scholarship, the successes (and failures) of models over the past week, data availability, and an increased understanding of the unique nature of this election.
 
 **Model Formula**
 
 My model includes four predictive variables:
 
-- **Latest Poll Averages**: Polling was covered in [week three](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/). The regularized regression model from that post discovered that the weeks with the greatest predictive power were those closest to the election. In this way, the model only includes recent polling data 
+- **Latest Poll Averages**: Polling was covered in [week three](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/). The regularized regression model from that post discovered that the weeks with the greatest predictive power were those closest to the election. In this way, the model only includes recent polling data aggregated by FiveThirtyEight. To learn more about how FiveThirtyEight evaluates and weights their polls when generating aggregates, see [here](https://fivethirtyeight.com/methodology/how-our-polling-averages-work/).
 - **The Interaction Between Q2 GDP Growth and Incumbency**: In [week two]((https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/)) we began our discussion of fundamentals, covering the effect of the economy on incumbent vote share. Week two's model discovered the significant relationship between Q2 GDP growth and vote share, above all other economic variables. This relationship, however, often comes across in the relationship between Q2 GDP Growth and incumbent advantage. If GDP growth is high, individuals may be more likely to re-elect an incumbent president; however, if growth is low, the opposite may take place. Indeed, the incumbency advantage was discussed in [week four](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) wherein we weighed the effects of name recognition, pork-barrel spending, and candidate fatigue. Incumbent status proves to be a major predictor of election outcomes; however, this effect is complicated by the candidate switch from Biden to Harris. To account for this, incumbency will only be included in the model as it related to Q2 GDP growth, accounting for the reality that while many voters see Harris as different than Biden, they attribute the low economic growth over the Biden presidency to her. 
 - **Democratic Two-Party Vote Share Lagged One Cycle**: In [week five](https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/), we covered the effects of out final fundamental variable: demographics. As the electorate becomes further calcified, demographics are increasingly predictive of both turnout and election outcomes. It is difficult, however, to predict demographic shifts on existing data. Indeed, lagged vote share serves as a proxy for this variable (and others) by displaying how the state has voted in past elections.
-- **Democratic Two-Party Vote Share Lagged Two Cycles**: By including lagged vote share from both the previous cycle and the one before that, the model is able to account for shifts within the state — i.e. demographic, turnout, or campaign strategy changes. 
+- **Democratic Two-Party Vote Share Lagged Two Cycles**: By including lagged vote share from both the previous cycle and the one before that, the model is able to account for other shifts within the state — i.e. demographic, turnout, or campaign strategy changes. 
 
 **Model Strategy**
 
@@ -99,143 +111,316 @@ When utilizing a regression model, there are two main concerns: overfitting and 
 
 *The first elastic-net regression regularizes the Democratic two-party vote share regression analyzed above*
 
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-7"></span>Table 1: Democratic Two-Party Vote Share Elastic Net Coefficients</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable </th>
+   <th style="text-align:right;"> Coefficient </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Intercept </td>
+   <td style="text-align:right;"> 3.7152136 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Intercept  1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Latest Democratic Poll Averages </td>
+   <td style="text-align:right;"> 0.7089807 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Incumbency and GDP Interaction Effect </td>
+   <td style="text-align:right;"> -0.0630074 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Democratic Two Party Vote Share Lagged One Cycle </td>
+   <td style="text-align:right;"> 0.3784582 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Democratic Two Party Vote Share Lagged Two Cycles </td>
+   <td style="text-align:right;"> -0.0795311 </td>
+  </tr>
+</tbody>
+</table>
 
-Table: <span id="tab:unnamed-chunk-7"></span>Table 1: Democratic Two-Party Vote Share Elastic Net Coefficients
+In comparing the coefficients of this model with the model above, it appears that none of the coefficients underwent significant changes with the use of elastic-net. Indeed, the ideal lambda discovered through cross-validation was 0.03 meaning that my model requires only a small amount of regularization to optimize predictive performance. This means that my model has a low risk of both multicollinearity and overfitting, further emphasizing the strong predictive power of my selected variables. Each coefficient will be evaluated here:
 
-|Variable                                          | Coefficient|
-|:-------------------------------------------------|-----------:|
-|Intercept                                         |   3.7152136|
-|Intercept  1                                      |   0.0000000|
-|Latest Democratic Poll Averages                   |   0.7089807|
-|Incumbency and GDP Interaction Effect             |  -0.0630074|
-|Democratic Two Party Vote Share Lagged One Cycle  |   0.3784582|
-|Democratic Two Party Vote Share Lagged Two Cycles |  -0.0795311|
+- **Latest Poll Averages**: This variable has the largest coefficient in the model, making it the most predictive factor for Democratic two-party vote share. Indeed, each 1% increase in the latest Democratic poll averages is associated with a 0.7% increase in the Democratic two-party vote share, suggesting a strong correlation between recent polling and actual voting outcomes.
+- **The Interaction Between Q2 GDP Growth and Incumbency**: This interaction variable captures the effect of having a Democratic incumbent in combination with Q2 GDP growth. A 1-point increase results in a slight decrease (0.06%) in Democratic two-party vote share. This result is especially notable given that the variable’s values range from -8 to 8, indicating that economic conditions tied to the Democratic incumbency have minimal influence compared to more fixed indicators like polling and past vote shares.
+- **Democratic Two-Party Vote Share Lagged One Cycle**: This variable also shows a meaningful positive effect, with a 1% increase in the previous election's Democratic vote share corresponding to a 0.3% increase in the current two-party vote share. This finding highlights the impact of prior voting behavior as a predictor for subsequent elections.
+- **Democratic Two-Party Vote Share Lagged Two Cycles**: Interestingly, this variable has a small negative coefficient, where a 1% increase two cycles ago is associated with a 0.08% decrease in the current Democratic two-party vote share. 
 
-In comparing the coefficients of this model with the model above, it appears that none of the coefficients underwent significant changes with the use of elastic-net. Indeed, the ideal lambda discovered through cross-validation was 0.03 meaning that my model requires only a small amount of regularization to optimize predictive performance. This means that my model has a low risk of both multicollinearity and overfitting, further emphasizing the strong predictive power of my selected variables. 
-
-Furthermore, the most interesting finding here is that the variable which codes for the latest Democratic poll averages has the largest coefficient, indicating it is the most predictive of the actual Democratic two-party vote share. Indeed, every percentage point increase in the latest Democratic poll averages correlated with a 0.7% increase in Democratic two-party vote share. The only other coefficient that comes close to this magnitude is Democratic Two Party Vote Share Lagged One Cycle, wherein a 1% increase is associated with a 0.3% increase in two-party vote share. 
 
 *The second elastic-net regression regularizes the Republican two-party vote share regression also analyzed above*
 
-
-Table: <span id="tab:unnamed-chunk-8"></span>Table 2: Republican Two-Party Vote Share Elastic Net Coefficients
-
-|Variable                                          | Coefficient|
-|:-------------------------------------------------|-----------:|
-|Intercept                                         |   0.0823261|
-|Intercept  1                                      |   0.0000000|
-|Latest Republican Poll Averages                   |   0.6316387|
-|Incumbency and GDP Interaction Effect             |   0.0231685|
-|Republican Two Party Vote Share Lagged One Cycle  |   0.2562105|
-|Republican Two Party Vote Share Lagged Two Cycles |   0.1901908|
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-8"></span>Table 2: Republican Two-Party Vote Share Elastic Net Coefficients</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable </th>
+   <th style="text-align:right;"> Coefficient </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Intercept </td>
+   <td style="text-align:right;"> 0.0823261 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Intercept  1 </td>
+   <td style="text-align:right;"> 0.0000000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Latest Republican Poll Averages </td>
+   <td style="text-align:right;"> 0.6316387 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Incumbency and GDP Interaction Effect </td>
+   <td style="text-align:right;"> 0.0231685 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Republican Two Party Vote Share Lagged One Cycle </td>
+   <td style="text-align:right;"> 0.2562105 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Republican Two Party Vote Share Lagged Two Cycles </td>
+   <td style="text-align:right;"> 0.1901908 </td>
+  </tr>
+</tbody>
+</table>
 
 While the lambda found through cross-validation here is slightly higher, sitting around 0.056, the coefficients remain relatively unchanged compared to those found in the aimple regression model above. Once again, this indicates my model has a low risk of both multicollinearity and overfitting, further emphasizing the strong predictive power of my selected variables. 
 
-As mentioned above, the coefficient on the latest Republican poll averages variable is also the largest here, indicating a 1% increase in poll averages leads to a 0.6% increase in Republican two-party vote share. Furthermore, the coefficients on both lagged Republican vote shares are of significant magnitude, displaying that a 1% increase in vote share lagged two cycles increases Republican vote share by 0.19% while a 1% increase in vote share lagged one cycle increases Republican vote share by 0.26%.
+- **Latest Poll Averages**: The variable for the latest Republican poll averages holds the largest coefficient here, indicating that each 1% increase in poll averages corresponds to a 0.6% increase in the Republican two-party vote share. This highlights the strong predictive power of current polling for the Republican vote share, similar to the pattern seen with the Democratic model.
+- **The Interaction Between Q2 GDP Growth and Incumbency**: This interaction variable, which combines Republican incumbency with Q2 GDP growth, shows a minimal positive effect, where a 1-point increase results in only a 0.02% boost in the Republican two-party vote share. This value is smaller than that observed in the Democratic model (0.06%) and, when combined with the limited range of this variable, becomes nearly negligible in influence.
+- **Democratic Two-Party Vote Share Lagged One Cycle**: A 1% increase in the prior cycle's Republican vote share is associated with a 0.26% increase in the current Republican two-party vote share. This substantial effect suggests that the most recent past election results serve as an essential indicator of the upcoming vote share for Republicans, consistent with the idea that voting trends from the previous cycle carry forward.
+- **Democratic Two-Party Vote Share Lagged Two Cycles**: Here, a 1% increase in vote share from two election cycles ago correlates with a 0.19% increase in current Republican two-party vote share. This differs notably from the Democratic model, where the two-cycle lagged vote share was relatively insignificant and even showed a slight negative effect. For Republicans, however, both recent and older election outcomes seem to have notable predictive value.
 
 **Model Validation**
 
-To verify the accuracy of my model in predicting my chosen outcome variables — Democratic and Republican two-party vote share — I decided to perform an out-of-sample performance validation. While I would have liked to display my in-sample error as well, the use of an aggregate elastic-net model predicted onto state-based variables makes it incredibly difficult, thus I will instead focus on out-of-sampel error.
+To verify the accuracy of my model in predicting my chosen outcome variables — Democratic and Republican two-party vote share — I decided to perform an out-of-sample performance validation. While I would have liked to display my in-sample error as well, the use of an aggregate elastic-net model predicted onto state-based variables makes it incredibly difficult, thus I will instead focus on out-of-sample error.
 
 *Using Bootstrapped Out-of-Sample Error Estimation to Test Predictive Power:*
 
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-9"></span>Table 3: Out-of-Sample Error Summary for Democratic and Republican Predictions</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Party </th>
+   <th style="text-align:right;"> Mean Error </th>
+   <th style="text-align:right;"> Standard Deviation </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Democratic </td>
+   <td style="text-align:right;"> -0.2518568 </td>
+   <td style="text-align:right;"> 6.260530 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Republican </td>
+   <td style="text-align:right;"> 0.4969762 </td>
+   <td style="text-align:right;"> 6.017972 </td>
+  </tr>
+</tbody>
+</table>
 
-Table: <span id="tab:unnamed-chunk-9"></span>Table 3: Out-of-Sample Error Summary for Democratic and Republican Predictions
-
-|Party      | Mean Error| Standard Deviation|
-|:----------|----------:|------------------:|
-|Democratic | -0.2518568|           6.260530|
-|Republican |  0.4969762|           6.017972|
-
-The mean error for Democrats is around -0.25, indicating the model tends to slightly underestimate Democrat performance. The mean error for Republicans is around 0.5, indicating the model tends to slightly overestimate Republican performance. That said, the values are close to zero, suggesting the models do not have a significant directional bias in their predictions. A standard deviation of around 6 for both, however, is relatively high, especially in the context of vote share predictions. A high standard deviation (relative to the mean error) suggests that individual predictions vary considerably from the true values.
+The mean error for Democrats is around -0.25, indicating the model tends to slightly underestimate Democrat performance. The mean error for Republicans is around 0.5, indicating the model tends to slightly overestimate Republican performance. That said, the values are close to zero, suggesting the models do not have a significant directional bias in their predictions. A standard deviation of around 6 for both, however, is relatively high, especially in the context of vote share predictions. A high standard deviation (relative to the mean error) suggests that individual predictions vary considerably from the true values. While this finding is worrying, it is not indicative of a bad model, rather it emphasizes the limited data availability and high uncertainty in the election forecasting industry as a whole.
 
 **Predicting Vote Share**
 
 As I have done in the previous three weeks, I will be predicting for the seven states which [expert predictors like Cook and Sabato](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. Using the elastic-net regularized regression model generated above, which includes four predictive variables, my models calculated both Democratic and Republican two-party vote share.
 
-When interpreting the results below, bear in mind that the predicted two-party vote shares sum to above 100 as a result of the data used in this model. The data will be normalized below; however, this model is included for the sake of evaluating the confidence intervals for each state.
+When interpreting the results below, bear in mind that the predicted two-party vote shares sum to above 100 as a result of the data used in this model. The data will be normalized below; however, the raw model results are included for the sake of evaluating the confidence intervals for each state.
 
 *Model of Elastic-Net Regularized Regression Predicted Two-Party Democratic Vote Share with 90% Confidence Intervals for Swing States*
 
-
-Table: <span id="tab:unnamed-chunk-10"></span>Table 4: Predicted Two-Party Democratic Vote Share with Confidence Intervals for Swing States
-
-|State          | Predicted Vote Share| Lower Bound| Upper Bound|Winner |
-|:--------------|--------------------:|-----------:|-----------:|:------|
-|Arizona        |             51.86514|    46.65193|    57.07834|Harris |
-|Georgia        |             52.11199|    46.89879|    57.32520|Harris |
-|Michigan       |             52.79701|    47.58380|    58.01021|Harris |
-|Nevada         |             52.38159|    47.16839|    57.59480|Harris |
-|North Carolina |             51.75088|    46.53768|    56.96409|Harris |
-|Pennsylvania   |             52.51599|    47.30279|    57.72919|Harris |
-|Wisconsin      |             52.56607|    47.35287|    57.77927|Harris |
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-10"></span>Table 4: Predicted Two-Party Democratic Vote Share with Confidence Intervals for Swing States</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> State </th>
+   <th style="text-align:right;"> Predicted Vote Share </th>
+   <th style="text-align:right;"> Upper Bound </th>
+   <th style="text-align:right;"> Lower Bound </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Arizona </td>
+   <td style="text-align:right;"> 51.61043 </td>
+   <td style="text-align:right;"> 56.82364 </td>
+   <td style="text-align:right;"> 46.39723 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Georgia </td>
+   <td style="text-align:right;"> 52.08289 </td>
+   <td style="text-align:right;"> 57.29609 </td>
+   <td style="text-align:right;"> 46.86969 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Michigan </td>
+   <td style="text-align:right;"> 52.89343 </td>
+   <td style="text-align:right;"> 58.10663 </td>
+   <td style="text-align:right;"> 47.68022 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nevada </td>
+   <td style="text-align:right;"> 52.28574 </td>
+   <td style="text-align:right;"> 57.49894 </td>
+   <td style="text-align:right;"> 47.07253 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> North Carolina </td>
+   <td style="text-align:right;"> 51.77751 </td>
+   <td style="text-align:right;"> 56.99071 </td>
+   <td style="text-align:right;"> 46.56430 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pennsylvania </td>
+   <td style="text-align:right;"> 52.50238 </td>
+   <td style="text-align:right;"> 57.71558 </td>
+   <td style="text-align:right;"> 47.28917 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Wisconsin </td>
+   <td style="text-align:right;"> 52.74622 </td>
+   <td style="text-align:right;"> 57.95943 </td>
+   <td style="text-align:right;"> 47.53302 </td>
+  </tr>
+</tbody>
+</table>
 
 *Model of Elastic-Net Regularized Regression Predicted Two-Party Republican Vote Share with 90% Confidence Intervals for Swing States*
 
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption><span id="tab:unnamed-chunk-11"></span>Table 5: Predicted Two-Party Republican Vote Share with Confidence Intervals for Swing States</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> State </th>
+   <th style="text-align:right;"> Predicted Vote Share </th>
+   <th style="text-align:right;"> Upper Bound </th>
+   <th style="text-align:right;"> Lower Bound </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Arizona </td>
+   <td style="text-align:right;"> 53.68981 </td>
+   <td style="text-align:right;"> 58.84942 </td>
+   <td style="text-align:right;"> 48.53021 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Georgia </td>
+   <td style="text-align:right;"> 53.51498 </td>
+   <td style="text-align:right;"> 58.67459 </td>
+   <td style="text-align:right;"> 48.35538 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Michigan </td>
+   <td style="text-align:right;"> 51.79185 </td>
+   <td style="text-align:right;"> 56.95145 </td>
+   <td style="text-align:right;"> 46.63224 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nevada </td>
+   <td style="text-align:right;"> 52.06144 </td>
+   <td style="text-align:right;"> 57.22105 </td>
+   <td style="text-align:right;"> 46.90184 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> North Carolina </td>
+   <td style="text-align:right;"> 53.50122 </td>
+   <td style="text-align:right;"> 58.66082 </td>
+   <td style="text-align:right;"> 48.34162 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Pennsylvania </td>
+   <td style="text-align:right;"> 52.56941 </td>
+   <td style="text-align:right;"> 57.72901 </td>
+   <td style="text-align:right;"> 47.40981 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Wisconsin </td>
+   <td style="text-align:right;"> 52.31164 </td>
+   <td style="text-align:right;"> 57.47124 </td>
+   <td style="text-align:right;"> 47.15203 </td>
+  </tr>
+</tbody>
+</table>
 
-Table: <span id="tab:unnamed-chunk-11"></span>Table 5: Predicted Two-Party Republican Vote Share with Confidence Intervals for Swing States
-
-|State          | Predicted Vote Share| Lower Bound| Upper Bound|Winner |
-|:--------------|--------------------:|-----------:|-----------:|:------|
-|Arizona        |             53.26769|    48.10809|    58.42729|Trump  |
-|Georgia        |             53.37372|    48.21411|    58.53332|Trump  |
-|Michigan       |             51.74763|    46.58803|    56.90724|Trump  |
-|Nevada         |             51.63499|    46.47539|    56.79460|Trump  |
-|North Carolina |             53.46686|    48.30725|    58.62646|Trump  |
-|Pennsylvania   |             52.28012|    47.12051|    57.43972|Trump  |
-|Wisconsin      |             52.39460|    47.23500|    57.55421|Trump  |
-
-The 90% confidence interval of these predictions includes both election outcomes, indicating the extreme variability of the model. Since election prediction models are extremely specific and based on limited data, confidence intervals which include both outcomes are typical; however, it is important to bear this in mind when interpreting the results below. 
+The 90% confidence interval of these predictions includes both election outcomes, indicating the extreme variability of the model. This variability suggests that the predictions are sensitive to small changes in input, reflecting the inherent uncertainty in election forecasting. Since election prediction models rely on a limited set of data points and may not fully capture unforeseen events or shifts in voter sentiment, it is common for confidence intervals to span both possible outcomes. Such wide intervals remind us that while the model offers a probabilistic view of the election, it should not be interpreted as a definitive forecast.
 
 *Normalizing the Two-Party Vote Share in my Models to Generate a Final Prediction*
 
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> State </th>
+   <th style="text-align:right;"> Democratic Prediction </th>
+   <th style="text-align:right;"> Republican Prediction </th>
+   <th style="text-align:left;"> Winner </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Arizona </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.01264 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.98736 </td>
+   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Georgia </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.32191 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.67809 </td>
+   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Michigan </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.52614 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.47386 </td>
+   <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Nevada </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.10748 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.89252 </td>
+   <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> North Carolina </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.18136 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.81864 </td>
+   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Pennsylvania </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.96810 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.03190 </td>
+   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Wisconsin </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.20683 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.79317 </td>
+   <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
+  </tr>
+</tbody>
+</table>
 
-|State          | Democratic Prediction| Republican Prediction|Winner |
-|:--------------|---------------------:|---------------------:|:------|
-|Arizona        |              49.33296|              50.66704|Trump  |
-|Georgia        |              49.40195|              50.59805|Trump  |
-|Michigan       |              50.50188|              49.49812|Harris |
-|Nevada         |              50.35888|              49.64112|Harris |
-|North Carolina |              49.18456|              50.81544|Trump  |
-|Pennsylvania   |              50.11254|              49.88746|Harris |
-|Wisconsin      |              50.08168|              49.91832|Harris |
+# Final 2024 Prediction
 
-**In normalizing both predictions, Harris appears to win Michigan, Nevada, Pennsylvania, and Wisconsin on a slim margin, while Trump wins Arizona, Georgia, and North Carolina on similarly slim margin. This leads to a result where Harris wins with 276 electors while Trump has 262 electors.** 
+**In normalizing both predictions, Harris appears to win Michigan, Nevada, and Wisconsin on a slim margin, while Trump wins Arizona, Pennsylvania, Georgia, and North Carolina on similarly slim margin. This leads to a result where Trump wins with 281 electors while Harris has 257 electors.** 
 
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-13-1.png" width="960" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-13-2.png" width="960" />
 
-
-```r
-library(ggplot2)
-library(maps)
-
-us_states <- map_data("state")
-
-final_preds$State <- tolower(final_preds$State)
-
-map_data <- us_states %>%
-  left_join(final_preds, by = c("region" = "State"))
-
-
-ggplot(map_data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(fill = Winner), color = "white") + 
-  scale_fill_manual(values = c("Harris" = "blue", "Trump" = "red")) +
-  theme_minimal() +
-  theme(
-    panel.grid = element_blank(),   
-    axis.title.x = element_blank(), 
-    axis.title.y = element_blank(), 
-    axis.ticks = element_blank(),     
-    axis.text = element_blank()        
-  ) + 
-  labs(title = "Predicted Election Results by State, Swing States Only",
-       fill = "Winner") 
-```
-
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 ## Notes
 All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-11-01-9-final-prediction-assignment/index.Rmarkdown).
-
 
 **Data Sources**
 

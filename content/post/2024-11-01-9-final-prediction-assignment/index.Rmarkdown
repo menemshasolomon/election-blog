@@ -42,7 +42,7 @@ d_ec <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-
 
 # Read polling data.
 d_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/national_polls_1968-2024.csv")
-d_state_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-27-8-final-prediction-post/state_polls_1968-2024.csv")
+d_state_polls <- read_csv("state_polls_1968-2024.csv")
 
 # Read turnout data.
 d_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_turnout_1980_2022.csv")
@@ -163,7 +163,7 @@ r_ec <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-
 
 # Read polling data.
 r_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/national_polls_1968-2024.csv")
-r_state_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_polls_1968-2024.csv")
+r_state_polls <- read_csv("state_polls_1968-2024.csv")
 
 # Read turnout data.
 r_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_turnout_1980_2022.csv")
@@ -278,16 +278,16 @@ r_regress <-
 
 ## Who will win the 2024 Presidential Election?
 
-With only a few days to go until voting closes across the United States, the time has come to generate my finalized prediction for the 2024 Presidential election. Building off of eight weeks of learning, modeling, and discussing, my final model has been built based on existing scholarship, the successes (and failures) of models over the past week, data availability, and an increased understanding of the unique nature of this election.
+With only one day to go until voting closes across the United States, the time has come to generate my finalized prediction for the 2024 Presidential election. Building off of eight weeks of learning, modeling, and discussing, my final model has been built based on existing scholarship, the successes (and failures) of models over the past week, data availability, and an increased understanding of the unique nature of this election.
 
 **Model Formula**
 
 My model includes four predictive variables:
 
-- **Latest Poll Averages**: Polling was covered in [week three](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/). The regularized regression model from that post discovered that the weeks with the greatest predictive power were those closest to the election. In this way, the model only includes recent polling data 
+- **Latest Poll Averages**: Polling was covered in [week three](https://menemshasolomon.github.io/election-blog/post/2024-09-18-3-incorporating-polling/). The regularized regression model from that post discovered that the weeks with the greatest predictive power were those closest to the election. In this way, the model only includes recent polling data aggregated by FiveThirtyEight. To learn more about how FiveThirtyEight evaluates and weights their polls when generating aggregates, see [here](https://fivethirtyeight.com/methodology/how-our-polling-averages-work/).
 - **The Interaction Between Q2 GDP Growth and Incumbency**: In [week two]((https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/)) we began our discussion of fundamentals, covering the effect of the economy on incumbent vote share. Week two's model discovered the significant relationship between Q2 GDP growth and vote share, above all other economic variables. This relationship, however, often comes across in the relationship between Q2 GDP Growth and incumbent advantage. If GDP growth is high, individuals may be more likely to re-elect an incumbent president; however, if growth is low, the opposite may take place. Indeed, the incumbency advantage was discussed in [week four](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) wherein we weighed the effects of name recognition, pork-barrel spending, and candidate fatigue. Incumbent status proves to be a major predictor of election outcomes; however, this effect is complicated by the candidate switch from Biden to Harris. To account for this, incumbency will only be included in the model as it related to Q2 GDP growth, accounting for the reality that while many voters see Harris as different than Biden, they attribute the low economic growth over the Biden presidency to her. 
 - **Democratic Two-Party Vote Share Lagged One Cycle**: In [week five](https://menemshasolomon.github.io/election-blog/post/2024-10-02-5-demographics-turnout-and-vote-choice/), we covered the effects of out final fundamental variable: demographics. As the electorate becomes further calcified, demographics are increasingly predictive of both turnout and election outcomes. It is difficult, however, to predict demographic shifts on existing data. Indeed, lagged vote share serves as a proxy for this variable (and others) by displaying how the state has voted in past elections.
-- **Democratic Two-Party Vote Share Lagged Two Cycles**: By including lagged vote share from both the previous cycle and the one before that, the model is able to account for shifts within the state — i.e. demographic, turnout, or campaign strategy changes. 
+- **Democratic Two-Party Vote Share Lagged Two Cycles**: By including lagged vote share from both the previous cycle and the one before that, the model is able to account for other shifts within the state — i.e. demographic, turnout, or campaign strategy changes. 
 
 **Model Strategy**
 
@@ -427,13 +427,19 @@ coef_df <- tibble::rownames_to_column(coef_df, var = "Variable")
 
 coef_df$Variable <- gsub("^X\\.|\\.", " ", coef_df$Variable)  # Remove 'X.' prefix and replace '.' with spaces
 coef_df$Variable <- trimws(coef_df$Variable)  # Trim whitespace
-kable(coef_df, col.names = c("Variable", "Coefficient"), caption = "Democratic Two-Party Vote Share Elastic Net Coefficients")
+kable(coef_df, col.names = c("Variable", "Coefficient"), caption = "Democratic Two-Party Vote Share Elastic Net Coefficients" , 
+      format = "html") |>
+  kable_styling(full_width = FALSE) 
 
 ```
 
-In comparing the coefficients of this model with the model above, it appears that none of the coefficients underwent significant changes with the use of elastic-net. Indeed, the ideal lambda discovered through cross-validation was 0.03 meaning that my model requires only a small amount of regularization to optimize predictive performance. This means that my model has a low risk of both multicollinearity and overfitting, further emphasizing the strong predictive power of my selected variables. 
+In comparing the coefficients of this model with the model above, it appears that none of the coefficients underwent significant changes with the use of elastic-net. Indeed, the ideal lambda discovered through cross-validation was 0.03 meaning that my model requires only a small amount of regularization to optimize predictive performance. This means that my model has a low risk of both multicollinearity and overfitting, further emphasizing the strong predictive power of my selected variables. Each coefficient will be evaluated here:
 
-Furthermore, the most interesting finding here is that the variable which codes for the latest Democratic poll averages has the largest coefficient, indicating it is the most predictive of the actual Democratic two-party vote share. Indeed, every percentage point increase in the latest Democratic poll averages correlated with a 0.7% increase in Democratic two-party vote share. The only other coefficient that comes close to this magnitude is Democratic Two Party Vote Share Lagged One Cycle, wherein a 1% increase is associated with a 0.3% increase in two-party vote share. 
+- **Latest Poll Averages**: This variable has the largest coefficient in the model, making it the most predictive factor for Democratic two-party vote share. Indeed, each 1% increase in the latest Democratic poll averages is associated with a 0.7% increase in the Democratic two-party vote share, suggesting a strong correlation between recent polling and actual voting outcomes.
+- **The Interaction Between Q2 GDP Growth and Incumbency**: This interaction variable captures the effect of having a Democratic incumbent in combination with Q2 GDP growth. A 1-point increase results in a slight decrease (0.06%) in Democratic two-party vote share. This result is especially notable given that the variable’s values range from -8 to 8, indicating that economic conditions tied to the Democratic incumbency have minimal influence compared to more fixed indicators like polling and past vote shares.
+- **Democratic Two-Party Vote Share Lagged One Cycle**: This variable also shows a meaningful positive effect, with a 1% increase in the previous election's Democratic vote share corresponding to a 0.3% increase in the current two-party vote share. This finding highlights the impact of prior voting behavior as a predictor for subsequent elections.
+- **Democratic Two-Party Vote Share Lagged Two Cycles**: Interestingly, this variable has a small negative coefficient, where a 1% increase two cycles ago is associated with a 0.08% decrease in the current Democratic two-party vote share. 
+
 
 *The second elastic-net regression regularizes the Republican two-party vote share regression also analyzed above*
 
@@ -446,17 +452,22 @@ rcoef_df <- tibble::rownames_to_column(rcoef_df, var = "Variable")
 
 rcoef_df$Variable <- gsub("^X\\.|\\.", " ", rcoef_df$Variable)  # Remove 'X.' prefix and replace '.' with spaces
 rcoef_df$Variable <- trimws(rcoef_df$Variable)  # Trim whitespace
-kable(rcoef_df, col.names = c("Variable", "Coefficient"), caption = "Republican Two-Party Vote Share Elastic Net Coefficients")
+kable(rcoef_df, col.names = c("Variable", "Coefficient"), caption = "Republican Two-Party Vote Share Elastic Net Coefficients", 
+      format = "html") |>
+  kable_styling(full_width = FALSE) 
 
 ```
 
 While the lambda found through cross-validation here is slightly higher, sitting around 0.056, the coefficients remain relatively unchanged compared to those found in the aimple regression model above. Once again, this indicates my model has a low risk of both multicollinearity and overfitting, further emphasizing the strong predictive power of my selected variables. 
 
-As mentioned above, the coefficient on the latest Republican poll averages variable is also the largest here, indicating a 1% increase in poll averages leads to a 0.6% increase in Republican two-party vote share. Furthermore, the coefficients on both lagged Republican vote shares are of significant magnitude, displaying that a 1% increase in vote share lagged two cycles increases Republican vote share by 0.19% while a 1% increase in vote share lagged one cycle increases Republican vote share by 0.26%.
+- **Latest Poll Averages**: The variable for the latest Republican poll averages holds the largest coefficient here, indicating that each 1% increase in poll averages corresponds to a 0.6% increase in the Republican two-party vote share. This highlights the strong predictive power of current polling for the Republican vote share, similar to the pattern seen with the Democratic model.
+- **The Interaction Between Q2 GDP Growth and Incumbency**: This interaction variable, which combines Republican incumbency with Q2 GDP growth, shows a minimal positive effect, where a 1-point increase results in only a 0.02% boost in the Republican two-party vote share. This value is smaller than that observed in the Democratic model (0.06%) and, when combined with the limited range of this variable, becomes nearly negligible in influence.
+- **Democratic Two-Party Vote Share Lagged One Cycle**: A 1% increase in the prior cycle's Republican vote share is associated with a 0.26% increase in the current Republican two-party vote share. This substantial effect suggests that the most recent past election results serve as an essential indicator of the upcoming vote share for Republicans, consistent with the idea that voting trends from the previous cycle carry forward.
+- **Democratic Two-Party Vote Share Lagged Two Cycles**: Here, a 1% increase in vote share from two election cycles ago correlates with a 0.19% increase in current Republican two-party vote share. This differs notably from the Democratic model, where the two-cycle lagged vote share was relatively insignificant and even showed a slight negative effect. For Republicans, however, both recent and older election outcomes seem to have notable predictive value.
 
 **Model Validation**
 
-To verify the accuracy of my model in predicting my chosen outcome variables — Democratic and Republican two-party vote share — I decided to perform an out-of-sample performance validation. While I would have liked to display my in-sample error as well, the use of an aggregate elastic-net model predicted onto state-based variables makes it incredibly difficult, thus I will instead focus on out-of-sampel error.
+To verify the accuracy of my model in predicting my chosen outcome variables — Democratic and Republican two-party vote share — I decided to perform an out-of-sample performance validation. While I would have liked to display my in-sample error as well, the use of an aggregate elastic-net model predicted onto state-based variables makes it incredibly difficult, thus I will instead focus on out-of-sample error.
 
 *Using Bootstrapped Out-of-Sample Error Estimation to Test Predictive Power:*
 
@@ -575,18 +586,20 @@ error_summary <- data.frame(
 
 knitr::kable(error_summary, 
              col.names = c("Party", "Mean Error", "Standard Deviation"),
-             caption = "Out-of-Sample Error Summary for Democratic and Republican Predictions")
+             caption = "Out-of-Sample Error Summary for Democratic and Republican Predictions",  
+      format = "html") |>
+  kable_styling(full_width = FALSE) 
 
 
 ```
 
-The mean error for Democrats is around -0.25, indicating the model tends to slightly underestimate Democrat performance. The mean error for Republicans is around 0.5, indicating the model tends to slightly overestimate Republican performance. That said, the values are close to zero, suggesting the models do not have a significant directional bias in their predictions. A standard deviation of around 6 for both, however, is relatively high, especially in the context of vote share predictions. A high standard deviation (relative to the mean error) suggests that individual predictions vary considerably from the true values.
+The mean error for Democrats is around -0.25, indicating the model tends to slightly underestimate Democrat performance. The mean error for Republicans is around 0.5, indicating the model tends to slightly overestimate Republican performance. That said, the values are close to zero, suggesting the models do not have a significant directional bias in their predictions. A standard deviation of around 6 for both, however, is relatively high, especially in the context of vote share predictions. A high standard deviation (relative to the mean error) suggests that individual predictions vary considerably from the true values. While this finding is worrying, it is not indicative of a bad model, rather it emphasizes the limited data availability and high uncertainty in the election forecasting industry as a whole.
 
 **Predicting Vote Share**
 
 As I have done in the previous three weeks, I will be predicting for the seven states which [expert predictors like Cook and Sabato](https://menemshasolomon.github.io/election-blog/post/2024-09-27-4-the-incumbency-advantage/) determine to be toss-ups in the upcoming election: Arizona, Nevada, Michigan, Wisconsin, North Carolina, Georgia, and Pennsylvania. Using the elastic-net regularized regression model generated above, which includes four predictive variables, my models calculated both Democratic and Republican two-party vote share.
 
-When interpreting the results below, bear in mind that the predicted two-party vote shares sum to above 100 as a result of the data used in this model. The data will be normalized below; however, this model is included for the sake of evaluating the confidence intervals for each state.
+When interpreting the results below, bear in mind that the predicted two-party vote shares sum to above 100 as a result of the data used in this model. The data will be normalized below; however, the raw model results are included for the sake of evaluating the confidence intervals for each state.
 
 *Model of Elastic-Net Regularized Regression Predicted Two-Party Democratic Vote Share with 90% Confidence Intervals for Swing States*
 
@@ -614,15 +627,20 @@ results_state <- data.frame(
   Upper_Bound = as.vector(predictions_state + margin)
 )
 
-results_state <- results_state |>
-  filter(State %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada"))
+results_state2 <- results_state |>
+  filter(State %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada")) 
 
-EN_results <- results_state |>
+EN_results <- results_state2 |>
   mutate(Winner = if_else(Predicted >= 50, "Harris", "Trump"))
 
-knitr::kable(EN_results, 
-             col.names = c("State", "Predicted Vote Share", "Lower Bound", "Upper Bound", "Winner"),
-             caption = "Predicted Two-Party Democratic Vote Share with Confidence Intervals for Swing States")
+EN_results_nowinner <- results_state2 |>
+  select(State, Predicted, Upper_Bound, Lower_Bound)
+
+knitr::kable(EN_results_nowinner, 
+             col.names = c("State", "Predicted Vote Share", "Upper Bound", "Lower Bound"),
+             caption = "Predicted Two-Party Democratic Vote Share with Confidence Intervals for Swing States", 
+      format = "html") |>
+  kable_styling(full_width = FALSE) 
 
 ```
 
@@ -653,21 +671,25 @@ rresults_state <- data.frame(
 )
 
 
-rresults_state <- rresults_state |>
+rresults_state2 <- rresults_state |>
   filter(State %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada"))
 
 
-rEN_results <- rresults_state |>
+rEN_results <- rresults_state2 |>
   mutate(Winner = if_else(Predicted >= 50, "Trump", "Harris"))  
 
+rEN_results_nowinner <- rresults_state2 |>
+  select(State, Predicted, Upper_Bound, Lower_Bound)
 
-knitr::kable(rEN_results, 
-             col.names = c("State", "Predicted Vote Share", "Lower Bound", "Upper Bound", "Winner"),
-             caption = "Predicted Two-Party Republican Vote Share with Confidence Intervals for Swing States")
+kable(rEN_results_nowinner, 
+             col.names = c("State", "Predicted Vote Share", "Upper Bound", "Lower Bound"),
+             caption = "Predicted Two-Party Republican Vote Share with Confidence Intervals for Swing States", 
+      format = "html") |>
+  kable_styling(full_width = FALSE) 
 
 ```
 
-The 90% confidence interval of these predictions includes both election outcomes, indicating the extreme variability of the model. Since election prediction models are extremely specific and based on limited data, confidence intervals which include both outcomes are typical; however, it is important to bear this in mind when interpreting the results below. 
+The 90% confidence interval of these predictions includes both election outcomes, indicating the extreme variability of the model. This variability suggests that the predictions are sensitive to small changes in input, reflecting the inherent uncertainty in election forecasting. Since election prediction models rely on a limited set of data points and may not fully capture unforeseen events or shifts in voter sentiment, it is common for confidence intervals to span both possible outcomes. Such wide intervals remind us that while the model offers a probabilistic view of the election, it should not be interpreted as a definitive forecast.
 
 *Normalizing the Two-Party Vote Share in my Models to Generate a Final Prediction*
 
@@ -687,7 +709,7 @@ combined_preds <- combined_preds |>
   mutate(
     Dem_prediction_normalized = Dem_prediction / (Dem_prediction + Rep_prediction) * 100,
     Rep_prediction_normalized = Rep_prediction / (Dem_prediction + Rep_prediction) * 100,
-    Winner = if_else(Dem_prediction_normalized >= 50, "Harris", "Trump")
+    Winner = if_else(Dem_prediction_normalized >= 50, "Harris", "Trump"),
   )
 
 
@@ -699,28 +721,59 @@ final_preds <- combined_preds |>
   )
 
 
-knitr::kable(final_preds)
+kable(final_preds, format = "html") |>
+  kable_styling(full_width = FALSE) |>
+  row_spec(which(final_preds$Winner == "Harris"), background = "#ADD8E6") |>  
+  row_spec(which(final_preds$Winner == "Trump"), background = "#F08080") 
 
 ```
 
-**In normalizing both predictions, Harris appears to win Michigan, Nevada, Pennsylvania, and Wisconsin on a slim margin, while Trump wins Arizona, Georgia, and North Carolina on similarly slim margin. This leads to a result where Harris wins with 276 electors while Trump has 262 electors.** 
+# Final 2024 Prediction
 
+**In normalizing both predictions, Harris appears to win Michigan, Nevada, and Wisconsin on a slim margin, while Trump wins Arizona, Pennsylvania, Georgia, and North Carolina on similarly slim margin. This leads to a result where Trump wins with 281 electors while Harris has 257 electors.** 
 
-```{r cho = FALSE, message=FALSE, warning=FALSE}
+```{r echo = FALSE, message=FALSE, warning=FALSE, fig.width=10, fig.height=6}
 library(ggplot2)
 library(maps)
 
+dem_preds2 <- results_state |>
+  rename(State = State, Dem_prediction = Predicted)  
+rep_preds2 <- rresults_state |>
+  rename(State = State, Rep_prediction = Predicted)
+
+
+combined_preds2 <- dem_preds2 |>
+  inner_join(rep_preds2, by = "State")
+
+# Normalize so that Dem_prediction + Rep_prediction = 100
+combined_preds2 <- combined_preds2 |>
+  mutate(
+    Dem_prediction_normalized = Dem_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Rep_prediction_normalized = Rep_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Winner = if_else(Dem_prediction_normalized >= 50, "Harris", "Trump")
+  )
+
+
+final_preds2 <- combined_preds2 |>
+  select(State, Dem_prediction_normalized, Rep_prediction_normalized, Winner) |>
+  rename(
+    `Democratic Prediction` = Dem_prediction_normalized,
+    `Republican Prediction` = Rep_prediction_normalized
+  ) |>
+  mutate(`Democratic Margin` = `Democratic Prediction` - `Republican Prediction`)
+
 us_states <- map_data("state")
 
-final_preds$State <- tolower(final_preds$State)
+final_preds2$State <- tolower(final_preds2$State)
 
-map_data <- us_states %>%
-  left_join(final_preds, by = c("region" = "State"))
+map_data2 <- us_states |>
+  left_join(final_preds2, by = c("region" = "State")) |>
+  mutate(Winner = if_else(is.na(Winner), "No Data", Winner)) 
 
 
-ggplot(map_data, aes(x = long, y = lat, group = group)) +
-  geom_polygon(aes(fill = Winner), color = "white") + 
-  scale_fill_manual(values = c("Harris" = "blue", "Trump" = "red")) +
+ggplot(map_data2, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = Winner), color = "black") + 
+  scale_fill_manual(values = c("Harris" = "blue", "Trump" = "red", "No Data" = "white")) +
   theme_minimal() +
   theme(
     panel.grid = element_blank(),   
@@ -729,15 +782,33 @@ ggplot(map_data, aes(x = long, y = lat, group = group)) +
     axis.ticks = element_blank(),     
     axis.text = element_blank()        
   ) + 
-  labs(title = "Predicted Election Results by State, Swing States Only",
+  labs(title = "Predicted Election Results, Including all States with Available Data",
        fill = "Winner") 
+
+ggplot(map_data2, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = `Democratic Margin`), color = "black") + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "blue", 
+                       midpoint = 0, 
+                       limits = c(-33, 33), 
+                       na.value = "grey90") +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),   
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.ticks = element_blank(),     
+    axis.text = element_blank()        
+  ) + 
+  labs(title = "Predicted Democrtaic Vote Margin, Including all States with Available Data",
+       subtitle = "States with No Available Data are Gray",
+       fill = "Democratic Vote Margin") 
 
 
 ```
 
+
 ## Notes
 All code above is accessible via [Github](https://github.com/menemshasolomon/election-blog/blob/main/content/post/2024-11-01-9-final-prediction-assignment/index.Rmarkdown).
-
 
 **Data Sources**
 
