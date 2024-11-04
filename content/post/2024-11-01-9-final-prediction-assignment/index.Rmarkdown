@@ -693,6 +693,8 @@ The 90% confidence interval of these predictions includes both election outcomes
 
 *Normalizing the Two-Party Vote Share in my Models to Generate a Final Prediction*
 
+Since my values for two-party vote share sum to over 100, I normalized them through a simple formula of deviding each party's prediction by a sum of both parties' predictions. Doing so generated the results displayed below:
+
 ```{r echo = FALSE, message=FALSE, warning=FALSE}
 
 dem_preds <- EN_results |>

@@ -122,7 +122,7 @@ When utilizing a regression model, there are two main concerns: overfitting and 
 <tbody>
   <tr>
    <td style="text-align:left;"> Intercept </td>
-   <td style="text-align:right;"> 3.7152136 </td>
+   <td style="text-align:right;"> 3.7430536 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Intercept  1 </td>
@@ -130,19 +130,19 @@ When utilizing a regression model, there are two main concerns: overfitting and 
   </tr>
   <tr>
    <td style="text-align:left;"> Latest Democratic Poll Averages </td>
-   <td style="text-align:right;"> 0.7089807 </td>
+   <td style="text-align:right;"> 0.7076161 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Incumbency and GDP Interaction Effect </td>
-   <td style="text-align:right;"> -0.0630074 </td>
+   <td style="text-align:right;"> -0.0616626 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Democratic Two Party Vote Share Lagged One Cycle </td>
-   <td style="text-align:right;"> 0.3784582 </td>
+   <td style="text-align:right;"> 0.3771867 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Democratic Two Party Vote Share Lagged Two Cycles </td>
-   <td style="text-align:right;"> -0.0795311 </td>
+   <td style="text-align:right;"> -0.0776459 </td>
   </tr>
 </tbody>
 </table>
@@ -252,45 +252,45 @@ When interpreting the results below, bear in mind that the predicted two-party v
 <tbody>
   <tr>
    <td style="text-align:left;"> Arizona </td>
-   <td style="text-align:right;"> 51.61043 </td>
-   <td style="text-align:right;"> 56.82364 </td>
-   <td style="text-align:right;"> 46.39723 </td>
+   <td style="text-align:right;"> 51.60586 </td>
+   <td style="text-align:right;"> 56.81940 </td>
+   <td style="text-align:right;"> 46.39231 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Georgia </td>
-   <td style="text-align:right;"> 52.08289 </td>
-   <td style="text-align:right;"> 57.29609 </td>
-   <td style="text-align:right;"> 46.86969 </td>
+   <td style="text-align:right;"> 52.07609 </td>
+   <td style="text-align:right;"> 57.28963 </td>
+   <td style="text-align:right;"> 46.86254 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Michigan </td>
-   <td style="text-align:right;"> 52.89343 </td>
-   <td style="text-align:right;"> 58.10663 </td>
-   <td style="text-align:right;"> 47.68022 </td>
+   <td style="text-align:right;"> 52.88877 </td>
+   <td style="text-align:right;"> 58.10231 </td>
+   <td style="text-align:right;"> 47.67522 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Nevada </td>
-   <td style="text-align:right;"> 52.28574 </td>
-   <td style="text-align:right;"> 57.49894 </td>
-   <td style="text-align:right;"> 47.07253 </td>
+   <td style="text-align:right;"> 52.28480 </td>
+   <td style="text-align:right;"> 57.49834 </td>
+   <td style="text-align:right;"> 47.07125 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> North Carolina </td>
-   <td style="text-align:right;"> 51.77751 </td>
-   <td style="text-align:right;"> 56.99071 </td>
-   <td style="text-align:right;"> 46.56430 </td>
+   <td style="text-align:right;"> 51.77304 </td>
+   <td style="text-align:right;"> 56.98658 </td>
+   <td style="text-align:right;"> 46.55949 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Pennsylvania </td>
-   <td style="text-align:right;"> 52.50238 </td>
-   <td style="text-align:right;"> 57.71558 </td>
-   <td style="text-align:right;"> 47.28917 </td>
+   <td style="text-align:right;"> 52.49847 </td>
+   <td style="text-align:right;"> 57.71202 </td>
+   <td style="text-align:right;"> 47.28493 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Wisconsin </td>
-   <td style="text-align:right;"> 52.74622 </td>
-   <td style="text-align:right;"> 57.95943 </td>
-   <td style="text-align:right;"> 47.53302 </td>
+   <td style="text-align:right;"> 52.74194 </td>
+   <td style="text-align:right;"> 57.95548 </td>
+   <td style="text-align:right;"> 47.52839 </td>
   </tr>
 </tbody>
 </table>
@@ -357,6 +357,8 @@ The 90% confidence interval of these predictions includes both election outcomes
 
 *Normalizing the Two-Party Vote Share in my Models to Generate a Final Prediction*
 
+Since my values for two-party vote share sum to over 100, I normalized them through a simple formula of deviding each party's prediction by a sum of both parties' predictions. Doing so generated the results displayed below:
+
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
@@ -369,44 +371,44 @@ The 90% confidence interval of these predictions includes both election outcomes
 <tbody>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Arizona </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.01264 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.98736 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.01043 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.98957 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Georgia </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.32191 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.67809 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.31865 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.68135 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Michigan </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.52614 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.47386 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.52394 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.47606 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Nevada </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.10748 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.89252 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.10702 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.89298 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> North Carolina </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.18136 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.81864 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.17920 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.82080 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Pennsylvania </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.96810 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.03190 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.96624 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.03376 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Wisconsin </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.20683 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.79317 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.20480 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.79520 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
 </tbody>
