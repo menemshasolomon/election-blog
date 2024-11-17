@@ -37,7 +37,7 @@ It has now been almost two weeks since Donald Trump won the 2024 election, thus 
 
 ## My 2024 Prediction Model
 
-My prediction model utilized an elastic-net regularized regression of four key predictor variables: the interaction effect between Q2 GDP growth and incumbency, the latest FiveThirtyEight weighted poll averages, two-party voteshare lagged one cycle, and two-party vote share lagged two cycles. In choosing these variables I hoped to build a relatively simple model which could apply to an election as unusual as this once. For a full explanation of each variable as well as my justification for its inclusion, refer to my week nine blog post [linked here](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/). 
+My prediction model utilized an elastic-net regularized regression of four key predictor variables: the interaction effect between Q2 GDP growth and incumbency, the latest FiveThirtyEight weighted poll averages, two-party voteshare lagged one cycle, and two-party vote share lagged two cycles. In choosing these variables I hoped to build a relatively simple model which could apply to an election as unusual as this one. For a full explanation of each variable as well as my justification for its inclusion, refer to my week nine blog post [linked here](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/). 
 
 I utilized an elastic-net regularized regression to control for multicollinearity and overfitting while maintaining my model's simplicity, transparency, and generalizability. Once again, my [week nine](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/) blog post provides a more in-depth explaination for my choice of model. 
 
@@ -55,158 +55,158 @@ Finally, since my two-party vote share summed to over 100%, I normalized my pred
 <tbody>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Arizona </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.01043 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.98957 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.01197 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.98803 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> California </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 63.23122 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 36.76878 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 63.23277 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 36.76723 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Colorado </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 55.64091 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 44.35909 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 55.64483 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 44.35517 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Florida </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.18360 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.81640 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.18262 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.81738 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Georgia </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.31865 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.68135 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.32092 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.67908 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Indiana </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 41.54405 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 58.45595 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 41.54387 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 58.45613 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Maryland </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 64.86479 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 35.13521 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 64.86863 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 35.13137 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Massachusetts </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 64.60665 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 35.39335 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 64.60979 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 35.39021 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Michigan </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.52394 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.47606 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.52547 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.47453 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Minnesota </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 52.82454 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 47.17546 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 52.82726 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 47.17274 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Missouri </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 42.63118 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 57.36882 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 42.63182 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 57.36818 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Montana </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 40.92092 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 59.07908 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 40.92082 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 59.07918 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Nebraska </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 40.98688 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 59.01312 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 40.98839 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 59.01161 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Nevada </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.10702 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.89298 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.10734 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.89266 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> New Hampshire </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 52.52365 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 47.47635 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 52.52684 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 47.47316 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> New Mexico </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 53.91951 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 46.08049 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 53.92062 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 46.07938 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> New York </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 59.56939 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 40.43061 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 59.57016 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 40.42984 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> North Carolina </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.17920 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.82080 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.18070 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.81930 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Ohio </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 45.70149 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 54.29851 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 45.70136 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 54.29864 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Pennsylvania </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.96624 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.03376 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.96754 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.03246 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> South Carolina </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 43.84469 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 56.15531 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 43.84498 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 56.15502 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Texas </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 46.29538 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 53.70462 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 46.29625 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 53.70375 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Utah </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 38.54048 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 61.45952 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 38.53784 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 61.46216 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Virginia </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 53.58799 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 46.41201 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 53.59005 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 46.40995 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Washington </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 59.56872 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 40.43128 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 59.57126 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 40.42874 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Wisconsin </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.20480 </td>
-   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.79520 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 50.20622 </td>
+   <td style="text-align:right;background-color: rgba(173, 216, 230, 255) !important;"> 49.79378 </td>
    <td style="text-align:left;background-color: rgba(173, 216, 230, 255) !important;"> Harris </td>
   </tr>
 </tbody>
@@ -217,7 +217,7 @@ Finally, since my two-party vote share summed to over 100%, I normalized my pred
 
 My model predicted that Harris would win Michigan, Nevada, and Wisconsin on a slim margin, while Trump would have won Arizona, Pennsylvania, Georgia, and North Carolina on similarly slim margin. *This would have resulted in a Trump victory with 281 electors while Harris had 257 electors.*
 
-**The 2024 Election Results**
+## The 2024 Election Results
 
 Early Wednesday morning the 2024 election was called for Former President Donald Trump after he managed to clinch Georgia, North Carolina, and Pennsylvania. In the hours that followed, the rest of the swing states — Michigan, Wisconsin, Arizona, and Nevada — were called for Donald Trump as well. **This means that Trump won the election with 312 electoral votes compared to Vice President Harris' 226 electoral votes.**
 
@@ -246,57 +246,57 @@ I predicted that Trump would narrowly beat Harris with 281 electoral votes by wi
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> georgia </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.12155 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.68135 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.67908 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.87845 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.31865 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.32092 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> pennsylvania </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.01765 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.03376 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.03246 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.98235 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.96624 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.96754 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> nevada </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.62171 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.89298 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.89266 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.37829 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.10702 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.10734 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> michigan </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.69844 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.47606 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.47453 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.30156 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.52394 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.52547 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> arizona </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.84747 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.98957 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.98803 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.15253 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.01043 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.01197 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> wisconsin </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.46844 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.79520 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.79378 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.53156 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.20480 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.20622 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> north carolina </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.70111 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.82080 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.81930 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.29889 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.17920 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.18070 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
 </tbody>
@@ -317,44 +317,44 @@ To better understand the magnitude and direction of this error, I have outlined 
   <tr>
    <td style="text-align:left;"> georgia </td>
    <td style="text-align:right;"> 48.87845 </td>
-   <td style="text-align:right;"> 49.31865 </td>
-   <td style="text-align:right;"> -0.4401968 </td>
+   <td style="text-align:right;"> 49.32092 </td>
+   <td style="text-align:right;"> -0.4424722 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> pennsylvania </td>
    <td style="text-align:right;"> 48.98235 </td>
-   <td style="text-align:right;"> 49.96624 </td>
-   <td style="text-align:right;"> -0.9838947 </td>
+   <td style="text-align:right;"> 49.96754 </td>
+   <td style="text-align:right;"> -0.9851911 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> nevada </td>
    <td style="text-align:right;"> 48.37829 </td>
-   <td style="text-align:right;"> 50.10702 </td>
-   <td style="text-align:right;"> -1.7287368 </td>
+   <td style="text-align:right;"> 50.10734 </td>
+   <td style="text-align:right;"> -1.7290509 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> michigan </td>
    <td style="text-align:right;"> 49.30156 </td>
-   <td style="text-align:right;"> 50.52394 </td>
-   <td style="text-align:right;"> -1.2223826 </td>
+   <td style="text-align:right;"> 50.52547 </td>
+   <td style="text-align:right;"> -1.2239176 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> arizona </td>
    <td style="text-align:right;"> 47.15253 </td>
-   <td style="text-align:right;"> 49.01043 </td>
-   <td style="text-align:right;"> -1.8578990 </td>
+   <td style="text-align:right;"> 49.01197 </td>
+   <td style="text-align:right;"> -1.8594439 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> wisconsin </td>
    <td style="text-align:right;"> 49.53156 </td>
-   <td style="text-align:right;"> 50.20480 </td>
-   <td style="text-align:right;"> -0.6732417 </td>
+   <td style="text-align:right;"> 50.20622 </td>
+   <td style="text-align:right;"> -0.6746573 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> north carolina </td>
    <td style="text-align:right;"> 48.29889 </td>
-   <td style="text-align:right;"> 49.17920 </td>
-   <td style="text-align:right;"> -0.8803062 </td>
+   <td style="text-align:right;"> 49.18070 </td>
+   <td style="text-align:right;"> -0.8818089 </td>
   </tr>
 </tbody>
 </table>
@@ -395,15 +395,15 @@ The graphic above indicates that for every state except Washington, Utah, and Co
 <tbody>
   <tr>
    <td style="text-align:left;"> Bias </td>
-   <td style="text-align:right;"> -1.4343 </td>
+   <td style="text-align:right;"> -1.4356 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Mean Squared Error (MSE) </td>
-   <td style="text-align:right;"> 3.3158 </td>
+   <td style="text-align:right;"> 3.3190 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Root Mean Squared Error (RMSE) </td>
-   <td style="text-align:right;"> 1.8209 </td>
+   <td style="text-align:right;"> 1.8218 </td>
   </tr>
 </tbody>
 </table>
@@ -429,44 +429,44 @@ After completing my prediction model, I realized that when including the interac
 <tbody>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Arizona </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.93136 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.06864 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.93247 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.06753 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Georgia </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.32335 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.67665 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.32415 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.67585 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Michigan </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.37357 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.62643 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.37468 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.62532 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Nevada </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.75901 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.24099 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.76072 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.23928 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> North Carolina </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.95523 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.04477 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.95655 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.04345 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Pennsylvania </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.73942 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.26058 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.74074 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.25926 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Wisconsin </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.92756 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.07244 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.92890 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.07110 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
 </tbody>
@@ -493,57 +493,57 @@ To evaluate the performance of this adjusted model I will one again run through 
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Georgia </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.12155 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.67665 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.67585 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.87845 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.32335 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.32415 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Pennsylvania </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.01765 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.26058 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.25926 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.98235 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.73942 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.74074 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Nevada </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.62171 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.24099 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.23928 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.37829 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.75901 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.76072 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Michigan </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.69844 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.62643 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.62532 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.30156 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.37357 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.37468 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Arizona </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.84747 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.06864 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.06753 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.15253 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.93136 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.93247 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Wisconsin </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 50.46844 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.07244 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.07110 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 49.53156 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.92756 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.92890 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> North Carolina </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 51.70111 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.04477 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 52.04345 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 48.29889 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.95523 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 47.95655 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
 </tbody>
@@ -564,44 +564,44 @@ To better understand the magnitude and direction of this error, I have outlined 
   <tr>
    <td style="text-align:left;"> Georgia </td>
    <td style="text-align:right;"> 48.87845 </td>
-   <td style="text-align:right;"> 48.32335 </td>
-   <td style="text-align:right;"> 0.5550947 </td>
+   <td style="text-align:right;"> 48.32415 </td>
+   <td style="text-align:right;"> 0.5542976 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Pennsylvania </td>
    <td style="text-align:right;"> 48.98235 </td>
-   <td style="text-align:right;"> 48.73942 </td>
-   <td style="text-align:right;"> 0.2429313 </td>
+   <td style="text-align:right;"> 48.74074 </td>
+   <td style="text-align:right;"> 0.2416078 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Nevada </td>
    <td style="text-align:right;"> 48.37829 </td>
-   <td style="text-align:right;"> 48.75901 </td>
-   <td style="text-align:right;"> -0.3807175 </td>
+   <td style="text-align:right;"> 48.76072 </td>
+   <td style="text-align:right;"> -0.3824356 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Michigan </td>
    <td style="text-align:right;"> 49.30156 </td>
-   <td style="text-align:right;"> 49.37357 </td>
-   <td style="text-align:right;"> -0.0720130 </td>
+   <td style="text-align:right;"> 49.37468 </td>
+   <td style="text-align:right;"> -0.0731260 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Arizona </td>
    <td style="text-align:right;"> 47.15253 </td>
-   <td style="text-align:right;"> 47.93136 </td>
-   <td style="text-align:right;"> -0.7788320 </td>
+   <td style="text-align:right;"> 47.93247 </td>
+   <td style="text-align:right;"> -0.7799436 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Wisconsin </td>
    <td style="text-align:right;"> 49.53156 </td>
-   <td style="text-align:right;"> 48.92756 </td>
-   <td style="text-align:right;"> 0.6040008 </td>
+   <td style="text-align:right;"> 48.92890 </td>
+   <td style="text-align:right;"> 0.6026553 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> North Carolina </td>
    <td style="text-align:right;"> 48.29889 </td>
-   <td style="text-align:right;"> 47.95523 </td>
-   <td style="text-align:right;"> 0.3436614 </td>
+   <td style="text-align:right;"> 47.95655 </td>
+   <td style="text-align:right;"> 0.3423483 </td>
   </tr>
 </tbody>
 </table>
@@ -626,15 +626,15 @@ To better understand the bias and error of this adjusted model mathematically, I
 <tbody>
   <tr>
    <td style="text-align:left;"> Bias </td>
-   <td style="text-align:right;"> -0.2723 </td>
+   <td style="text-align:right;"> -0.2735 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Mean Squared Error (MSE) </td>
-   <td style="text-align:right;"> 1.2176 </td>
+   <td style="text-align:right;"> 1.2183 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Root Mean Squared Error (RMSE) </td>
-   <td style="text-align:right;"> 1.1034 </td>
+   <td style="text-align:right;"> 1.1037 </td>
   </tr>
 </tbody>
 </table>
@@ -648,7 +648,7 @@ To better understand the bias and error of this adjusted model mathematically, I
 
 Directly after the election, scholars, journalists, forecasters, and politicians scrambled to make sense of Trump's overwhelming success in what was thought of to be an incredibly close election. I will now attempt to understand why my initial model fell short of accurately predicting the results, why I believe my corrected model had more success in accurately predicting the results, and how my model's accuracy could be improved in the future. 
 
-**Why did my Initial Model Fail**
+**Why did my Initial Model Fail?**
 
 As I mentioned previously, my initial model fell short of accurately predicting the results of the 2024 election because it was not fully saturated. While I included the interaction effect between Q2 GDP growth and incumbency, I failed to include these two variables independently as part of the model. This omission is problematic because, without the individual terms for Q2 GDP growth and incumbency, the interaction effect cannot be properly interpreted. By excluding these base variables, my model lacked the saturation needed to accurately capture the unique influence of the interaction effect on the predictions. This inevitably distorted the relationships between my variables and ultimately contributed to inaccuracies in my results.
 
@@ -656,7 +656,7 @@ This error stemmed partly from a lack of understanding, but I also have to admit
 
 I believe that this is a learning opportunity for me as I move forward in the field of data science and forecasting. Remaining unbiased is incredibly difficult; however, without understanding and removing my personal bias, I may end up ruining what would have been an accurate prediction. 
 
-**Why was my Fully Saturated Model so Accurate**
+**Why was my Fully Saturated Model so Accurate?**
 
 **Predictive Variables:** When deciding on which variables I wanted to include in my final model, I relied heavily on three understandings — 
 1. Elections are often determined based on fundamental variables, of which the interaction between incumbency and Q2 GDP growth is often the most obvious economic trend to which voters hold an incumbent accountable [(Blog Post 2)](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/). 
@@ -667,7 +667,7 @@ By focusing on a few, carefully chosen variables—each supported by a clear the
 
 **Procedure:** I believe my model’s accuracy in predicting the 2024 results lies in its simplicity, transparency, and reliance on fundamental variables. By using a regularized regression model instead of more complex ensemble or machine learning methods, I minimized opportunities for model bias and ensured that my predictions were directly interpretable and grounded in clear assumptions. The simplicity of this approach not only reduced overfitting but also enhanced transparency and generalizability, making the model accessible to broader audiences and its predictions robust despite limited data. In an era of skepticism about election integrity, this straightforward approach underscores the importance of transparency and interpretability in fostering public confidence in election forecasts.
 
-**How Can I Improve my Model for the Future**
+**How Can I Improve my Model for the Future?**
 
 **1. Harris Specific Bias:** One of my primary assumptions when creating my model was that Harris was a fundamentally different candidate than Biden. Based on this assumption, I specifically excluded Biden's presidential approval ratings and aggregate polling data from when Biden was the candidate. Furthermore, I avoided over-including economic fundamental interaction effects, which I believed were more attributable to Biden's presidency than to Harris's candidacy.
 
@@ -685,7 +685,7 @@ Second, I believe that unless this systematic error is corrected, it may be impo
 
 One of the dominant narratives in this election has been how Biden-era inflation eroded Harris's prospects, highlighting the importance of personal economic circumstances in shaping voter decisions [(New York Times, 2024)](https://www.nytimes.com/2024/11/07/us/politics/trump-win-election-harris.html). To refine my model, I would be curious to re-run it with the inclusion of personal economic indicators such as inflation, wage growth, and unemployment—potentially incorporating these as interaction effects. These variables may provide a more nuanced understanding of voter temperament and how economic realities translate into electoral outcomes.
 
-##Final Reflections
+## Final Reflections
 
 I am incredibly proud of the performance of my final model, which, when fully saturated, was able to correctly predict the 2024 election results. By incorporating key variables such as incumbency, GDP growth, lagged vote share, and polling data, I was able to provide a robust prediction that aligned closely with the actual outcome. This success underscores the importance of including fundamental variables, minimizing bias, and maintaining a transparent and interpretable approach to forecasting.
 

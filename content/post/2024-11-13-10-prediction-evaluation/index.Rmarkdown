@@ -149,7 +149,7 @@ It has now been almost two weeks since Donald Trump won the 2024 election, thus 
 
 ## My 2024 Prediction Model
 
-My prediction model utilized an elastic-net regularized regression of four key predictor variables: the interaction effect between Q2 GDP growth and incumbency, the latest FiveThirtyEight weighted poll averages, two-party voteshare lagged one cycle, and two-party vote share lagged two cycles. In choosing these variables I hoped to build a relatively simple model which could apply to an election as unusual as this once. For a full explanation of each variable as well as my justification for its inclusion, refer to my week nine blog post [linked here](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/). 
+My prediction model utilized an elastic-net regularized regression of four key predictor variables: the interaction effect between Q2 GDP growth and incumbency, the latest FiveThirtyEight weighted poll averages, two-party voteshare lagged one cycle, and two-party vote share lagged two cycles. In choosing these variables I hoped to build a relatively simple model which could apply to an election as unusual as this one. For a full explanation of each variable as well as my justification for its inclusion, refer to my week nine blog post [linked here](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/). 
 
 I utilized an elastic-net regularized regression to control for multicollinearity and overfitting while maintaining my model's simplicity, transparency, and generalizability. Once again, my [week nine](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/) blog post provides a more in-depth explaination for my choice of model. 
 
@@ -521,7 +521,7 @@ ggplot(map_data2, aes(x = long, y = lat, group = group)) +
 
 My model predicted that Harris would win Michigan, Nevada, and Wisconsin on a slim margin, while Trump would have won Arizona, Pennsylvania, Georgia, and North Carolina on similarly slim margin. *This would have resulted in a Trump victory with 281 electors while Harris had 257 electors.*
 
-**The 2024 Election Results**
+## The 2024 Election Results
 
 Early Wednesday morning the 2024 election was called for Former President Donald Trump after he managed to clinch Georgia, North Carolina, and Pennsylvania. In the hours that followed, the rest of the swing states — Michigan, Wisconsin, Arizona, and Nevada — were called for Donald Trump as well. **This means that Trump won the election with 312 electoral votes compared to Vice President Harris' 226 electoral votes.**
 
@@ -933,7 +933,7 @@ metrics_table |>
 
 Directly after the election, scholars, journalists, forecasters, and politicians scrambled to make sense of Trump's overwhelming success in what was thought of to be an incredibly close election. I will now attempt to understand why my initial model fell short of accurately predicting the results, why I believe my corrected model had more success in accurately predicting the results, and how my model's accuracy could be improved in the future. 
 
-**Why did my Initial Model Fail**
+**Why did my Initial Model Fail?**
 
 As I mentioned previously, my initial model fell short of accurately predicting the results of the 2024 election because it was not fully saturated. While I included the interaction effect between Q2 GDP growth and incumbency, I failed to include these two variables independently as part of the model. This omission is problematic because, without the individual terms for Q2 GDP growth and incumbency, the interaction effect cannot be properly interpreted. By excluding these base variables, my model lacked the saturation needed to accurately capture the unique influence of the interaction effect on the predictions. This inevitably distorted the relationships between my variables and ultimately contributed to inaccuracies in my results.
 
@@ -941,7 +941,7 @@ This error stemmed partly from a lack of understanding, but I also have to admit
 
 I believe that this is a learning opportunity for me as I move forward in the field of data science and forecasting. Remaining unbiased is incredibly difficult; however, without understanding and removing my personal bias, I may end up ruining what would have been an accurate prediction. 
 
-**Why was my Fully Saturated Model so Accurate**
+**Why was my Fully Saturated Model so Accurate?**
 
 **Predictive Variables:** When deciding on which variables I wanted to include in my final model, I relied heavily on three understandings — 
 1. Elections are often determined based on fundamental variables, of which the interaction between incumbency and Q2 GDP growth is often the most obvious economic trend to which voters hold an incumbent accountable [(Blog Post 2)](https://menemshasolomon.github.io/election-blog/post/2024-09-14-2-the-importance-of-the-economy/). 
@@ -952,7 +952,7 @@ By focusing on a few, carefully chosen variables—each supported by a clear the
 
 **Procedure:** I believe my model’s accuracy in predicting the 2024 results lies in its simplicity, transparency, and reliance on fundamental variables. By using a regularized regression model instead of more complex ensemble or machine learning methods, I minimized opportunities for model bias and ensured that my predictions were directly interpretable and grounded in clear assumptions. The simplicity of this approach not only reduced overfitting but also enhanced transparency and generalizability, making the model accessible to broader audiences and its predictions robust despite limited data. In an era of skepticism about election integrity, this straightforward approach underscores the importance of transparency and interpretability in fostering public confidence in election forecasts.
 
-**How Can I Improve my Model for the Future**
+**How Can I Improve my Model for the Future?**
 
 **1. Harris Specific Bias:** One of my primary assumptions when creating my model was that Harris was a fundamentally different candidate than Biden. Based on this assumption, I specifically excluded Biden's presidential approval ratings and aggregate polling data from when Biden was the candidate. Furthermore, I avoided over-including economic fundamental interaction effects, which I believed were more attributable to Biden's presidency than to Harris's candidacy.
 
@@ -970,7 +970,7 @@ Second, I believe that unless this systematic error is corrected, it may be impo
 
 One of the dominant narratives in this election has been how Biden-era inflation eroded Harris's prospects, highlighting the importance of personal economic circumstances in shaping voter decisions [(New York Times, 2024)](https://www.nytimes.com/2024/11/07/us/politics/trump-win-election-harris.html). To refine my model, I would be curious to re-run it with the inclusion of personal economic indicators such as inflation, wage growth, and unemployment—potentially incorporating these as interaction effects. These variables may provide a more nuanced understanding of voter temperament and how economic realities translate into electoral outcomes.
 
-##Final Reflections
+## Final Reflections
 
 I am incredibly proud of the performance of my final model, which, when fully saturated, was able to correctly predict the 2024 election results. By incorporating key variables such as incumbency, GDP growth, lagged vote share, and polling data, I was able to provide a robust prediction that aligned closely with the actual outcome. This success underscores the importance of including fundamental variables, minimizing bias, and maintaining a transparent and interpretable approach to forecasting.
 
