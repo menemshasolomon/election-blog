@@ -1,0 +1,935 @@
+---
+title: 10. Prediction Evaluation
+author: Mena Solomon
+date: '2024-11-13'
+slug: []
+categories: []
+tags: []
+---
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+# Load libraries.
+library(censable)
+library(geofacet)
+library(ggpubr)
+library(ggthemes)
+library(haven)
+library(kableExtra)
+library(maps)
+library(mgcv)
+library(mgcViz)
+library(RColorBrewer)
+library(readstata13)
+library(scales)
+library(sf)
+library(spData)
+library(stargazer)
+library(tidygeocoder)
+library(tidyverse)
+library(tigris)
+library(tmap)
+library(tmaptools)
+library(viridis)
+library(knitr)
+library(kableExtra)
+```
+
+
+```{r  echo = FALSE, message=FALSE, warning=FALSE}
+# Read popular vote datasets.
+d_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/popvote_1948_2020.csv")
+d_state_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_popvote_1948_2020.csv")
+d_state_popvote[d_state_popvote$state == "District of Columbia",]$state <- "District Of Columbia"
+
+# Read elector distribution dataset.
+d_ec <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/corrected_ec_1948_2024.csv")
+
+# Read polling data.
+d_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/national_polls_1968-2024.csv")
+d_state_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-11-01-9-final-prediction-assignment/state_polls_1968-2024.csv")
+
+# Read turnout data.
+d_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_turnout_1980_2022.csv")
+
+# Read county turnout.
+d_county_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/county_turnout.csv")
+
+# Read economy data.
+d_econ <- read_csv("~/Desktop/election-blog2/content/post/2024-09-27-4-the-incumbency-advantage/data/fred_econ.csv")
+
+# Read popular vote datasets.
+r_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/popvote_1948_2020.csv")
+r_state_popvote <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_popvote_1948_2020.csv")
+r_state_popvote[r_state_popvote$state == "District of Columbia",]$state <- "District Of Columbia"
+
+# Read elector distribution dataset.
+r_ec <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/corrected_ec_1948_2024.csv")
+
+# Read polling data.
+r_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/national_polls_1968-2024.csv")
+r_state_polls <- read_csv("~/Desktop/election-blog2/content/post/2024-11-01-9-final-prediction-assignment/state_polls_1968-2024.csv")
+
+# Read turnout data.
+r_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/state_turnout_1980_2022.csv")
+
+# Read county turnout.
+r_county_turnout <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/county_turnout.csv")
+
+# Read state-level demographics.
+r_state_demog <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/demographics.csv")
+
+# Read county demographics.
+r_county_demog <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/county_demographics.csv")
+
+# Read campaign events datasets.
+r_campaign_events <- read_csv("~/Desktop/election-blog2/content/post/2024-10-16-7-the-ground-game/data/campaigns_2016_2024.csv")[,-1]
+
+# Read economy data.
+r_econ <- read_csv("~/Desktop/election-blog2/content/post/2024-09-27-4-the-incumbency-advantage/data/fred_econ.csv")
+```
+
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+####-------------------------------------------------------------------------#
+#### Read, merge, and process data.
+####-------------------------------------------------------------------------#
+
+# Read 2024 results datasets. 
+d_state_2024 <- read_csv("state_votes_pres_2024.csv")[-1, 1:6]
+d_county_2024 <- read_csv("county_votes_pres_2024.csv")[-1, 1:6]
+d_county_2020 <- read_csv("county_votes_pres_2020.csv")[-1, 1:6]
+
+# Process 2024 state and county-level data. 
+d_state_2024 <- d_state_2024 |> 
+  mutate(FIPS = as.numeric(FIPS), 
+         votes_trump = as.numeric(`Donald J. Trump`), 
+         votes_harris = as.numeric(`Kamala D. Harris`), 
+         votes = as.numeric(`Total Vote`), 
+         trump_pv = votes_trump/votes, 
+         harris_pv = votes_harris/votes, 
+         trump_2pv = votes_trump/(votes_trump + votes_harris), 
+         harris_2pv = votes_harris/(votes_trump + votes_harris)) |> 
+  mutate(winner = case_when(votes_trump > votes_harris ~ "REP", 
+                            .default = "DEM")) |> 
+  select(FIPS, `Geographic Name`, `Geographic Subtype`, votes_trump, votes_harris, votes, 
+         winner, trump_pv, harris_pv, trump_2pv, harris_2pv)
+
+d_county_2024 <- d_county_2024 |>
+  mutate(FIPS = as.numeric(FIPS),
+         votes_trump = as.numeric(`Donald J. Trump`), 
+         votes_harris = as.numeric(`Kamala D. Harris`), 
+         votes = as.numeric(`Total Vote`), 
+         trump_pv = votes_trump/votes, 
+         harris_pv = votes_harris/votes, 
+         trump_2pv = votes_trump/(votes_trump + votes_harris), 
+         harris_2pv = votes_harris/(votes_trump + votes_harris)) |> 
+  mutate(winner = case_when(votes_trump > votes_harris ~ "REP", 
+                            .default = "DEM")) |> 
+  select(FIPS, `Geographic Name`, `Geographic Subtype`, votes_trump, votes_harris, votes, 
+         winner, trump_pv, harris_pv, trump_2pv, harris_2pv)
+
+d_county_2020 <- d_county_2020 |> 
+  mutate(FIPS = as.numeric(FIPS),
+         votes_trump_2020 = as.numeric(`Donald J. Trump`), 
+         votes_biden_2020 = as.numeric(`Joseph R. Biden Jr.`), 
+         votes_2020 = as.numeric(`Total Vote`), 
+         trump_pv_2020 = votes_trump_2020/votes_2020, 
+         biden_pv_2020 = votes_biden_2020/votes_2020, 
+         trump_2pv_2020 = votes_trump_2020/(votes_trump_2020 + votes_biden_2020), 
+         biden_2pv_2020 = votes_biden_2020/(votes_trump_2020 + votes_biden_2020)) |> 
+  mutate(winner_2020 = case_when(votes_trump_2020 > votes_biden_2020 ~ "REP", 
+                            .default = "DEM")) |> 
+  select(FIPS, `Geographic Name`, `Geographic Subtype`, votes_trump_2020, votes_biden_2020, votes_2020, 
+         winner_2020, trump_pv_2020, biden_pv_2020, trump_2pv_2020, biden_2pv_2020)
+```
+
+## Post-election Reflection
+
+It has now been almost two weeks since Donald Trump won the 2024 election, thus the time has come to evaluate my prediction model and attempt to understand where I fell short. To begin, here is another look at my prediction:
+
+**My 2024 Prediction Model**
+
+My prediction model utilized an elastic-net regularized regression of four key predictor variables: the interaction effect between Q2 GDP growth and incumbency, the latest FiveThirtyEight weighted poll averages, two-party voteshare lagged one cycle, and two-party vote share lagged two cycles. In choosing these variables I hoped to build a relatively simple model which could apply to an election as unusual as this once. For a full explanation of each variable as well as my justification for its inclusion, refer to my week nine blog post [linked here](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/). 
+
+I utilized an elastic-net regularized regression to control for multicollinearity and overfitting while maintaining my model's simplicity, transparency, and generalizability. Once again, my [week nine](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/) blog post provides a more in-depth explaination for my choice of model. 
+
+Finally, since my two-party vote share summed to over 100%, I normalized my predictions for both Democratic and Republican two-party vote share against each other. *My results are summarized below:*
+
+```{r  echo = FALSE, message=FALSE, warning=FALSE}
+####-------------------------------------------------------------------------#
+#### Model evaluation - prediction model code
+####-------------------------------------------------------------------------#
+
+# Using state popvote.
+d_state_popvote <- d_state_popvote |>
+  select(year, state, D_pv2p, D_pv2p_lag1, D_pv2p_lag2) |>
+  filter(year >= 1972)
+
+# Coding incumbency variable.
+d_popvote <- d_popvote |>
+  filter(party == "democrat") |>
+  select(year, deminc) |>
+  filter(year >= 1972)
+
+# Using poll data.
+d_pollav_state <- d_state_polls |>
+  filter(weeks_left <= 15) |>
+  group_by(year, state, party) |>
+  mutate(mean_pollav = mean(poll_support, na.rm = TRUE)) |>
+  top_n(1, poll_date) |>
+  rename(latest_pollav = poll_support) |>
+  select(-c(weeks_left, days_left, poll_date, candidate, before_convention)) |>
+  pivot_wider(names_from = party, values_from = c(latest_pollav, mean_pollav)) |>
+  select(year, state, latest_pollav_DEM, mean_pollav_DEM)
+
+# Using econ data.
+d_econ <- d_econ |>
+  filter(quarter == 2) |>
+  select(year, GDP_growth_quarterly) |>
+  filter(year >= 1972)
+
+# Combining econ and incumbency.
+econ_deminc <- d_econ |>
+  left_join(d_popvote, by = "year") |>
+  drop_na()
+
+# Join data.
+d <- d_pollav_state |>
+  left_join(econ_deminc, by = "year") |>
+  left_join(d_state_popvote, by = c("year", "state"))
+
+t <- d |>
+  filter(year >= 2016) |>
+  arrange(year) |>
+  group_by(state) |>
+  mutate(
+    D_pv2p_lag1 = lag(D_pv2p, 1),
+    D_pv2p_lag2 = lag(D_pv2p, 2)
+  )
+
+t2024 <- t |>
+  filter(year == 2024) |>
+  select(year, state, D_pv2p_lag1, D_pv2p_lag2) |>
+  rename(State = state)
+
+d_rename <- d |>
+  rename(
+    `Latest Democratic Poll Averages` = latest_pollav_DEM,
+    `Mean Democratic Poll Averages (Week 15 - Present)` = mean_pollav_DEM,
+    `Q2 GDP Growth` = GDP_growth_quarterly,
+    Incumbency = deminc,
+    `Democratic Two-Party Vote Share` = D_pv2p,
+    `Democratic Two-Party Vote Share Lagged One Cycle` = D_pv2p_lag1,
+    `Democratic Two-Party Vote Share Lagged Two Cycles` = D_pv2p_lag2,
+    Year = year,
+    State = state
+  )
+
+d_rename_test <- d_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Democratic Two-Party Vote Share`)) |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+d2024 <- d_rename |>
+  filter(Year == 2024) |>
+  select(State, `Latest Democratic Poll Averages`, `Mean Democratic Poll Averages (Week 15 - Present)`, `Q2 GDP Growth`, Incumbency) |>
+  left_join(t2024, by = "State") |>
+  rename(
+    `Democratic Two-Party Vote Share Lagged One Cycle` = D_pv2p_lag1,
+    `Democratic Two-Party Vote Share Lagged Two Cycles` = D_pv2p_lag2
+  )
+
+d2024 <- d2024 |>
+  select(State, `Latest Democratic Poll Averages`, `Q2 GDP Growth`, Incumbency, `Democratic Two-Party Vote Share Lagged One Cycle`, `Democratic Two-Party Vote Share Lagged Two Cycles`) |>
+  filter(!is.na(`Democratic Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+d2024 <-  d2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+d_regress <- lm(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` +
+                `Incumbency and GDP Interaction Effect` +
+                `Democratic Two-Party Vote Share Lagged One Cycle` +
+                `Democratic Two-Party Vote Share Lagged Two Cycles`, data = d_rename_test)
+
+
+# Using state popvote
+r_state_popvote <- r_state_popvote |>
+  select(year, state, R_pv2p, R_pv2p_lag1, R_pv2p_lag2) |>
+  filter(year >= 1972)
+
+# Coding incumbency variable
+r_popvote <- r_popvote |>
+  filter(party == "republican") |>
+  mutate(repinc = if_else(deminc == 1, 0, 1)) |>
+  select(year, repinc) |>
+  filter(year >= 1972)
+
+# Using poll data
+r_pollav_state <- r_state_polls |> 
+  filter(weeks_left <= 15) |>
+  group_by(year, state, party) |>
+  mutate(mean_pollav = mean(poll_support, na.rm = TRUE)) |>
+  top_n(1, poll_date) |> 
+  rename(latest_pollav = poll_support) |>
+  select(-c(weeks_left, days_left, poll_date, candidate, before_convention)) |>
+  pivot_wider(names_from = party, values_from = c(latest_pollav, mean_pollav)) |>
+  select(year, state, latest_pollav_REP, mean_pollav_REP)
+
+# Using econ data
+r_econ <- r_econ |>
+  filter(quarter == 2) |>
+  select(year, GDP_growth_quarterly) |>
+  filter(year >= 1972)
+
+# Combining econ and incumbency (bc similar)
+r_econ_deminc <- r_econ |>
+  left_join(r_popvote, by = "year") |>
+  drop_na()
+
+# Join data
+r <- r_pollav_state |>
+  left_join(r_econ_deminc, by = "year") |>
+  left_join(r_state_popvote, by = c("year", "state")) 
+
+tr <- r |>
+  filter(year >= 2016) |> 
+  arrange(year) |> 
+  group_by(state) |> 
+  mutate(
+    R_pv2p_lag1 = lag(R_pv2p, 1),
+    R_pv2p_lag2 = lag(R_pv2p, 2)
+  )
+
+tr2024 <- tr |>
+  filter(year == 2024) |>
+  select(year, state, R_pv2p_lag1, R_pv2p_lag2) |>
+  rename(State = state)
+
+r_rename <- r |>
+  rename(`Latest Republican Poll Averages` = latest_pollav_REP,
+         `Mean Republican Poll Averages (Week 15 - Present)` = mean_pollav_REP,
+         `Q2 GDP Growth` = GDP_growth_quarterly,
+         `Incumbency` = repinc,
+         `Republican Two-Party Vote Share` = R_pv2p,
+         `Republican Two-Party Vote Share Lagged One Cycle` = R_pv2p_lag1,
+         `Republican Two-Party Vote Share Lagged Two Cycles` = R_pv2p_lag2,
+         Year = year,
+         State = state) 
+
+r_rename_test <- r_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Republican Two-Party Vote Share`)) |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+r2024 <- r_rename |>
+  filter(Year == 2024) |>
+  select(State, `Latest Republican Poll Averages`, `Mean Republican Poll Averages (Week 15 - Present)`, `Q2 GDP Growth`, `Incumbency`) |>
+  left_join(tr2024, by = "State") |>
+  rename(`Republican Two-Party Vote Share Lagged One Cycle` = R_pv2p_lag1,
+         `Republican Two-Party Vote Share Lagged Two Cycles` = R_pv2p_lag2) 
+
+r2024 <- r2024 |>
+  select(State, `Latest Republican Poll Averages`, `Q2 GDP Growth`, `Incumbency`, `Republican Two-Party Vote Share Lagged One Cycle`, `Republican Two-Party Vote Share Lagged Two Cycles`) |>
+  filter(!is.na(`Republican Two-Party Vote Share Lagged One Cycle`)) |>
+  ungroup()
+
+r2024 <- r2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+r_regress <- 
+  lm(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + 
+       `Incumbency and GDP Interaction Effect` + 
+       `Republican Two-Party Vote Share Lagged One Cycle` + 
+       `Republican Two-Party Vote Share Lagged Two Cycles`, data = r_rename_test)
+
+dtrain <- d_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Democratic Two-Party Vote Share`)) |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+d2024 <-  d2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+# Lasso regularization
+library(glmnet)
+
+X_train <- model.matrix(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` + `Incumbency and GDP Interaction Effect` + `Democratic Two-Party Vote Share Lagged One Cycle` + `Democratic Two-Party Vote Share Lagged Two Cycles`, data = dtrain)
+
+Y_train <- dtrain$`Democratic Two-Party Vote Share`
+
+
+# Perform cross-validation for Elastic-Net regression
+cv_EN <- cv.glmnet(X_train, Y_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+
+# Best lambda values from cross-validation
+
+best_lambda_EN <- cv_EN$lambda.min
+
+# Fit final models using the best lambda
+
+EN_final <- glmnet(X_train, Y_train, alpha = 0.5, lambda = best_lambda_EN)
+
+# Create testing data
+X_test <- model.matrix(~ `Latest Democratic Poll Averages` + 
+                         `Incumbency and GDP Interaction Effect` + 
+                         `Democratic Two-Party Vote Share Lagged One Cycle` + 
+                         `Democratic Two-Party Vote Share Lagged Two Cycles`, data = d2024)
+
+
+pred_EN <- predict(EN_final, newx = X_test)
+
+pred_EN <- as.vector(pred_EN)
+
+dresults_state <- data.frame(
+  State = d2024$State,  # Add the state names from r2024
+  Predicted = pred_EN)
+
+
+rtrain <- r_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Republican Two-Party Vote Share`)) 
+
+# Lasso regularization
+library(glmnet)
+
+rtrain <-  rtrain |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+r2024 <- r2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+RX_train <- model.matrix(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + `Incumbency and GDP Interaction Effect` + `Republican Two-Party Vote Share Lagged One Cycle` + `Republican Two-Party Vote Share Lagged Two Cycles`, data = rtrain)
+
+RY_train <- rtrain$`Republican Two-Party Vote Share`
+
+
+# Perform cross-validation for Elastic-Net regression
+rcv_EN <- cv.glmnet(RX_train, RY_train, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+
+# Best lambda values from cross-validation
+
+rbest_lambda_EN <- rcv_EN$lambda.min
+
+# Fit final models using the best lambda
+
+REN_final <- glmnet(RX_train, RY_train, alpha = 0.5, lambda = rbest_lambda_EN)
+
+# Create testing data
+RX_test <- model.matrix(~ `Latest Republican Poll Averages` + 
+                         `Incumbency and GDP Interaction Effect` + 
+                         `Republican Two-Party Vote Share Lagged One Cycle` + 
+                         `Republican Two-Party Vote Share Lagged Two Cycles`, data = r2024)
+
+# Predict using Ridge and Lasso
+
+rpred_EN <- predict(REN_final, newx = RX_test)
+
+rpred_EN <- as.vector(rpred_EN)
+
+rresults_state <- data.frame(
+  State = r2024$State,  # Add the state names from r2024
+  Predicted = rpred_EN)
+
+
+us_states <- map_data("state")
+
+dem_preds <- dresults_state |>
+  rename(State = State, Dem_prediction = Predicted)  
+rep_preds <- rresults_state |>
+  rename(State = State, Rep_prediction = Predicted)
+
+
+combined_preds <- dem_preds |>
+  inner_join(rep_preds, by = "State")
+
+# Normalize so that Dem_prediction + Rep_prediction = 100
+combined_preds <- combined_preds |>
+  mutate(
+    Dem_prediction_normalized = Dem_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Rep_prediction_normalized = Rep_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Winner = if_else(Dem_prediction_normalized >= 50, "Harris", "Trump"),
+  )
+
+
+final_preds <- combined_preds |>
+  select(State, Dem_prediction_normalized, Rep_prediction_normalized, Winner) |>
+  rename(
+    `Democratic Prediction` = Dem_prediction_normalized,
+    `Republican Prediction` = Rep_prediction_normalized
+  )
+
+
+kable(final_preds, format = "html") |>
+  kable_styling(full_width = FALSE) |>
+  row_spec(which(final_preds$Winner == "Harris"), background = "#ADD8E6") |>  
+  row_spec(which(final_preds$Winner == "Trump"), background = "#F08080") 
+
+library(ggplot2)
+library(maps)
+
+
+
+final_preds2 <- final_preds |>
+  mutate(`Democratic Margin` = `Democratic Prediction` - `Republican Prediction`)
+
+us_states <- map_data("state")
+
+final_preds2$State <- tolower(final_preds2$State)
+
+map_data2 <- us_states |>
+  left_join(final_preds2, by = c("region" = "State")) |>
+  mutate(Winner = if_else(is.na(Winner), "No Data", Winner)) 
+
+
+ggplot(map_data2, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = Winner), color = "black") + 
+  scale_fill_manual(values = c("Harris" = "blue", "Trump" = "red", "No Data" = "white")) +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),   
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.ticks = element_blank(),     
+    axis.text = element_blank()        
+  ) + 
+  labs(title = "Predicted Election Results, Including all States with Available Data",
+       fill = "Winner") 
+
+ggplot(map_data2, aes(x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = `Democratic Margin`), color = "black") + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "blue", 
+                       midpoint = 0, 
+                       limits = c(-33, 33), 
+                       na.value = "grey90") +
+  theme_minimal() +
+  theme(
+    panel.grid = element_blank(),   
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.ticks = element_blank(),     
+    axis.text = element_blank()        
+  ) + 
+  labs(title = "Predicted Democrtaic Vote Margin, Including all States with Available Data",
+       subtitle = "States with No Available Data are Gray",
+       fill = "Democratic Vote Margin") 
+
+
+```
+
+My model predicted that Harris would win Michigan, Nevada, and Wisconsin on a slim margin, while Trump would have won Arizona, Pennsylvania, Georgia, and North Carolina on similarly slim margin. *This would have resulted in a Trump victory with 281 electors while Harris had 257 electors.*
+
+**The 2024 Election Results**
+
+Early Wednesday morning the 2024 election was called for Former President Donald Trump after he managed to clinch Georgia, North Carolina, and Pennsylvania. In the hours that followed, the rest of the swing states — Michigan, Wisconsin, Arizona, and Nevada — were called for Donald Trump as well. **This means that Trump won the election with 312 electoral votes compared to Vice President Harris' 226 electoral votes.**
+
+```{r  echo = FALSE, message=FALSE, warning=FALSE}
+####-------------------------------------------------------------------------#
+#### Visualizing the results of the 2024 Presidential Election. 
+####-------------------------------------------------------------------------#
+
+# Sequester state and county-level map.
+states_2024 <- states(cb = TRUE, year = 2023) |> 
+  shift_geometry() |> 
+  mutate(GEOID = as.numeric(GEOID)) |> 
+  left_join(d_state_2024, by = c("GEOID" = "FIPS")) |> 
+  drop_na()
+counties_2024 <- counties(cb = TRUE, resolution = "5m", year = 2023) |> 
+  shift_geometry() |> 
+  mutate(GEOID = as.numeric(GEOID)) |> 
+  left_join(d_county_2024, by = c("GEOID" = "FIPS")) |> 
+  left_join(d_county_2020, by = c("GEOID" = "FIPS")) |>
+  mutate(shift = (trump_pv - trump_pv_2020) * 100, 
+         shift_dir = case_when(shift > 0 ~ "REP", 
+                               shift < 0 ~ "DEM", 
+                               TRUE ~ "No Change"),
+         centroid = st_centroid(geometry), 
+         centroid_long = st_coordinates(centroid)[,1],
+         centroid_lat = st_coordinates(centroid)[,2],
+         scale_factor = 1e4, 
+         end_long = centroid_long + scale_factor * shift,
+         end_lat = centroid_lat + scale_factor * shift) |>
+  drop_na()
+county_pop_2024 <- read_csv("PopulationEstimates.csv") |> 
+  mutate(FIPStxt = as.numeric(FIPStxt)) |>
+  select(FIPStxt, POP_ESTIMATE_2023)
+counties_2024 <- counties_2024 |> 
+  left_join(county_pop_2024, by = c("GEOID" = "FIPStxt"))
+
+# Make map of state winners. 
+ggplot(states_2024, aes(fill = factor(winner))) + 
+  geom_sf() + 
+  scale_fill_manual(values = c("DEM" = "blue", "REP" = "red")) + 
+  theme_bw() + 
+  labs(title = "2024 Presidential Election Results by State", 
+       fill = "Winner") + 
+  theme(legend.position = "bottom") 
+```
+
+The overwhelming shift toward Donald Trump and the Republican party was seen across the United States, as is outlined in the map included below:
+
+```{r  echo = FALSE, message=FALSE, warning=FALSE}
+# Make arrow map of county-level shifts across US. 
+counties_2024 |> 
+  ggplot() +
+  geom_sf(fill = "gray95", color = "darkgrey") +  # Base map
+  geom_curve(aes(x = centroid_long, 
+                 y = centroid_lat,
+                 xend = end_long, 
+                 yend = end_lat,
+                 color = shift_dir),
+              arrow = arrow(length = unit(0.1, "cm"), type = "closed"),  # Smaller arrowhead
+              curvature = 0.2,  # Add a slight curve to each arrow
+              size = 0.2) +
+  scale_color_manual(values = c("DEM" = "blue", "REP" = "red")) +
+  theme_void() +
+  labs(title = "Presidential Voting Shifts by County Across the US",
+       subtitle = "Democratic vs. Republican Gains")
+
+```
+
+**Comparing My Predictions with the Actual Results**
+
+I predicted that Trump would narrowly beat Harris with 281 electoral votes by winning Georgia, North Carolina, and Pennsylvania by incredibly slim margins. Instead, Trump managed to win every one of the seven swing states. The table below compares my predicted vote margins with the reality in each swing state.
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+states_2024_margins <- states_2024 |>
+  select(NAME, trump_2pv, harris_2pv) |>
+  rename(State = NAME) |>
+  mutate(State = tolower(State),
+         `2024 Republican Vote Share` = 100 * trump_2pv,
+         `2024 Democratic Vote Share` = 100 * harris_2pv) |>
+  left_join(final_preds2, by = "State") |>
+  select(State, `2024 Republican Vote Share`, `2024 Democratic Vote Share`, `Democratic Prediction`, `Republican Prediction`)
+
+swingstates_2024_margins <- states_2024_margins |>
+  filter(State %in% c("pennsylvania", "michigan", "arizona", "wisconsin", "georgia", "north carolina", "nevada")) |>
+  mutate(`Democratic Vote Share Error` = `2024 Democratic Vote Share` - `Democratic Prediction`,
+         `Republican Vote Share Error` = `2024 Republican Vote Share` - `Republican Prediction`)
+
+library(sf)
+
+real_votes_table <- swingstates_2024_margins |>
+  st_drop_geometry() |>
+  select(State, `2024 Republican Vote Share`, `Republican Prediction`, `2024 Democratic Vote Share`, `Democratic Prediction`) |>
+  mutate(Winner = if_else(`2024 Democratic Vote Share`>= 50, "Harris", "Trump"))
+
+kable(real_votes_table, format = "html") |>
+  kable_styling(full_width = FALSE) |>
+  row_spec(which(real_votes_table$Winner == "Harris"), background = "#ADD8E6") |>  
+  row_spec(which(real_votes_table$Winner == "Trump"), background = "#F08080") 
+
+swing_miss_table <- swingstates_2024_margins |>
+  st_drop_geometry() |>
+  select(State, `2024 Democratic Vote Share`, `Democratic Prediction`, `Democratic Vote Share Error`)
+
+kable(swing_miss_table, format = "html") |>
+  kable_styling(full_width = FALSE)
+```
+
+As the tables above indicate, my model overpredicted for Harris in every swing state. 
+- **Georgia:** My model correctly predicted that Georgia would swing for Trump. Furthermore, the margin of error between my prediction model and the actual result was only 0.44 percentage points: a relatively small under prediction for Trump. My working hypothesis as to why my model was more accurate in Georgia is that polls in Georgia have been incredibly accurate in the Trump era, especially compared to polling in other states. According to FiveThirtyEight, Georgia's average polling miss across 188 polls since 2016 was only 3.4 points [(FiveThirtyEight, 2024)](https://abcnews.go.com/538/states-accurate-polls/story?id=115108709). I believe this enhanced accuracy in accounting for the Trump-effect increased the accuracy of Georgia's prediction.
+
+- **Arizona:** My model also asserted that Arizona would vote for Trump. This state, however, saw the largest margin of error wherein my model overpredicted Harris's performance by a margin of 1.86 points. This result calls into question my earlier hypothesis as FiveThirtyEight asserts that Arizona's average polling miss across 162 polls since 2016 was 3.7 points, only 0.3 points higher than Georgia  [(FiveThirtyEight, 2024)](https://abcnews.go.com/538/states-accurate-polls/story?id=115108709).
+
+- **North Carolina:** I accurately predicted that North Carolina would swing for Trump. The margin for error in this prediction was 0.88 percentage points, placing it on the smaller end in terms of magnitude. My prediction is that the North Carolina model was more accurate as North Carolina is the only state of that seven that has swung for former President Trump in both 2016 and 2020, thus the lagged vote share may predict a Trump victory more accurately.
+
+- **Pennsylvania:** Pennsylvania is the most interesting state in my prediction model as I had originally predicted it would swing for Harris when using the latest FiveThirtyEight poll averages taken about three weeks before election day. When I updated my poll averages the day before the election, however, Pennsylvania flipped for Trump on a narrow margin of 0.003 percentage points. This prediction ended up being correct, though it still overpredicted Harris's vote share by 0.99 percentage points. Three weeks before election day, FiveThirtyEight's latest aggregate poll showed Harris above Trump with a margin of 0.7 percentage points [(FineThirtyEight, 2024)](https://projects.fivethirtyeight.com/polls/president-general/2024/pennsylvania/). In the data I used for my model, Trump had shifted to having a 0.2 percentage point margin above Harris. This 0.9 point shift in the polls led Pennsylvania to swing for a different candidate, thus indicating how important poll accuracy was for the success of my model. 
+
+- **Michigan:** Michigan was one of the three states that I incorrectly predicted would swing for Harris. My model had overpredicted Harris's vote margin by 1.22 percentage points. My hypothesis is that both Michigan and Wisconsin were biased by polling data which overpredicted Harris's vote margin as Michigan and Wisconsin were thought of as part of the "Blue Wall." Blue Wall states are those which have voted for a Democratic candidate from 1992 to 2012 and again in 2020, with the one exception being Trump's election in 2016. According to FiveThirtyEight, Michigan's average polling miss across 133 polls since 2016 was 5.4 points [(FiveThirtyEight, 2024)](https://abcnews.go.com/538/states-accurate-polls/story?id=115108709). Furthermore, Michigan polling from FiveThirtyEight had Harris at a 0.9 percentage point margin above Trump. 
+
+- **Wisconsin:** Like Michigan, my model also incorrectly predicted a Harris victory in Wisconsin. The prediction error in Wisconsin was around 0.67 percentage points, so around half of the error in Michigan. I am unsure why my model was more accurate in Wisconsin than in Michigan, especially because Wisconsin's average polling miss across 81 polls since 2016 was 5.6 points [(FiveThirtyEight, 2024)](https://abcnews.go.com/538/states-accurate-polls/story?id=115108709). 
+
+- **Nevada:** Finally, my last incorrect prediction was in Nevada where I overpredicted Harris's margin by 1.73 percentage points. Nevada had voted for the Democratic candidate in 2016 and 2020, thus the lagged vote share most likely biased my model. Indeed, Nevada's polls are thought of as the most accurate — the state's average polling miss across 86 polls since 2016 was 3.3 points [(FiveThirtyEight, 2024)](https://abcnews.go.com/538/states-accurate-polls/story?id=115108709). I am unsure as to why Nevada would have behaved differently in this election and will explore that (and my other hypotheses) in depth below.  
+
+**Calculating My Model's Error**
+
+To better understand the error in my prediction model, I will utilize both graphics and calculations of bias and error. 
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+states_2024_margins <- states_2024 |>
+  select(NAME, trump_2pv, harris_2pv) |>
+  rename(State = NAME) |>
+  mutate(State = tolower(State),
+         `2024 Republican Vote Share` = 100 * trump_2pv,
+         `2024 Democratic Vote Share` = 100 * harris_2pv) |>
+  left_join(final_preds2, by = "State") |>
+  select(State, `2024 Republican Vote Share`, `2024 Democratic Vote Share`, `Democratic Prediction`, `Republican Prediction`) |>
+  mutate(`Democratic Vote Share Error` = `2024 Democratic Vote Share` - `Democratic Prediction`,
+         `Republican Vote Share Error` = `2024 Republican Vote Share` - `Republican Prediction`)
+
+ggplot(states_2024_margins, aes(fill = `Democratic Vote Share Error`)) + 
+  geom_sf() + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "blue", 
+                       midpoint = 0, 
+                       limits = c(-3, 3), 
+                       na.value = "grey90") +
+  theme_bw() + 
+  labs(title = "Margin of Error Between 2024 Real and Predicted Election Results",
+       caption = "States Where Trump Outperformed the Model will be Red, 
+       States Where Harris Outperformed the Model will be Blue,
+       Gray States Were Not Included in the Original Prediction Model",
+       fill = "Vote Margin Error") + 
+  theme(legend.position = "bottom",
+        panel.grid = element_blank(),   
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.ticks = element_blank(),     
+    axis.text = element_blank()) 
+```
+
+The graphic above indicates that for every state except Washington, Utah, and Colorado, Trump outperformed the model. This indicates systemic model bias in favor of Harris which I will attempt to understand and explore below.
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+states_2024_margins2 <- states_2024_margins |>
+  drop_na()
+
+bias <- mean(states_2024_margins2$`2024 Democratic Vote Share` - states_2024_margins2$`Democratic Prediction`)
+MSE <- mean((states_2024_margins2$`2024 Democratic Vote Share` - states_2024_margins2$`Democratic Prediction`)^2)
+RMSE <- sqrt(MSE)
+
+metrics_table <- data.frame(
+  Metric = c("Bias", "Mean Squared Error (MSE)", "Root Mean Squared Error (RMSE)"),
+  Value = c(bias, MSE, RMSE)
+)
+
+metrics_table |>
+  kable(col.names = c("Metric", "Value"), 
+        format = "html",
+        caption = "Model Evaluation Metrics for 2024 Democratic Vote Share Predictions",
+        digits = 4)|>
+  kable_styling(full_width = FALSE)
+```
+
+
+- **Bias:** Numerically, my model was biased to overpredict Harris's vote share by an average of 1.44 percentage points. This is curious as  when calculating the mean error of my final prediction model using out-of-sample cross-validation I had calculated that the [mean error for Democrats is around -0.25](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/), indicating my model tended to slightly underestimate Democrat performance. This systematic overestimation of Harris's performance is unique to this election cycle and an undesirable outcome of my model. I will attempt to understand what happened below.
+- **Mean Squared Error:** The average squared error is 3.32. This value is sensitive to larger errors because squaring amplifies the impact of larger deviations. This value is difficult to interpret in the context of vote margin since it is squared; however, I use it here to compare it to the square of the [mean out-of-sample error of my model](https://menemshasolomon.github.io/election-blog/post/2024-11-01-9-final-prediction-assignment/) calculated using cross-validation. The mean error for a Democratic prediction prior to 2024 was -0.25 making the mean squared error 0.0625. Indeed, the mean squared error of my 2024 prediction is nearly 54 times that of my model prior to 2024.
+- **Root Mean Squared Error:** To interpret this error in terms of vote percentage, root mean squared error was calculated to be 1.82. This means that my model was, on average, 1.82 percentage points off from the actual Democratic vote share. 
+
+**Correcting my Model and Recalculating Error**
+
+After completing my prediction model, I realized that when including the interaction effect between Q2 GDP growth and incumbency, it is essential to also include the individual variables (Q2 GDP growth and incumbency) to ensure that the model is fully saturated. A fully saturated model accounts for the main effects of each variable alongside their interaction, which is a standard practice in data science to avoid omitting key predictors. I have decided to address this oversight by updating my model and re-evaluating its errors. This will ensure that any hypotheses I make regarding the model's inaccuracies are based on a version of the model that adheres to proper data science principles and standards.
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+dtrain <- d_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Democratic Two-Party Vote Share`)) |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+d2024 <-  d2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+# Lasso regularization
+library(glmnet)
+
+X_train_corrected <- model.matrix(`Democratic Two-Party Vote Share` ~ `Latest Democratic Poll Averages` + `Incumbency and GDP Interaction Effect` + `Democratic Two-Party Vote Share Lagged One Cycle` + `Democratic Two-Party Vote Share Lagged Two Cycles` + `Incumbency` + `Q2 GDP Growth`, data = dtrain)
+
+Y_train_corrected <- dtrain$`Democratic Two-Party Vote Share`
+
+
+# Perform cross-validation for Elastic-Net regression
+cv_EN_corrected <- cv.glmnet(X_train_corrected, Y_train_corrected, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+
+# Best lambda values from cross-validation
+
+best_lambda_EN_corrected <- cv_EN_corrected$lambda.min
+
+# Fit final models using the best lambda
+
+EN_final_corrected <- glmnet(X_train_corrected, Y_train_corrected, alpha = 0.5, lambda = best_lambda_EN_corrected)
+
+# Create testing data
+X_test_corrected <- model.matrix(~ `Latest Democratic Poll Averages` + 
+                         `Incumbency and GDP Interaction Effect` + 
+                         `Democratic Two-Party Vote Share Lagged One Cycle` + 
+                         `Democratic Two-Party Vote Share Lagged Two Cycles` +
+                         `Incumbency` + `Q2 GDP Growth`, data = d2024)
+
+
+pred_EN_corrected <- predict(EN_final_corrected, newx = X_test_corrected)
+
+pred_EN_corrected <- as.vector(pred_EN_corrected)
+
+dresults_state_corrected <- data.frame(
+  State = d2024$State,  # Add the state names from r2024
+  Predicted = pred_EN_corrected)
+
+rtrain <- r_rename |>
+  filter(Year < 2024) |>
+  filter(!is.na(`Republican Two-Party Vote Share`)) 
+
+# Lasso regularization
+library(glmnet)
+
+rtrain <-  rtrain |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+r2024 <- r2024 |>
+  mutate(`Incumbency and GDP Interaction Effect` = (`Incumbency` * `Q2 GDP Growth`))
+
+RX_train_corrected <- model.matrix(`Republican Two-Party Vote Share` ~ `Latest Republican Poll Averages` + `Incumbency and GDP Interaction Effect` + `Republican Two-Party Vote Share Lagged One Cycle` + `Republican Two-Party Vote Share Lagged Two Cycles` + `Incumbency` + `Q2 GDP Growth`, data = rtrain)
+
+RY_train_corrected <- rtrain$`Republican Two-Party Vote Share`
+
+
+# Perform cross-validation for Elastic-Net regression
+rcv_EN_corrected <- cv.glmnet(RX_train_corrected, RY_train_corrected, alpha = 0.5)  # alpha = 0.5 for Elastic Net
+
+# Best lambda values from cross-validation
+
+rbest_lambda_EN_corrected <- rcv_EN_corrected$lambda.min
+
+# Fit final models using the best lambda
+
+REN_final_corrected <- glmnet(RX_train_corrected, RY_train_corrected, alpha = 0.5, lambda = rbest_lambda_EN_corrected)
+
+# Create testing data
+RX_test_corrected <- model.matrix(~ `Latest Republican Poll Averages` + 
+                         `Incumbency and GDP Interaction Effect` + 
+                         `Republican Two-Party Vote Share Lagged One Cycle` + 
+                         `Republican Two-Party Vote Share Lagged Two Cycles` + `Incumbency` + `Q2 GDP Growth`, 
+                         data = r2024)
+
+# Predict using Ridge and Lasso
+
+rpred_EN_corrected <- predict(REN_final_corrected, newx = RX_test_corrected)
+
+rpred_EN_corrected <- as.vector(rpred_EN_corrected)
+
+rresults_state_corrected <- data.frame(
+  State = r2024$State,  # Add the state names from r2024
+  Predicted = rpred_EN_corrected)
+
+dem_preds_corrected <- dresults_state_corrected |>
+  rename(State = State, Dem_prediction = Predicted)  
+rep_preds_corrected <- rresults_state_corrected |>
+  rename(State = State, Rep_prediction = Predicted)
+
+combined_preds_corrected <- dem_preds_corrected |>
+  inner_join(rep_preds_corrected, by = "State")
+
+# Normalize so that Dem_prediction + Rep_prediction = 100
+combined_preds_corrected2 <- combined_preds_corrected |>
+  mutate(
+    Dem_prediction_normalized = Dem_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Rep_prediction_normalized = Rep_prediction / (Dem_prediction + Rep_prediction) * 100,
+    Winner = if_else(Dem_prediction_normalized >= 50, "Harris", "Trump"),
+  )
+
+
+final_preds_corrected <- combined_preds_corrected2 |>
+  select(State, Dem_prediction_normalized, Rep_prediction_normalized, Winner) |>
+  rename(
+    `Democratic Prediction` = Dem_prediction_normalized,
+    `Republican Prediction` = Rep_prediction_normalized
+  )
+  
+
+final_preds_corrected_swing <- final_preds_corrected |>
+  filter(State %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada"))
+
+kable(final_preds_corrected_swing, format = "html") |>
+  kable_styling(full_width = FALSE) |>
+  row_spec(which(final_preds_corrected_swing$Winner == "Harris"), background = "#ADD8E6") |>  
+  row_spec(which(final_preds_corrected_swing$Winner == "Trump"), background = "#F08080") 
+
+
+```
+
+As is displayed above, had I correctly included Q2 GDP Growth, Incumbency, and the interaction effect between them in a fully saturated version of my model I would have accurately predicted a Trump victory in all seven swing states. To evaluate the performance of this adjusted model I will one again run through the steps I took above when initially evaluating my model.
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+states_2024_margins_corrected <- states_2024 |>
+  select(NAME, trump_2pv, harris_2pv) |>
+  rename(State = NAME) |>
+  mutate(`2024 Republican Vote Share` = 100 * trump_2pv,
+         `2024 Democratic Vote Share` = 100 * harris_2pv) |>
+  left_join(final_preds_corrected, by = "State") |>
+  select(State, `2024 Republican Vote Share`, `2024 Democratic Vote Share`, `Democratic Prediction`, `Republican Prediction`)
+
+swingstates_2024_margins_corrected  <- states_2024_margins_corrected  |>
+  filter(State %in% c("Pennsylvania", "Michigan", "Arizona", "Wisconsin", "Georgia", "North Carolina", "Nevada")) |>
+  mutate(`Democratic Vote Share Error` = `2024 Democratic Vote Share` - `Democratic Prediction`,
+         `Republican Vote Share Error` = `2024 Republican Vote Share` - `Republican Prediction`)
+
+library(sf)
+
+real_votes_table_corrected  <- swingstates_2024_margins_corrected  |>
+  st_drop_geometry() |>
+  select(State, `2024 Republican Vote Share`, `Republican Prediction`, `2024 Democratic Vote Share`, `Democratic Prediction`) |>
+  mutate(Winner = if_else(`2024 Democratic Vote Share`>= 50, "Harris", "Trump"))
+
+kable(real_votes_table_corrected , format = "html") |>
+  kable_styling(full_width = FALSE) |>
+  row_spec(which(real_votes_table_corrected$Winner == "Harris"), background = "#ADD8E6") |>  
+  row_spec(which(real_votes_table_corrected$Winner == "Trump"), background = "#F08080") 
+
+swing_miss_table_corrected <- swingstates_2024_margins_corrected |>
+  st_drop_geometry() |>
+  select(State, `2024 Democratic Vote Share`, `Democratic Prediction`, `Democratic Vote Share Error`)
+
+kable(swing_miss_table_corrected, format = "html") |>
+  kable_styling(full_width = FALSE)
+```
+
+The corrected version of my model accurately predicted a Trump landslide in each of the swing states with the error in democratic vote share equal to less than a percentage point. To visually represent my model's bias for each state, I plotted them on a map similar to the one pictured above. 
+
+```{r}
+states_2024_margins_corrected <- states_2024_margins_corrected |>
+  mutate(`Democratic Vote Share Error` = `2024 Democratic Vote Share` - `Democratic Prediction`,
+         `Republican Vote Share Error` = `2024 Republican Vote Share` - `Republican Prediction`)
+
+states_2024_margins_corrected2 <- states_2024_margins_corrected |>
+  drop_na()
+
+ggplot(states_2024_margins_corrected, aes(fill = `Democratic Vote Share Error`)) + 
+  geom_sf() + 
+  scale_fill_gradient2(low = "red", mid = "white", high = "blue", 
+                       midpoint = 0, 
+                       limits = c(-3, 3), 
+                       na.value = "grey90") +
+  theme_bw() + 
+  labs(title = "Margin of Error Between 2024 Real and Predicted Election Results",
+       caption = "States Where Trump Outperformed the Model will be Red, 
+       States Where Harris Outperformed the Model will be Blue,
+       Gray States Were Not Included in the Original Prediction Model",
+       fill = "Vote Margin Error") + 
+  theme(legend.position = "bottom",
+        panel.grid = element_blank(),   
+    axis.title.x = element_blank(), 
+    axis.title.y = element_blank(), 
+    axis.ticks = element_blank(),     
+    axis.text = element_blank()) 
+```
+
+As can be seen in the map above, my model does not appear to be biased in either direction as around half of the predicted states were bias toward Trump and the other half were biased toward Harris. This is very different than my less-saturated model above which systematically underpredicted for Trump. Furthermore, the lighter shades of both colors represents the model's enhanced accuracy in predicting the actual Democratic two-party vote share in each state.
+
+To better understand the bias and error of this adjusted model mathematically, I conducted the same calculations as above on the fully-saturated version of my model here:
+
+```{r echo = FALSE, message=FALSE, warning=FALSE}
+
+bias2 <- mean(states_2024_margins_corrected2$`2024 Democratic Vote Share` - states_2024_margins_corrected2$`Democratic Prediction`)
+
+MSE2 <- mean((states_2024_margins_corrected2$`2024 Democratic Vote Share` - states_2024_margins_corrected2$`Democratic Prediction`)^2)
+
+RMSE2 <- sqrt(MSE2)
+
+metrics_table <- data.frame(
+  Metric = c("Bias", "Mean Squared Error (MSE)", "Root Mean Squared Error (RMSE)"),
+  Value = c(bias2, MSE2, RMSE2)
+)
+
+metrics_table |>
+  kable(col.names = c("Metric", "Value"), 
+        format = "html",
+        caption = "Model Evaluation Metrics for 2024 Democratic Vote Share Predictions",
+        digits = 4)|>
+  kable_styling(full_width = FALSE)
+```
+
+- **Bias:** Numerically, my corrected model was biased to overpredict Harris's vote share by an average of 0.27 percentage points. As is indicated by the different directions of error in each of my swing state predictions, this model does not have the systematic bias towards Harris that the less-saturated version of my model did. I will, however, continue to explore why this version of my model still slightly overpredicts for Harris.
+- **Mean Squared Error:** The average squared error for my corrected model is 1.21 which is over 2 points less than that of my less-saturated model presented above. This implies that a fully saturated version of my model more accurately predicted the actual 2024 vote share.
+- **Root Mean Squared Error:** To interpret this error in terms of vote percentage, root mean squared error was calculated to be 1.1. This means that my model was, on average, 1.1 percentage points off from the actual Democratic vote share. This is 0.7 percentage points lower than the error of my less-saturated model.
+
+
