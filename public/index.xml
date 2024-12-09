@@ -6,8 +6,15 @@
     <description>Recent content in Home on Election Prediction Blog</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 Nov 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 Dec 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://menemshasolomon.github.io/election-blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>11. Campaign Narrative: Texas</title>
+      <link>https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/</link>
+      <pubDate>Wed, 04 Dec 2024 00:00:00 +0000</pubDate>
+      <guid>https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/</guid>
+      <description>&lt;script src=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;&#xA;&lt;link href=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;&#xA;&lt;script src=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;&#xA;&lt;link href=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;&#xA;&lt;script src=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;&#xA;&lt;link href=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;&#xA;&lt;script src=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;&#xA;&lt;link href=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;&#xA;&lt;script src=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;&#xA;&lt;link href=&#34;https://menemshasolomon.github.io/election-blog/post/2024-12-04-11-campaign-narrative-texas/index_files/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;&#xA;&lt;h2 id=&#34;the-texas-campaign-narrative&#34;&gt;The Texas Campaign Narrative&lt;/h2&gt;&#xA;&lt;p&gt;The prediction model explored in the previous two posts attempted to use fundamental variables to predict the outcome of the election. Though fundamentals are largely predictive of election outcomes, utilizing fundamentals alone discounts the role of the campaign in determining the outcome of a certain state. To ascertain an understanding of how the campaign may have contributed to forecasting error within my model (and other predictive models).&lt;/p&gt;</description>
+    </item>
     <item>
       <title>10. Prediction Evaluation</title>
       <link>https://menemshasolomon.github.io/election-blog/post/2024-11-13-10-prediction-evaluation/</link>
