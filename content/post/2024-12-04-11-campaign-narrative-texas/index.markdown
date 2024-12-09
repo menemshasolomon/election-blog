@@ -14,20 +14,19 @@ tags: []
 <link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
 <script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
 <link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
-<script src="{{< blogdown/postref >}}index_files/kePrint/kePrint.js"></script>
-<link href="{{< blogdown/postref >}}index_files/lightable/lightable.css" rel="stylesheet" />
 
 
 
 
 ## The Texas Campaign Narrative
 
-The prediction model explored in the previous two posts attempted to use fundamental variables to predict the outcome of the election. Though fundamentals are largely predictive of election outcomes, utilizing fundamentals alone discounts the role of the campaign in determining the outcome of a certain state. To ascertain an understanding of how the campaign may have contributed to forecasting error within my model (and other predictive models). 
+The prediction model explored in the previous two posts attempted to use fundamental variables to predict the outcome of the election. Though fundamentals are largely predictive of election outcomes, utilizing fundamentals alone discounts the role of the campaign in determining the outcome of a certain state. To ascertain an understanding of how the campaign may have contributed to forecasting error within my model (and other predictive models), I analyzed the volume and nature of campaign activity in Texas as well as general trends of both election results and predictions. 
 
-To provide and in-depth understanding of the effect of the campaign, this post will focus on one state: Texas. Texas was chosen as it offers a unique perspective for two reasons:
+*To provide and in-depth understanding of the effect of the campaign, this post will focus on one state: Texas.* 
 
+Texas was chosen as it offers a unique perspective for two reasons:
 1. **Increasingly Narrow Margins for the Republican Party:** Texas has been a Republican stronghold in presidential elections since Jimmy Carter's victory in 1976. However, recent trends suggest a narrowing gap between the two parties. In 2020, Donald Trump carried the state by just five percentage points, a marked decline from previous Republican margins. Similarly, in the 2018 Senate race, Republican Ted Cruz narrowly defeated Democrat Beto O’Rourke by less than three points, signaling growing Democratic competitiveness in the state. These shifts underscore Texas's evolving political landscape and its potential to become a key battleground.[(Texas Standard, 2024)](https://www.texasstandard.org/stories/texas-polls-turning-blue-democratic-gains-accuracy-allred-cruz/).
-2. **Battleground of Decisive Electoral Issues:** Two of the most decisive issues in the 2024 election were immigration and abortion, both of which are incredibly important to Texas voters. Immigration has been a defining issue for Trump supporters, serving as both a cornerstone of his political identity and a polarizing national debate. For Vice President Kamala Harris, the topic represents a key vulnerability in her political resume. This issue holds heightened significance in Texas, a state uniquely positioned at the forefront of the immigration debate. As home to over half of the U.S.-Mexico border, Texas bears the brunt of both the logistical and political complexities associated with immigration policy. Border towns face immediate pressures from surges in migrant crossings, while the broader state grapples with the economic, social, and political implications of federal immigration decisions.[(University of Houston, 2024)](https://uh.edu/news-events/stories/2024/august/08152024-hobby-immigration-survey.php) Additionally, Abortion has been a defining narrative of the Democratic party since the overturning of Roe V. Wade in June, 2022. This issue is particularly resonant in Texas, where anti-abortion politicians have tried to stop people from accessing abortion by passing unnecessary restrictions for the past 20 years. Texas is also home to some of the most restrictive abortion legislation, banning abortion as early as six weeks in pregnancy and offering money “damages” of at least $10,000 to anyone who successfully sues an abortion provider. These laws, passed by the Republican legislature, have become a point of pride for the Trump administration. For Harris, they have become a rallying cry as she defends women from laws which seek to limit their bodily autonomy. 
+2. **Battleground of Decisive Electoral Issues:** Two of the most decisive issues in the 2024 election were immigration and abortion, both of which are incredibly important to Texas voters. Immigration has been a defining issue for Trump supporters, serving as both a cornerstone of his political identity and a polarizing national debate. For Vice President Kamala Harris, the topic represents a key vulnerability in her political resume. This issue holds heightened significance in Texas, a state uniquely positioned at the forefront of the immigration debate. As home to over half of the U.S.-Mexico border, Texas bears the brunt of both the logistical and political complexities associated with immigration policy. Border towns face immediate pressures from surges in migrant crossings, while the broader state grapples with the economic, social, and political implications of federal immigration decisions.[(University of Houston, 2024)](https://uh.edu/news-events/stories/2024/august/08152024-hobby-immigration-survey.php) Additionally, Abortion has been a defining narrative of the Democratic party since the overturning of Roe V. Wade in June, 2022. This issue is particularly resonant in Texas, where anti-abortion politicians have tried to stop people from accessing abortion by passing unnecessary restrictions for the past 20 years. Texas is also home to some of the most restrictive abortion legislation, banning abortion as early as six weeks in pregnancy and offering money “damages” of at least $10,000 to anyone who successfully sues an abortion provider. These laws, passed by the Republican legislature, have become a point of pride for the Trump administration. For Harris, they have become a rallying cry as she defends women from laws which seek to limit their bodily autonomy[(ACLU Texas, 2024)](https://www.aclutx.org/en/know-your-rights/abortion-texas). 
 
 Though Texas is not a swing state and, thus, did not see a high volume of campaign activity, the issues have inflated its importance throughout the campaign, making it an interesting area for analysis.
 
@@ -67,27 +66,6 @@ Every prediction model for the 2024 Presidential Election predicted a Trump vict
 
 As a reminder, the fully saturated version of my prediction model included six variables — the interaction between incumbency and Q2 GDP growth, incumbency, Q2 GDP growth, poll averages right before election day, two-party vote share lagged one cycle, and two-party vote share lagged two cycles. These variables were incorporated into an elastic-net regularized regression predicting both Democratic two-party vote share and Republican two-party vote share. These predictions were then normalized against each other to arrive at my final prediction. 
 
-**Texas Presidential Election Forecast**
-
-<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
- <thead>
-  <tr>
-   <th style="text-align:left;"> State </th>
-   <th style="text-align:right;"> Democratic Prediction </th>
-   <th style="text-align:right;"> Republican Prediction </th>
-   <th style="text-align:left;"> Winner </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Texas </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 45.14754 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 54.85246 </td>
-   <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
-  </tr>
-</tbody>
-</table>
-
 **Real and Predicted Texas Election Results**
 
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -105,9 +83,9 @@ As a reminder, the fully saturated version of my prediction model included six v
   <tr>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Texas </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 57.01534 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 54.85246 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 54.85448 </td>
    <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 42.98466 </td>
-   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 45.14754 </td>
+   <td style="text-align:right;background-color: rgba(240, 128, 128, 255) !important;"> 45.14552 </td>
    <td style="text-align:left;background-color: rgba(240, 128, 128, 255) !important;"> Trump </td>
   </tr>
 </tbody>
@@ -128,8 +106,8 @@ As the table above indicates, my model predicted a Trump victory with 54.85% as 
   <tr>
    <td style="text-align:left;"> Texas </td>
    <td style="text-align:right;"> 42.98466 </td>
-   <td style="text-align:right;"> 45.14754 </td>
-   <td style="text-align:right;"> -2.162884 </td>
+   <td style="text-align:right;"> 45.14552 </td>
+   <td style="text-align:right;"> -2.160856 </td>
   </tr>
 </tbody>
 </table>
@@ -139,7 +117,7 @@ This table makes it abundantly clear that my model overpredicted Harris's vote m
 **Model Error and Bias**
 
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
-<caption><span id="tab:unnamed-chunk-5"></span>Table 1: Model Evaluation Metrics for 2024 Democratic Vote Share Predictions</caption>
+<caption><span id="tab:unnamed-chunk-4"></span>Table 1: Model Evaluation Metrics for 2024 Democratic Vote Share Predictions</caption>
  <thead>
   <tr>
    <th style="text-align:left;"> Metric </th>
@@ -150,18 +128,18 @@ This table makes it abundantly clear that my model overpredicted Harris's vote m
 <tbody>
   <tr>
    <td style="text-align:left;"> Bias </td>
-   <td style="text-align:right;"> -0.2741 </td>
-   <td style="text-align:right;"> -2.1629 </td>
+   <td style="text-align:right;"> -0.2723 </td>
+   <td style="text-align:right;"> -2.1609 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Mean Squared Error (MSE) </td>
-   <td style="text-align:right;"> 1.2192 </td>
-   <td style="text-align:right;"> 4.6781 </td>
+   <td style="text-align:right;"> 1.2176 </td>
+   <td style="text-align:right;"> 4.6693 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Root Mean Squared Error (RMSE) </td>
-   <td style="text-align:right;"> 1.1042 </td>
-   <td style="text-align:right;"> 2.1629 </td>
+   <td style="text-align:right;"> 1.1034 </td>
+   <td style="text-align:right;"> 2.1609 </td>
   </tr>
 </tbody>
 </table>
@@ -174,11 +152,11 @@ These results indicate a need to explore what led to such a large error in my mo
 
 As mentioned above, Former President Trump won Texas by 57.02% compared to Vice President Harris's 42.98%. To understand these results, it is helpful to analyze them at the country level.
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 As is indicated in the graphic above, Texas is almost entirely Republican. Following general trends, the Democratic sections of the state are concentrated in the large metropolitan areas. As detailed above, these areas are typically the fastest growing, most diverse sections of the state. Setting them aside, a majority of Texas is made up of White, small-town Republican voters.
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 The chart above is particularly revealing when analyzing the 2024 election outcome. While some Democratic strongholds shifted further left, a majority of the state moved significantly to the right, with the most notable shift occurring along the Western border of Texas.
 
@@ -200,7 +178,7 @@ Despite this, as previously stated, Texas was considered an incredibly important
 
 Each campaign hosted one event in Texas during the period from July 22, 2024 to November 5, 2024. 
 
-On the evening of October 25th, the Harris campaign "held a rally in [Houston,] Texas to draw attention to restrictions on reproductive freedom and Trump's role in overturning Roe v. Wade.” The event, featuring cameos from Beyonce and Willie Nelson, was the largest that the Vice President hosted during her campaign. [(NBC News, 2024)](https://www.nbcnews.com/politics/2024-election/kamala-harris-rallies-beyonce-willie-nelson-texas-rcna177407).
+On the evening of October 25th, the Harris campaign "held a rally in Houston Texas to draw attention to restrictions on reproductive freedom and Trump's role in overturning Roe v. Wade.” The event, featuring cameos from Beyonce and Willie Nelson, was the largest that the Vice President hosted during her campaign. [(NBC News, 2024)](https://www.nbcnews.com/politics/2024-election/kamala-harris-rallies-beyonce-willie-nelson-texas-rcna177407).
 
 Hours before Harris was set to appear in Houston for this star-studded rally, Trump hosted his own event in Austin, Texas. According to PBS, “Donald Trump tried Friday to turn a major celebratory event for Kamala Harris into an attack line tied to his favorite subject, immigration.” [(PBS News, 2024)](https://www.pbs.org/newshour/politics/watch-trump-calls-the-u-s-a-garbage-can-for-the-world-at-campaign-event-in-austin-texas).
 
@@ -228,13 +206,13 @@ Due to time constraints, the Harris campaign concentrated efforts on the seven s
 
 This theory is evaluated by comparing the shift in Democratic two-party vote share between the 2020 and 2024 elections, providing insight into the potential impact of focused campaigning in these critical states.
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="864" />
 
 As seen in the graphic above, on average the seven swing states (light green) did have a smaller shift to the right than the average of all of the other states (magenta). This could be evidence of the effect of the Harris campaign in shrinking the shift rightward from 2020 to 2024.
 
 Texas appeared to have the 5th largest shift rightward in the United States, nearly two points above the national average. This result indicates that though the lack of campaign may have been partially related to the outcome, it is likely that there were other factors at play as well.  
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-8-1.png" width="864" />
 
 The chart above examines whether higher campaign activity in a state correlates with a reduced root mean squared error (RMSE) in forecast predictions. It reveals that the average RMSE for the seven swing states (light green) was 0.75 points lower than the overall average RMSE for all states (magenta). This disparity suggests that the Harris campaign's focus on swing states may have improved alignment between polling predictions and actual results in these key regions, potentially demonstrating the effectiveness of their targeted efforts.
 
@@ -252,7 +230,7 @@ Using Vavreck's framework, it would make sense for Trump to run a clarifying cam
 
 To analyze the type of campaign each candidate ran in Texas, I will use text analysis of each speech. First, summarizing the most frequent words used in each speech:
 
-<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-10-2.png" width="672" />
+<img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-1.png" width="672" /><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-9-2.png" width="672" />
 
 First, it is important to note that Trump's speech in Austin was 50 minutes, while Harris's speech was around 28 minutes. Furthermore, while Harris delivered polished, well-rehearsed remarks, Trump often veered off his teleprompter. These details are important as the most frequent words in the Harris word cloud seem to be very intentional — Texas, women, abortion, freedom. However, the most frequent words in Trump's word cloud are far more general — people, know, thank, going. 
 
@@ -365,6 +343,12 @@ According to the chart above, Trump did not run a clarifying campaign in Texas. 
 
 The chart does indicate that Harris ran a successful insurgent campaign, focused on the issue of abortion and women's rights. As mentioned above, she also carried this message across the air through campaign advertising. It goes against Vavreck's hypothesis that Harris would have lost the election while running a strong insurgent campaign. However, it is likely that Texas voters did not find this issues particularly salient when compared to Trump's success delivering his clarifying message. 
 
+To summarize, the campaign's influence on Texas's rightward shift was likely minor. While increased campaign efforts might have slightly tempered this shift, they wouldn't have bridged the considerable gap between Biden's 2020 performance and Harris's in 2024. Despite Harris's strong insurgent campaign and Trump's lack of a clarifying one, voters appeared to favor Trump's message over Harris's. This outcome underscores the inability of Vavreck's model to fully account for voter sentiment in the 2024 election.
+
+## So, Why Did Trump Win and Why Did the Polls Fail?
+
+Texas experienced one of the most significant rightward shifts in the 2024 election, coupled with the largest polling error among states. This was likely driven by demographic changes and the failure of predictive models to capture the underlying priorities and sentiments of Texas voters. While the campaign contributed to this shift through a lack of presence in Texas and a message that missed key voter concerns, these factors alone cannot account for the scale of the outcome. The evidence suggests that broader demographic trends and a nationwide sentiment favoring Trump played the decisive role. Even with an optimal campaign strategy, reversing this shift in Texas would have been extremely challenging, given the broader dynamics shaping the election.
+
 ## Notes
 All code above is accessible via [Github](https://menemshasolomon.github.io/election-blog/post/2024-11-13-10-prediction-evaluation/).
 
@@ -373,6 +357,8 @@ All code above is accessible via [Github](https://menemshasolomon.github.io/elec
 Texas Standard. “Why Are Texas Polls Missing the Mark on Democratic Gains?” Texas Standard, Texas Public Radio, 27 Oct. 2024, https://www.texasstandard.org/stories/texas-polls-turning-blue-democratic-gains-accuracy-allred-cruz/.
 
 University of Houston. “Survey Reveals Texans’ Mixed Views on Immigration.” UH News, University of Houston, 15 Aug. 2024, https://uh.edu/news-events/stories/2024/august/08152024-hobby-immigration-survey.php.
+
+ACLU of Texas. “Know Your Rights: Abortion in Texas.” ACLU of Texas, https://www.aclutx.org/en/know-your-rights/abortion-texas. Accessed 8 Dec. 2024.
 
 U.S. Census Bureau. “Texas: Population Change Between Census Decades.” Census Stories by State, U.S. Census Bureau, 2024, https://www.census.gov/library/stories/state-by-state/texas-population-change-between-census-decade.html#age.
 
