@@ -22,7 +22,7 @@ tags: []
 
 The prediction model explored in the previous two posts attempted to use fundamental variables to predict the outcome of the election. Though fundamentals are largely predictive of election outcomes, utilizing fundamentals alone discounts the role of the campaign in determining the outcome of a certain state. To ascertain an understanding of how the campaign may have contributed to forecasting error within my model (and other predictive models), I analyzed the volume and nature of campaign activity in Texas as well as general trends of both election results and predictions. 
 
-*To provide and in-depth understanding of the effect of the campaign, this post will focus on one state: Texas.* 
+*To provide an in-depth understanding of the effect of the campaign, this post will focus on one state: Texas.* 
 
 Texas was chosen as it offers a unique perspective for two reasons:
 1. **Increasingly Narrow Margins for the Republican Party:** Texas has been a Republican stronghold in presidential elections since Jimmy Carter's victory in 1976. However, recent trends suggest a narrowing gap between the two parties. In 2020, Donald Trump carried the state by just five percentage points, a marked decline from previous Republican margins. Similarly, in the 2018 Senate race, Republican Ted Cruz narrowly defeated Democrat Beto O’Rourke by less than three points, signaling growing Democratic competitiveness in the state. These shifts underscore Texas's evolving political landscape and its potential to become a key battleground.[(Texas Standard, 2024)](https://www.texasstandard.org/stories/texas-polls-turning-blue-democratic-gains-accuracy-allred-cruz/).
@@ -50,7 +50,7 @@ Texas is represented in the U.S. senate by John Cornyn (R) and Ted Cruz (R). Cru
 
 **2024 Election**
 
-In the 2024 election, Texas voters elected 25 Republicans and 13 Democrats to the House of Representatives. This represented no change from he 2022 midterm elections. As mentioned above, Ted Cruz was re-elected to his position in the U.S. senate. 15 seats in the Texas State Senate were up for election, seven went to Democrats and eight to Republicans. Republicans expanded their majority in the Texas House by flipping two seats in historically Democratic border districts.
+In the 2024 election, Texas voters elected 25 Republicans and 13 Democrats to the House of Representatives. This represented no change from the 2022 midterm elections. As mentioned above, Ted Cruz was re-elected to his position in the U.S. senate. 15 seats in the Texas State Senate were up for election, seven went to Democrats and eight to Republicans. Republicans expanded their majority in the Texas House by flipping two seats in historically Democratic border districts.
 
 Texans also voted to elect a Railroad Commissioner, one member of the three-person board in charge of regulating the oil and gas industry. The republican incumbent won reelection for that position. 
 
@@ -150,7 +150,7 @@ These results indicate a need to explore what led to such a large error in my mo
 
 ## Actual Outcome of the 2024 Presidential Election in Texas
 
-As mentioned above, Former President Trump won Texas by 57.02% compared to Vice President Harris's 42.98%. To understand these results, it is helpful to analyze them at the country level.
+As mentioned above, Former President Trump won Texas by 57.02% compared to Vice President Harris's 42.98%. To understand these results, it is helpful to analyze them at the county level.
 
 <img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
@@ -202,7 +202,7 @@ In evaluating the campaign's influence on shifting the vote margin in Texas, it 
 
 **Quantitative Analysis — The Volume of Campaign Activity**
 
-Due to time constraints, the Harris campaign concentrated efforts on the seven swing states, which, according to campaign representatives on Pod Save America, led to narrower margins in these states. They argue that with more time, they could have reduced these margins even further [(Pod Save America, 2024)](https://podcasts.apple.com/us/podcast/pod-save-america/id1192761536). As New York Magazine reports, "States that had a margin of 3 points or less in 2020 moved to the right by 3.4 points on average. States where the margin in 2020 was larger than that moved to the right by an average of 4.8 points.” [(New York Magazine, 2024)](https://nymag.com/intelligencer/article/harris-campaign-battleground-states-electoral-college.html)
+Due to time constraints, the Harris campaign concentrated efforts on the seven swing states, which, according to campaign representatives on *Pod Save America*, led to narrower margins in these states. They argue that with more time, they could have reduced these margins even further [(Pod Save America, 2024)](https://podcasts.apple.com/us/podcast/pod-save-america/id1192761536). As *New York Magazine* reports, "States that had a margin of 3 points or less in 2020 moved to the right by 3.4 points on average. States where the margin in 2020 was larger than that moved to the right by an average of 4.8 points.” [(New York Magazine, 2024)](https://nymag.com/intelligencer/article/harris-campaign-battleground-states-electoral-college.html)
 
 This theory is evaluated by comparing the shift in Democratic two-party vote share between the 2020 and 2024 elections, providing insight into the potential impact of focused campaigning in these critical states.
 
